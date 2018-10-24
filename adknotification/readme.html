@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<head lang="en">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Template Documentation Template</title>
+	<style type="text/css" media="screen">
+		p, table, hr, .box {
+			margin-bottom:25px;
+		}
+		.box p {
+			margin-bottom:10px;
+		}
+		.container {
+			width: 80%;
+			min-width: 300px;
+			margin: 0 auto;
+		}
+		.center {
+			text-align: center;
+		}
+		.advertikon {
+			font-weight: bolder;
+			color: blue;
+		}
+		.sidenote {
+			font-size: 0.9em;
+			font-style: italic;
+			padding: 5px;
+		}
+		.figure {
+			width: 100%;
+		}
+	</style>
+</head>
+
+
+<body>
+	<div class="container">
+	
+		<h3 class="center alt">&ldquo;Samart Notifications&rdquo; by Adverti<span class="advertikon">k</span>on</h3>
+		
+		<hr>
+		
+		<h1 class="center">&ldquo;Smart Notifications&rdquo;</h1>
+		
+		<div class="borderTop">
+			<div class="span-6 colborder info prepend-1">
+				<p class="prepend-top">
+					<strong>
+					Created: 06/13/2016<br>
+					By: Advertikon<br>
+					Email: <a href="mailto:support@advertikon.com.ua">support@advertikon.com.ua</a>
+					</strong>
+				</p>
+			</div><!-- end div .span-6 -->		
+	
+			<div class="span-12 last">
+				<p class="prepend-top append-0">Thank you for purchasing my WooCommerce plugin. If you have any questions that are beyond the scope of this help file, please feel free to email via my user page contact form <a href="http://codecanyon.net/user/advertikon">here</a>. Thanks so much!</p>
+			</div>
+		</div><!-- end div .borderTop -->
+		
+		<hr>
+		
+		<h2 id="toc" class="alt">Table of Contents</h2>
+		<ol class="alpha">
+			<li><a href="#description">Description</a></li>
+			<li><a href="#features">Features</a></li>
+			<li><a href="#view-cus">View customization options</a></li>
+			<li><a href="#func-vars">The text variables functions</a></li>
+			<li><a href="#events">Events (conditions) to show/hide notification</a></li>
+			<li><a href="#installation">Installation</a></li>
+			<li><a href="#configuration">Configuration</a></li>
+			<li><a href="#remove">Removing plugin</a></li>
+		</ol>
+
+		<hr>
+		<h3 id="description"><strong>1. Description</strong> - <a href="#toc">top</a></h3>
+		<p>
+			Woocommerce plug-in to create a highly customizable notifications at the store side, which allow communicate with customers as if personally. With this extension you can create unlimited number of notifications and display each of them to specific customer on a particular page, under certain conditions. Extension gives ability to completely customize the view of notification – from the background color to the color of the shadow, cast by the notification. Dozen of build-in functions allow on the fly change the text of the notification, depending on the specific situation: the amount in the basket, guest session, current time, etc. You also can add call to action button which will lead customer to any page you specify. And the most powerful feature of the extension is ability to specify on which conditions show each notification ( more then 20 rules).
+		</p>
+
+		<hr>
+		<h3 id="features"><strong>2. Features</strong> - <a href="#toc">top</a></h3>
+		<ul>
+			<li>Extremely customizable appearance.
+			<li>Custom notification text.
+			<li>Functions to put variables into notification text.
+			<li>Option to select position at checkout and cart pages the notification to appear.
+			<li>Call to action button.
+			<li>The ability to bind showing / hiding the notification to a specific system event.
+			<li>Ability to create unlimited notifications with its own settings.
+		</ul>
+
+		<hr>
+		<h3 id="view-cus"><strong>3. View customization options</strong> - <a href="#toc">top</a></h3>
+		<ul>
+			<li>Text color
+			<li>Background color.
+			<li>Width.
+			<li>Height.
+			<li>Font height.
+			<li>Border radius.
+			<li>Box shadow.
+			<li>Box shadow color.
+			<li>Border width.
+			<li>Border color.
+			<li>Border style.
+			<li>Position left offset.
+			<li>Position bottom offset.
+		</ul>
+
+		<hr>
+		<h3 id="func-vars"><strong>4. The text variables functions</strong> - <a href="#toc">top</a></h3>
+		<ul>
+			<li>Difference between cart total amount and free shipping minimum amount
+			<li>Difference between cart total amount and specific amount
+			<li>Difference between cart sub total amount and specific amount
+			<li>Difference between cart sub total (ex. tax) amount and specific amount
+			<li>Custom URL
+			<li>Difference between specific weight and cart weight
+			<li>Current date
+			<li>Current time
+			<li>Current date and time
+			<li>Time remaining to a specific time
+		</ul>
+
+		<hr>
+		<h3 id="events"><strong>5. Events (conditions) to show/hide notification</strong> - <a href="#toc">top</a></h3>
+		<ul>
+			<li>Free shipping available, but total amount is insufficient.
+			<li>Free shipping is enabled in config.
+			<li>All conditions are met for free shipping.
+			<li>Cart subtotal is more then specific amount.
+			<li>Cart subtotal ex. tax) is more then specific amount.
+			<li>Cart total is more then specific amount.
+			<li>Cart weight are more them specific weight.
+			<li>One of the products in the cart has length more than specific length.
+			<li>One of the products in the cart has width more than specific width.
+			<li>One of the products in the cart has height more than specific height.
+			<li>One of the products in the cart belongs to specific category.
+			<li>One of the products in the cart has specific tag.
+			<li>One of the products in the cart has specific shipping class.
+			<li>One of the products in the cart belongs to specific type.
+			<li>One of the products in the cart has low stock status.
+			<li>One of the products in the cart has out of stock status.
+			<li>customer’s specific payment country.
+			<li>customer’s specific shipping country.
+			<li>Specific product in the cart.
+			<li>One of the products in the cart has specific related product.
+			<li>Applied specific coupon.
+			<li>Customer is guest.
+			<li>Customer is VAT exempt.
+		</ul>
+		
+		<hr>
+		
+		<h3 id="installation"><strong>6. Installation</strong> - <a href="#toc">top</a></h3>
+		<p>
+			In order to install the plugin unzip package file and upload its contents to <b>yourServerRootFolder/WordPressFolder/wp-content/plugins/</b> folder.
+		</p>
+
+		<p>
+			<span class="sidenote">Such folder structure will be in that case, when WordPress blog is installed in subfolder. In most cases <b>YourStoreRootFolder</b> will be the same as <b>WordPressFolder</b>.</span>
+		</p>
+
+		<p>
+			Then go to <b>WordPress Dashboard > Plugins</b> and click plugin's <b>Activate</b> link  to activate it (fig. 1).
+		</p>
+		<img class="figure" src="assets/img/smart_notifications_activate.png">
+		<span>Figure 1. Plugin activation</span>
+
+
+
+		<h3 id="configuration"><strong>7. Configuration</strong> - <a href="#toc">top</a></h3>
+		<p>
+			To configure the plugin go to <b>Dashboard > WooCommerce > Settings > Notifications tab.</b> To create notification you need follow the next steps:
+		</p>
+		<ol id="configs-list">
+			<li><a href="#conf-text">Set notification text.</a></li>
+			<li><a href="#conf-appearance">Set notification appearance.</a></li>
+			<li><a href="#conf-pos">Choose place at the store where notification should appear.</a></li>
+			<li><a href="#conf-event">Choose notifications' event - condition to show/hide notification.</a></li>
+			<li><a href="#conf-save"><b>Save notification</b>.</a></li>
+		</ol>
+		<p>
+			All changes to notification appearance will be reflected by notification preview. To have the notification preview always in sight, when you scroll down the page, you can fix it on the page, by clicking checkbox (fig 2). That will fix it in some location of the page, also you can drag it at any place you need.
+		</p>
+
+		<img class="figure" src="assets/img/smart_notifications_settings.png">
+		<span>Figure 2. Settings page</span>
+
+		<h4 id="conf-text"><strong>7.1 Notification text</strong> - <a href="#configs-list">top</a></h4>
+		<p>
+			To change notification text you need to type in it in <b>Notification Text</b> input field. Also you can use set of predefined functions to get environment specific values: shopping cart subtotal, current time etc. For example you want tell customer, that in order to get free shipping, he or she need to make purchase for specific amount. To make that type in something like this: 'To get free shipping spend another freeShipping()'. Where freeShipping() is a function, which calculates difference between minimum free shipping amount and cart subtotal. So in result you'll get this: 'To get free shipping spend another 25$'. In order to make the function work properly you need type in her name literally with parentheses and arguments (if applied). List of all supported functions you can find at <b>Notification Text</b> field description. Functions description and list of supported arguments you can see in tool-tip when clicking on circle with question mark, which placed opposite of each function.
+		</p>
+
+		<h4 id="conf-appearance"><strong>7.2 Notification appearance</strong> - <a href="#configs-list">top</a></h4>
+		<p>
+			You can change almost every aspect of notification appearance using appearance controls (fig. 3). These changes will be reflected by <b>Notification Preview</b>. One thing you should be aware of is that notification implements responsive design, so you set notification width in percents of available space, and real width will depend on specific page and theme.
+		</p>
+		<img class="figure" src="assets/img/smart_notifications_appearance_setting.png">
+		<span>Figure 3. Notification appearance controls</span>
+
+		<h4 id="conf-pos"><strong>7.3 Notification position</strong> - <a href="#configs-list">top</a></h4>
+		<p>
+			You can select amongst several places at checkout and cart pages (fig. 4) where to insert the notification (you can select more then one place).
+		</p>
+		<img class="figure" src="assets/img/smart_notifications_position.png">
+		<span>Figure 4. Notification position options</span>
+
+		<h4 id="conf-event"><strong>7.4 Events</strong> - <a href="#configs-list">top</a></h4>
+		<p>
+			To configure the notifications display logic you need activate desired events. All events have two options: show and hide. Exception is event always, which has only show option. It means when an event is enabled notification will be shown or hidden depend on its settings. Each event has priority, regarding its position in events list (fig. 5). The higher event's position - the higher its priority. You can change event's priority by dragging it in the list. Events logic is following: first enabled event, which is matched, will fire, and notification will be shown or hidden depend on its option.
+		</p>
+		<img class="figure" src="assets/img/smart_notifications_events.png">
+		<span>Figure 5. Notification's events</span>
+
+		<p>
+			For example, if you want that notification will be shown alway, but not when cart has product with specific category. To do it drag event <b>Categories</b> higher than event <b>Always</b> (fig. 5). In event <b>Categories</b>  select desired category, set option hide and enable events <b>Categories</b> and <b>Always</b>.
+		</p>
+
+		<h4 id="conf-save"><strong>7.5 Save</strong> - <a href="#configs-list">top</a></h4>
+		<p>
+			To changes, you have made, take effect, you need save the notification, by clicking <b>Save</b> button. To make copy of current notification - save it under another name.
+		</p>
+
+		<hr>
+		<h3 id="remove"><strong>8. Removing plugin</strong> - <a href="#toc">top</a></h3>
+		<p>
+			To deactivate plugin go to <b>WordPress Dashboard > Plugins</b> and click plugin's <b>Deactivate</b> link  to deactivate it (fig. 6). If you want totally remove plugin - click <b>Delete</b> link. In this case all plugin's data will be removed as well.
+		</p>
+		<img class="figure" src="assets/img/smart_notifications_deactivate.png">
+		<span>Figure 6. Plugin deactivation</span>
+		
+		<hr class="space">
+		<p><a href="#toc">Go To Table of Contents</a></p>
+		
+	</div><!-- end div .container -->
+</body>
+</html>
