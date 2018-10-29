@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * @package notifications
+ * @author Advertikon
+ */
+
+abstract class Advertikon_Notification_Includes_Control_Text extends Advertikon_Notification_Includes_Control {
+	protected $type = 'text';
+}

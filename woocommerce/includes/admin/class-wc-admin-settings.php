@@ -198,6 +198,7 @@ if ( ! class_exists( 'WC_Admin_Settings', false ) ) :
 				if ( ! isset( $value['type'] ) ) {
 					continue;
 				}
+
 				if ( ! isset( $value['id'] ) ) {
 					$value['id'] = '';
 				}

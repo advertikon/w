@@ -1,33 +1,28 @@
 <?php
 /**
- * Advertikon Notifications Tab Settings
+ * @package notifications
+ * @author Advertikon
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
+class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
+	protected $widget;
 
-if ( ! class_exists( 'ADK_Setting_Notifications' ) ) :
-
-/**
- * Notification setting page
- */
-class ADK_Setting_Notifications extends WC_Settings_Page {
-
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-
+	public function __construct( Advertikon_Notification_Includes_Widget $widget ) {
 		$this->id    = Advertikon_Notifications::ID;
-		$this->label = __( 'Notifications', 'advertikon' );
+		$this->label = __( 'Notifications', Advertikon_Notifications::LNS );
+
+		$this->widget = $widget;
 
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 100 );
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
 
 		// Register custom form renderer
-		require_once( 'admin_renderer.php' );
-		new ADK_Admin_Input_Renderer;
+		// require_once( 'admin_renderer.php' );
+		// new ADK_Admin_Input_Renderer;
+
+		foreach( $this->widget->get_controls() as $control ) {
+			$control->register_renderer();
+		}
 	}
 
 	/**
@@ -43,6 +38,21 @@ class ADK_Setting_Notifications extends WC_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
+		$ret = array( array(
+			'type'  => 'title',
+			'title' => __( 'Settings', Advertikon_Notifications::LNS ),
+		) );
+
+		foreach( $this->widget->get_controls() as $control ) {
+			$ret[] = $control->get();
+		}
+
+		$ret[] = array(
+			'type' => 'sectionend',
+		);
+
+		return $ret;
+
 		global $hide_save_button;
 
 		$teaser_max_height = 100;
@@ -707,5 +717,3 @@ json;
 		return $conf;
 	}
 }
-
-endif;

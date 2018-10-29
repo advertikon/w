@@ -23,9 +23,11 @@ require_once( plugin_dir_path( __FILE__ ) . '../library/advertikon.php' );
 //if( true || ! class_exists( 'Advertikon_Notifications' ) ) :
 class Advertikon_Notifications extends Advertikon {
 
-	protected $FILE = __FILE__;
-	protected $name = 'Smart Notification';
-	protected $ln = 'advertikon_notification';
+	protected $FILE         = __FILE__;
+	protected $name         = 'Smart Notification';
+	protected $class_prefix = 'Advertikon_Notification';
+
+	const LNS = 'advertikon_notification';
 
 	/**
 	 * @var String ID Module name
@@ -78,48 +80,86 @@ class Advertikon_Notifications extends Advertikon {
 	 */
 	public function __construct() {
 		parent::__construct();
-		load_plugin_textdomain( $this->ln, false,  dirname( __FILE__ ) . '/languages' );
+		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
 		$this->init();
 
-		require_once( dirname( __FILE__ ) . '/includes/error.php' );
+		// require_once( dirname( __FILE__ ) . '/includes/error.php' );
 
 		// load_plugin_textdomain( 'advertikon', false,  dirname( __FILE__ ) . '.languages' );
 
+		// if( is_admin() ) {
+		// 	if( isset( $_GET['tab'] ) && $_GET['tab'] == Advertikon_Notifications::ID ) {
+
+		// 		// Add admin scripts
+		// 		add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_scripts' ) );
+
+		// 		// Add notification preview renderer
+		// 		// add_action(
+		// 		// 	'woocommerce_admin_field_adk-notification-preview',
+		// 		// 	array( $this, 'render_notification_preview' )
+		// 		// );
+		// 	}
+
+		// 	// Add Notifications setting page
+		// 	add_action( 'woocommerce_get_settings_pages', array( $this, 'add_setting_tab' ) );
+		// } else {
+
+		// 	// Hook on page render events
+		// 	$pos = array();
+		// 	foreach( get_option( 'adk_notification', array() ) as $name => $config ) {
+		// 		$pos = array_merge( $pos, array_values( $config['advertikon_notifications_position'] ) );
+		// 	}
+
+		// 	foreach( array_unique( $pos ) as $p ) {
+		// 		add_action( $p, array( $this, 'render_notification' ) );
+		// 	}
+
+		// 	add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
+		// }
+
+		// // Add ajax template redirect to save notification hook
+		// add_action( 'wc_ajax_' . $this->save_notification_hook, array( $this, 'save_notification' ) );
+
+		// // Add ajax template redirect to delete notification hook
+		// add_action( 'wc_ajax_' . $this->delete_notification_hook, array( $this, 'delete_notification' ) );
+
+		// // Add ajax template redirect to products list fetcher
+		// add_action( 'wc_ajax_adk_products_list', array( $this, 'get_products_list' ) );
+
+		// // Add ajax template redirect to products list fetcher
+		// add_action( 'wc_ajax_adk_coupons_list', array( $this, 'get_coupons_list' ) );
+	}
+
+	protected function init() {
+		parent::init();
+
 		if( is_admin() ) {
 			if( isset( $_GET['tab'] ) && $_GET['tab'] == Advertikon_Notifications::ID ) {
-
-				// Add admin scripts
 				add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_scripts' ) );
-
-				// Add notification preview renderer
-				add_action(
-					'woocommerce_admin_field_adk-notification-preview',
-					array( $this, 'render_notification_preview' )
-				);
 			}
 
-			// Add Notifications setting page
-			add_action( 'woocommerce_get_settings_pages', array( $this, 'add_setting_tab' ) );
+			$widget = new Advertikon_Notification_Includes_Widget();
+			$widget->init_admin();
 		} else {
 
 			// Hook on page render events
-			$pos = array();
-			foreach( get_option( 'adk_notification', array() ) as $name => $config ) {
-				$pos = array_merge( $pos, array_values( $config['advertikon_notifications_position'] ) );
-			}
+			// $pos = array();
+			// foreach( get_option( 'adk_notification', array() ) as $name => $config ) {
+			// 	$pos = array_merge( $pos, array_values( $config['advertikon_notifications_position'] ) );
+			// }
 
-			foreach( array_unique( $pos ) as $p ) {
-				add_action( $p, array( $this, 'render_notification' ) );
-			}
+			// foreach( array_unique( $pos ) as $p ) {
+			// 	add_action( $p, array( $this, 'render_notification' ) );
+			// }
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
 		}
 
 		// Add ajax template redirect to save notification hook
-		add_action( 'wc_ajax_' . $this->save_notification_hook, array( $this, 'save_notification' ) );
+		// add_action( 'wc_ajax_' . $this->save_notification_hook, array( $this, 'save_notification' ) );
 
 		// Add ajax template redirect to delete notification hook
-		add_action( 'wc_ajax_' . $this->delete_notification_hook, array( $this, 'delete_notification' ) );
+		// add_action( 'wc_ajax_' . $this->delete_notification_hook, array( $this, 'delete_notification' ) );
 
 		// Add ajax template redirect to products list fetcher
 		add_action( 'wc_ajax_adk_products_list', array( $this, 'get_products_list' ) );

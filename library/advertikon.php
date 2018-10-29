@@ -11,12 +11,12 @@ abstract class Advertikon {
 	/** @var $FILE string child's __FILE__ */
 	protected $FILE = null;
 	protected $name = '';
-	protected $ln = 'advertikon';
+	protected $class_prefix = '';
+
+	const LNS = 'advertikon'; // Language name space
 
 	public function __construct() {
-		load_plugin_textdomain( $this->ln, false,  dirname( __FILE__ ) . '/languages' );
-		
-
+		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
 	}
 
 	protected function init() {
@@ -33,9 +33,13 @@ abstract class Advertikon {
 	}
 
 	protected function autoload( $name ) {
-		if ( 0 === strpos( $class_name, 'Advertikon' ) ) {
+		if ( !$this->class_prefix ) {
+			throw new Exception( 'Class prefix needs to be defined' );
+		}
+
+		if ( 0 === strpos( $name, $this->class_prefix ) ) {
 			$classes_dir = realpath( plugin_dir_path( $this->FILE ) );
-			$class_file = str_replace( '_', DIRECTORY_SEPARATOR, substr( $class_name, 11 ) ) . '.php';
+			$class_file = strtolower( str_replace( '_', DIRECTORY_SEPARATOR, substr( $name, strlen( $this->class_prefix ) ) ) . '.php' );
 			require_once $classes_dir . $class_file;
 		}
 	}
