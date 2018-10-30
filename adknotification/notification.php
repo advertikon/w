@@ -26,6 +26,7 @@ class Advertikon_Notifications extends Advertikon {
 	protected $FILE         = __FILE__;
 	protected $name         = 'Smart Notification';
 	protected $class_prefix = 'Advertikon_Notification';
+	static protected $prefix       = 'advertikon_notifications_';
 
 	const LNS = 'advertikon_notification';
 
@@ -58,6 +59,8 @@ class Advertikon_Notifications extends Advertikon {
 	 * @var String $nonce_action Nonce action name for edit notification
 	 */
 	protected $nonce_action = 'adk_edit_notification';
+
+	protected $widget;
 
 	/**
 	 * Activation hook handler
@@ -132,14 +135,17 @@ class Advertikon_Notifications extends Advertikon {
 
 	protected function init() {
 		parent::init();
+		$this->widget = class_exists( 'Advertikon_Notification_Includes_Widget_Extended' ) ?
+			new Advertikon_Notification_Includes_Widget_Extended() : new Advertikon_Notification_Includes_Widget();
 
 		if( is_admin() ) {
 			if( isset( $_GET['tab'] ) && $_GET['tab'] == Advertikon_Notifications::ID ) {
 				add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_scripts' ) );
 			}
 
-			$widget = new Advertikon_Notification_Includes_Widget();
-			$widget->init_admin();
+			// $widget = new Advertikon_Notification_Includes_Widget();
+			// $widget->init_admin();
+			add_action( 'woocommerce_get_settings_pages', function(){ new Advertikon_Notification_Includes_Setting( $this->widget ); } );
 		} else {
 
 			// Hook on page render events
@@ -737,36 +743,27 @@ jQuery( function documentOnReady( $ ) {
 			true
 		);
 
-		wp_script_add_data(
+		wp_scripts()->add_inline_script(
 			'adk_notifications',
-			'data',
-			$this->minify_script(
-
-				// Notification text parser class.
-				// Handles replacement of custom functions declaration by its returned values
-				file_get_contents( dirname( __FILE__ ) . '/js/adk_function_parser.js' ) . ";" .
-
-				// Localization and code injections
-				"var adkLang=" . json_encode( array(
-					'show_if'                => __( 'Show if', 'advertikon' ),
-					'hide_if'                => __( 'Hide if', 'advertikon' ),
-					'disabled'               => __( 'Disabled', 'advertikon' ),
-					'saving'                 => __( 'Saving', 'advertikon' ),
-					'network_error'          => __( 'Network error', 'advertikon' ),
-					'search'                 => __( 'Search for item', 'advertikon' ),
-					'searching'              => __( 'Searching', 'advertikon' ),
-					'query_min_length'       => __( 'Query should be at least % character(s) long', 'advertikon' ),
-					'query_max_length'       => __( 'Query may be maximum % character(s) long', 'advertikon' ),
-					'no_matches'             => __( 'No matches found', 'advertikon' ),
-					'parse_error'            => __( 'Response parsing error', 'advertikon' ),
-					'ajax_save_notification' => site_url() . '?wc-ajax=' . $this->save_notification_hook,
-					'ajax_delete_notification' => site_url() . '?wc-ajax=' . $this->delete_notification_hook,
-					'wpnonce' => wp_create_nonce( $this->nonce_action ),
-				) ) . ";" .
-
-				// Notification text and call-to-action button responsive functionality
-				$this->fix_banner_css_script()
-			)
+			// Localization and code injections
+			"var adkLang=" . json_encode( array(
+				'show_if'                  => __( 'Show if', 'advertikon' ),
+				'hide_if'                  => __( 'Hide if', 'advertikon' ),
+				'disabled'                 => __( 'Disabled', 'advertikon' ),
+				'saving'                   => __( 'Saving', 'advertikon' ),
+				'network_error'            => __( 'Network error', 'advertikon' ),
+				'search'                   => __( 'Search for item', 'advertikon' ),
+				'searching'                => __( 'Searching', 'advertikon' ),
+				'query_min_length'         => __( 'Query should be at least % character(s) long', 'advertikon' ),
+				'query_max_length'         => __( 'Query may be maximum % character(s) long', 'advertikon' ),
+				'no_matches'               => __( 'No matches found', 'advertikon' ),
+				'parse_error'              => __( 'Response parsing error', 'advertikon' ),
+				'ajax_save_notification'   => site_url() . '?wc-ajax=' . $this->save_notification_hook,
+				'ajax_delete_notification' => site_url() . '?wc-ajax=' . $this->delete_notification_hook,
+				'wpnonce'                  => wp_create_nonce( $this->nonce_action ),
+				'prefix'                   => Advertikon_Notifications::prefix( '' ),
+			) ) . ";",
+			'before'
 		);
 
 		$this->add_styles();

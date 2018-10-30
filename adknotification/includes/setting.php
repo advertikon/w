@@ -20,9 +20,9 @@ class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
 		// require_once( 'admin_renderer.php' );
 		// new ADK_Admin_Input_Renderer;
 
-		foreach( $this->widget->get_controls() as $control ) {
-			$control->register_renderer();
-		}
+		// foreach( $this->widget->get_controls() as $control ) {
+		// 	$control->register_renderer();
+		// }
 	}
 
 	/**
@@ -38,18 +38,23 @@ class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$ret = array( array(
-			'type'  => 'title',
-			'title' => __( 'Settings', Advertikon_Notifications::LNS ),
-		) );
+		$ret = array();
+		// $ret = array( array(
+		// 	'type'  => 'title',
+		// 	'title' => __( 'Settings', Advertikon_Notifications::LNS ),
+		// ) );
 
-		foreach( $this->widget->get_controls() as $control ) {
-			$ret[] = $control->get();
-		}
+		// foreach( $this->widget->get_controls() as $control ) {
+		// 	$ret[] = $control->get();
+		// }
 
-		$ret[] = array(
-			'type' => 'sectionend',
-		);
+		$ret = array_merge( $ret, $this->widget->get_template()->get_controls() );
+		$ret = array_merge( $ret, $this->get_section_controls() );
+		$ret = array_merge( $ret, $this->get_button_controls() );
+
+		// $ret[] = array(
+		// 	'type' => 'sectionend',
+		// );
 
 		return $ret;
 
@@ -715,5 +720,194 @@ json;
 		}
 
 		return $conf;
+	}
+
+	protected function get_section_controls() {
+		$ret = array();
+
+		foreach( array( 'content', 'top', 'bottom', 'left', 'right', ) as $section_name ) {
+			$ret = array_merge( $ret, array(
+				array(
+					'type' => 'title',
+					'title' => __( 'Section', Advertikon_Notifications::LNS ) . ': ' . ucfirst( $section_name ),
+				),
+				array(
+					'id'			=> Advertikon_Notifications::prefix( $section_name . '_text' ),
+					'type' 			=> 'textarea',
+					'title' 		=> __( 'Text', Advertikon_Notifications::LNS ),
+					'default' 		=> '',
+					'class'			=> 'adk-textarea',
+					'css'			=> 'height: 200px;',
+					// 'custom_attributes'	=> array(
+					// 	'data-callback'		=> 'setText',
+					// 	'data-desc'			=> __( 'Supported functions:' ),
+					// 	'data-func'			=> require( dirname( dirname( __FILE__ ) ) . '/includes/functions.json.php' ),
+					// ),
+				),
+				array(
+					'id'			=> Advertikon_Notifications::prefix( $section_name . '_text_color' ),
+					'type'			=> 'color',
+					'title' 		=> __( 'Text color', Advertikon_Notifications::LNS ),
+					'class'			=> 'adk-color',
+					// 'default'		=> '#000',
+					// 'custom_attributes'	=> array(
+					// 	'data-callback'		=> 'setTextColor',
+					// ),
+				),
+				array(
+					'id'			=> Advertikon_Notifications::prefix( $section_name . '_bg_color' ),
+					'type'			=> 'color',
+					'title' 		=> __( 'Background color', Advertikon_Notifications::LNS ),
+					'class'			=> 'adk-color',
+					// 'default'		=> '#f92e2e',
+					// 'custom_attributes'	=> array(
+					// 	'data-callback'		=> 'setBgColor',
+					// ),
+				),
+				array(
+					'id'			=> Advertikon_Notifications::prefix( $section_name . '_padding' ),
+					'type'			=> 'number',
+					'title' 		=> __( 'Padding', Advertikon_Notifications::LNS ),
+					'class'			=> 'adk-slider',
+					'default'		=> '10',
+					// 'custom_attributes'	=> array(
+					// 	'data-callback'		=> 'setHeight',
+					// 	'data-unit'			=> 'px',
+					// 	'data-max'			=> $teaser_max_height,	
+					// ),
+				),
+				array(
+					'id'			=> Advertikon_Notifications::prefix( $section_name . '_font_height' ),
+					'type'			=> 'number',
+					'title' 		=> __( 'Text height', Advertikon_Notifications::LNS ),
+					'class'			=> 'adk-slider',
+					'default'		=> '14',
+					// 'custom_attributes'	=> array(
+					// 	'data-max'			=> ceil( $teaser_max_height / 2.5 ),
+					// 	'data-callback'		=> 'setFontHeight',
+					// 	'data-unit'			=> 'px',
+					// ),
+				),
+				array(
+					'type' => 'sectionend',
+				)
+			) );
+
+		}
+		
+		return $ret;
+	}
+
+	protected function get_button_controls() {
+		return array(
+			array(
+					'type' => 'title',
+					'title' => __( 'Call to action button', Advertikon_Notifications::LNS ),
+				),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_text' ),
+				'type' 			=> 'text',
+				'title' 		=> __( 'Caption', Advertikon_Notifications::LNS ),
+				'default' 		=> 'Click me!!',
+				'desc'			=> __( 'Text to display on call to action button.', Advertikon_Notifications::LNS ),
+				'desc_tip'		=> true,
+				// 'custom_attributes'	=> array(
+				// 		'data-callback'	=> 'setButtonText',
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_url' ),
+				'type' 			=> 'text',
+				'title' 		=> __( 'Action URL', Advertikon_Notifications::LNS ),
+				'desc'			=> __( 'URL to open in response to click on CTA button', Advertikon_Notifications::LNS ),
+				'desc_tip'		=> true,
+				// 'custom_attributes'	=> array(
+				// 		'data-callback'	=> 'setButtonURL',
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_bg_color' ),
+				'type'			=> 'color',
+				'title' 		=> __( 'Background color', Advertikon_Notifications::LNS ),
+				'class'			=> 'adk-color',
+				// 'default'		=> '#f92e2e',
+				// 'custom_attributes'	=> array(
+				// 	'data-callback'		=> 'setBgColor',
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_text_color' ),
+				'type'			=> 'color',
+				'title' 		=> __( 'Text color', Advertikon_Notifications::LNS ),
+				'class'			=> 'adk-color',
+				// 'default'		=> '#f92e2e',
+				// 'custom_attributes'	=> array(
+				// 	'data-callback'		=> 'setBgColor',
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_padding' ),
+				'type'			=> 'number',
+				'title' 		=> __( 'Padding', Advertikon_Notifications::LNS ),
+				'class'			=> 'adk-slider',
+				'default'		=> '10',
+				// 'custom_attributes'	=> array(
+				// 	'data-callback'		=> 'setHeight',
+				// 	'data-unit'			=> 'px',
+				// 	'data-max'			=> $teaser_max_height,	
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_text_size' ),
+				'type'			=> 'number',
+				'title' 		=> __( 'Text size', Advertikon_Notifications::LNS ),
+				'class'			=> 'adk-slider',
+				'default'		=> '14',
+				// 'custom_attributes'	=> array(
+				// 	'data-callback'		=> 'setHeight',
+				// 	'data-unit'			=> 'px',
+				// 	'data-max'			=> $teaser_max_height,	
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_border_width' ),
+				'type'			=> 'number',
+				'title' 		=> __( 'Border width', Advertikon_Notifications::LNS ),
+				'class'			=> 'adk-slider',
+				'default'		=> '1',
+				// 'custom_attributes'	=> array(
+				// 	'data-callback'		=> 'setHeight',
+				// 	'data-unit'			=> 'px',
+				// 	'data-max'			=> $teaser_max_height,	
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_border_radius' ),
+				'type'			=> 'number',
+				'title' 		=> __( 'Border radius', Advertikon_Notifications::LNS ),
+				'class'			=> 'adk-slider',
+				'default'		=> '5',
+				// 'custom_attributes'	=> array(
+				// 	'data-callback'		=> 'setHeight',
+				// 	'data-unit'			=> 'px',
+				// 	'data-max'			=> $teaser_max_height,	
+				// ),
+			),
+			array(
+				'id'			=> Advertikon_Notifications::prefix( 'button_border_color' ),
+				'type'			=> 'color',
+				'title' 		=> __( 'Border color', Advertikon_Notifications::LNS ),
+				'class'			=> 'adk-color',
+				// 'default'		=> '#f92e2e',
+				// 'custom_attributes'	=> array(
+				// 	'data-callback'		=> 'setBgColor',
+				// ),
+			),
+			array(
+				'type' => 'sectionend',
+			),
+		);
+
+		return $ret;
 	}
 }

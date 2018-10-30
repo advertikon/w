@@ -177,3 +177,13 @@ th .description {
 .adk-select2 {
 	display: inline-block;
 }
+
+h2 {
+	background-color: #cccccc;
+    padding: 10px;
+    cursor: pointer;
+}
+
+h2 + table {
+	display: none;
+}

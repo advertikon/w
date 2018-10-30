@@ -6,33 +6,21 @@
  */
 
 class Advertikon_Notification_Includes_Widget {
-	protected $controls_classes = array(
-		'Advertikon_Notification_Includes_Control_Text_Name',
-		'Advertikon_Notification_Includes_Control_Text_Multiline_Content',
-		'Advertikon_Notification_Includes_Control_Color_Background',
-	);
+	protected $template;
 
-	protected $controls = array();
-
-	public function init_admin() {
-		// Add Notifications setting page
-		add_action( 'woocommerce_get_settings_pages', array( $this, 'render_setting_tab' ) );
+	public function __costruct() {
+		
 	}
 
-	public function render_setting_tab() {
-		$settings[] = new Advertikon_Notification_Includes_Setting( $this );
-	}
-
-	public function get_controls() {
-		if ( $this->controls ) {
-			return $this->controls;
+	public function get_template() {
+		if ( $this->template ) {
+			return $this->template;
 		}
 
-		foreach( $this->controls_classes as $class ) {
-			$this->controls[] = new $class();
-		}
+		$this->template = class_exists( 'Advertikon_Notification_Includes_Template_Extended', true ) ?
+			new Advertikon_Notification_Includes_Template_Extended() : new Advertikon_Notification_Includes_Template();
 
-		return $this->controls;
+		return $this->template;
 	}
 	
 }

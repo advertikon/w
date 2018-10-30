@@ -2555,3 +2555,36 @@ jQuery( document).ready( function onDocumentLoad( $ ) {
 	);
 
 } );
+
++ function( $ ) {
+"use strict";
+
+	function toggleSection() {
+		$( this ).next( "table" ).fadeToggle();
+	}
+
+	function select2TemplatePreview( data, element ) {
+		console.log( data );
+		var
+						ret = $( element );
+
+					if( data.image ) {
+						ret.html( "<img src='" + ADK.locale.imageBase + data.image +
+								"' style='height:" + imageHeight + "px' />&nbsp;" + data.text );
+					} else {
+						ret.text( data.text );
+					}
+
+					ret.attr( "value", data.id );
+
+					return ret;
+	}
+
+	function showTemplateSections() {
+
+	}
+
+	$( "h2" ).on( "click", toggleSection );
+	$( "#" + adkLang.prefix + "template" ).on( "change", showTemplateSections );
+	$( "#" + adkLang.prefix + "template" ).select2( { templateResult: select2TemplatePreview } );
+}( jQuery );

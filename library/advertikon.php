@@ -12,8 +12,13 @@ abstract class Advertikon {
 	protected $FILE = null;
 	protected $name = '';
 	protected $class_prefix = '';
+	static protected $prefix = ''; // module prefix
 
 	const LNS = 'advertikon'; // Language name space
+
+	static public function prefix( $v ) {
+		return static::$prefix . $v;
+	}
 
 	public function __construct() {
 		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
