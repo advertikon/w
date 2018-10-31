@@ -728,8 +728,9 @@ json;
 		foreach( array( 'content', 'top', 'bottom', 'left', 'right', ) as $section_name ) {
 			$ret = array_merge( $ret, array(
 				array(
-					'type' => 'title',
+					'type'  => 'adk_title',
 					'title' => __( 'Section', Advertikon_Notifications::LNS ) . ': ' . ucfirst( $section_name ),
+					'id'    => 'section_' . $section_name,
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_text' ),
@@ -738,11 +739,6 @@ json;
 					'default' 		=> '',
 					'class'			=> 'adk-textarea',
 					'css'			=> 'height: 200px;',
-					// 'custom_attributes'	=> array(
-					// 	'data-callback'		=> 'setText',
-					// 	'data-desc'			=> __( 'Supported functions:' ),
-					// 	'data-func'			=> require( dirname( dirname( __FILE__ ) ) . '/includes/functions.json.php' ),
-					// ),
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_text_color' ),

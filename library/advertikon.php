@@ -31,6 +31,7 @@ abstract class Advertikon {
 
 		$this->register_autoloader();
 		register_activation_hook( $this->FILE, [ $this, 'on_activate', ] );
+		Advertikon_Library_Renderer_Admin::init();
 	}
 
 	protected function register_autoloader() {
@@ -45,6 +46,12 @@ abstract class Advertikon {
 		if ( 0 === strpos( $name, $this->class_prefix ) ) {
 			$classes_dir = realpath( plugin_dir_path( $this->FILE ) );
 			$class_file = strtolower( str_replace( '_', DIRECTORY_SEPARATOR, substr( $name, strlen( $this->class_prefix ) ) ) . '.php' );
+			require_once $classes_dir . $class_file;
+		}
+
+		if ( 0 === strpos( $name, 'Advertikon_Library' ) ) {
+			$classes_dir = realpath( plugin_dir_path( $this->FILE ) );
+			$class_file = strtolower( str_replace( '_', DIRECTORY_SEPARATOR, substr( $name, 10 ) ) . '.php' );
 			require_once $classes_dir . $class_file;
 		}
 	}

@@ -29,7 +29,6 @@ class Advertikon_Notification_Includes_Template {
 				'title' 		=> __( 'Width', Advertikon_Notifications::LNS ),
 				'class'			=> 'adk-slider',
 				'default'		=> '800',
-				'desc'			=> __( 'Width', Advertikon_Notifications::LNS ),
 				'sort'          => 30,
 			),
 			array(
