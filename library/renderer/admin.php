@@ -6,7 +6,8 @@
 
 class Advertikon_Library_Renderer_Admin {
 	static protected $types = array(
-			'adk_title',
+		'adk_title',
+		'adk_button',
 	);
 
 	static public function init() {
@@ -16,11 +17,20 @@ class Advertikon_Library_Renderer_Admin {
 	}
 
 	static public function render( array $element ) {
+		$data = self::prepare( $element );
+
 		switch( $element['type'] ) {
 			case 'adk_title':
-				echo self::title( $element );
+				self::title( $data );
+				break;
+			case 'adk_button':
+				echo self::button( $data );
 				break;
 		}
+	}
+
+	static function prepare( array $data ) {
+		return $data;
 	}
 
 	static protected function title( array $value ) {
@@ -39,5 +49,18 @@ class Advertikon_Library_Renderer_Admin {
 		if ( ! empty( $value['id'] ) ) {
 			do_action( 'woocommerce_settings_' . sanitize_title( $value['id'] ) );
 		}
+	}
+
+	static protected function button( array $data ) {
+		extract( $data );
+
+		return sprintf(
+			'<button id="%s" class="%s" %s type="%s">%s</button>',
+			esc_attr( $id ),
+			esc_attr( $class ),
+			isset( $custom_attributes ) ? $custom_attributes : '',
+			isset( $button_type )       ? esc_attr( $button_type ) : 'button',
+			isset( $caption )           ? esc_html( $caption ) : __( 'Button', Advertikon::LNS )
+		);
 	}
 }

@@ -14,6 +14,8 @@ abstract class Advertikon {
 	protected $class_prefix = '';
 	static protected $prefix = ''; // module prefix
 
+	static protected $logger;
+
 	const LNS = 'advertikon'; // Language name space
 
 	static public function prefix( $v ) {
@@ -24,7 +26,7 @@ abstract class Advertikon {
 		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
 	}
 
-	protected function init() {
+	protected function init() { error_log( 'init()');
 		if ( !$this->FILE ) {
 			throw new Exception( 'FILE needs to be initialized' );
 		}
@@ -63,5 +65,17 @@ abstract class Advertikon {
 				$this->name
 			) );
 		}
+	}
+
+	public static function log( $message, $severity = Advertikon_Library_Log::LEVEL_NORNAL ) {
+		if ( !self::$logger ) {
+			self::$logger = new Advertikon_Library_Log();
+		}
+
+		self::$logger->log( $message, '', $severity );
+	}
+
+	public static function error( $message ) {
+		self::log( $message, Advertikon_Library_Log::LEVEL_ERROR );
 	}
 }
