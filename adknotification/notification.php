@@ -725,7 +725,7 @@ jQuery( function documentOnReady( $ ) {
 	 * Add scripts to admin area
 	 */
 	public function add_admin_scripts() {
-
+Advertikon::log( plugins_url( '', 'wocommerce/wocommerce.php' ) );
 		// Plugin main script - at footer
 		wp_enqueue_script(
 			'adk_notifications',
@@ -738,10 +738,42 @@ jQuery( function documentOnReady( $ ) {
 				'jquery-ui-slider',
 				'jquery-ui-draggable',
 				'jquery-ui-sortable',
-				'iris' ),
+				'iris',
+			),
 			false,
 			true
 		);
+		
+		wp_enqueue_script(
+		    'select2',
+		    plugins_url( 'assets/js/select2/select2.js', 'woocommerce/woocommerce.php' ),
+		    array(
+		        'jquery',
+		    ),
+		    false,
+		    true
+		    );
+		
+		wp_enqueue_script(
+		    'spectrum',
+		    plugins_url( 'js/spectrum.js', __FILE__ ),
+		    array(
+		        'jquery',
+		        'tinycolor'
+		    ),
+		    false,
+		    true
+		);
+		
+        wp_enqueue_script(
+            'tinycolor',
+            plugins_url( 'js/tinycolor-min.js', __FILE__ ),
+            array(
+                'jquery',
+            ),
+            false,
+            true
+        );
 
 		wp_scripts()->add_inline_script(
 			'adk_notifications',

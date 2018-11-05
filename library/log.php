@@ -44,6 +44,50 @@ class Advertikon_Library_Log {
 		$this->open();
 		$this->set_handlers();
 	}
+	
+	public function log( $msg, $line = '', $urgency = self::LEVEL_NORMAL ) {
+	    if ( is_null( $this->fd ) ) {
+	        return;
+	    }
+	    
+	    if ( is_a( $msg, 'Exception' ) || is_a( $msg, 'Error' ) ) {
+	        $msg = $msg->getMessage() . "\n" . $msg->getTraceAsString();
+	        $urgency = self::LEVEL_ERROR;
+	        
+	    } else if ( is_bool( $msg ) ) {
+	        $msg = '(boolean) ' . ( $msg ? 'true' : 'false' );
+	        
+	    } elseif ( is_null( $msg ) ) {
+	        $msg = 'NULL';
+	        
+	    } else {
+	        $msg = print_r( $msg, 1 );
+	    }
+	    
+	    $msg = rtrim( $msg, PHP_EOL ) . $line . "\n";
+	    
+	    if ( $this->first_log_line ) {
+	        $prefix = $this->color( $this->get_log_prefix( $urgency ), 'blue' );
+	        $this->first_log_line = false;
+	        
+	    } else {
+	        $prefix = $this->get_log_prefix( $urgency );
+	    }
+	    
+	    if ( $urgency >= self::LEVEL_ERROR ) {
+	        $msg = $this->color( $msg, 'red' );
+	    }
+	    
+	    fwrite( $this->fd, $prefix . $msg );
+	}
+	
+	public function error( $errno, $errstr, $errfile, $errline ) {
+	    $this->log( sprintf( "%s in %s:%s", $errstr, $errfile, $errline ), '', self::LEVEL_ERROR );
+	}
+	
+	public function dump_scripts() {
+	    $this->log( wp_scripts()->registered );
+	}
 
 	protected function trim_log() {
 		$size = filesize( $this->log );
@@ -116,51 +160,13 @@ class Advertikon_Library_Log {
 		$this->system_exception_handler = set_exception_handler( [ $this, 'log' ] );
 	}
 
-	public function log( $msg, $line = '', $urgency = self::LEVEL_NORMAL ) {
-		if ( is_null( $this->fd ) ) {
-			return;
-		}
-
-		if ( is_a( $msg, 'Exception' ) || is_a( $msg, 'Error' ) ) {
-			$msg = $msg->getMessage() . "\n" . $msg->getTraceAsString();
-			$urgency = self::LEVEL_ERROR;
-
-		} else if ( is_bool( $msg ) ) {
-			$msg = '(boolean) ' . ( $msg ? 'true' : 'false' ); 
-
-		} elseif ( is_null( $msg ) ) {
-			$msg = 'NULL';
-
-		} else {
-			$msg = print_r( $msg, 1 );
-		}
-
-		$msg = rtrim( $msg, PHP_EOL ) . $line . "\n";
-
-		if ( $this->first_log_line ) {
-			$prefix = $this->color( $this->get_log_prefix( $urgency ), 'blue' );
-			$this->first_log_line = false;
-
-		} else {
-			$prefix = $this->get_log_prefix( $urgency );
-		}
-
-		if ( $urgency >= self::LEVEL_ERROR ) {
-			$msg = $this->color( $msg, 'red' );
-		}
-
-		fwrite( $this->fd, $prefix . $msg );
-	}
-
-	public function error( $errno, $errstr, $errfile, $errline ) {
-		$this->log( sprintf( "%s in %s:%s", $errstr, $errfile, $errline ), '', self::LEVEL_ERROR );
-	}
+	
 
 	protected function get_log_prefix( $level_code ) {
 		return sprintf( "%s.%s\t[%s]\t", date( 'd M H:i:s' ), substr( microtime(), 2, 4 ), $this->level_name( $level_code ) );
 	}
 
-	private function level_name( $code ) {
+	protected function level_name( $code ) {
 		$ret = '';
 
 		switch ( $code ) {

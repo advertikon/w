@@ -26,7 +26,7 @@ abstract class Advertikon {
 		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
 	}
 
-	protected function init() { error_log( 'init()');
+	protected function init() {
 		if ( !$this->FILE ) {
 			throw new Exception( 'FILE needs to be initialized' );
 		}
@@ -67,7 +67,7 @@ abstract class Advertikon {
 		}
 	}
 
-	public static function log( $message, $severity = Advertikon_Library_Log::LEVEL_NORNAL ) {
+	public static function log( $message, $severity = Advertikon_Library_Log::LEVEL_NORMAL ) {
 		if ( !self::$logger ) {
 			self::$logger = new Advertikon_Library_Log();
 		}
@@ -77,5 +77,13 @@ abstract class Advertikon {
 
 	public static function error( $message ) {
 		self::log( $message, Advertikon_Library_Log::LEVEL_ERROR );
+	}
+	
+	public static function get_logger() {
+	    if ( !self::$logger ) {
+	        self::$logger = new Advertikon_Library_Log();
+	    }
+
+	    return self::$logger;
 	}
 }
