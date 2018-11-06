@@ -17,6 +17,7 @@ class Advertikon_Notification_Includes_Template_Extended extends Advertikon_Noti
 				'desc'			=> __( 'Description to show at backend', Advertikon_Notifications::LNS ),
 				'desc_tip'		=> true,
 				'sort'          => 10,
+				'class'         => 'adk-widget-control',
 			),
 		) );
 

@@ -728,44 +728,51 @@ json;
 		$ret = array();
 
 		foreach( array( 'content', 'top', 'bottom', 'left', 'right', ) as $section_name ) {
+			$section = 'section_' . $section_name;
+
 			$ret = array_merge( $ret, array(
 				array(
 					'type'  => 'adk_title',
 					'title' => __( 'Section', Advertikon_Notifications::LNS ) . ': ' . ucfirst( $section_name ),
-					'id'    => 'section_' . $section_name,
+					'id'    => $section,
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_text' ),
-					'type' 			=> 'textarea',
+					'name'          => $section . '[' . 'text' . ']',
+					'type' 			=> 'adk_textarea',
 					'title' 		=> __( 'Text', Advertikon_Notifications::LNS ),
 					'default' 		=> '',
-					'class'			=> 'adk-textarea',
+					'class'         => 'adk-widget-control',
 					'css'			=> 'height: 200px;',
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_text_color' ),
-					'type'			=> 'color',
+					'name'          => $section . '[' . 'text_color' . ']',
+					'type'			=> 'adk_color',
 					'title' 		=> __( 'Text color', Advertikon_Notifications::LNS ),
-					'class'			=> 'adk-color',
+					'class'         => 'adk-widget-control',
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_bg_color' ),
-					'type'			=> 'color',
+					'name'          => $section . '[' . 'bg_color' . ']',
+					'type'			=> 'adk_color',
 					'title' 		=> __( 'Background color', Advertikon_Notifications::LNS ),
-					'class'			=> 'adk-color',
+					'class'         => 'adk-widget-control',
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_padding' ),
-					'type'			=> 'number',
+					'name'          => $section . '[' . 'padding' . ']',
+					'type'			=> 'adk_number',
 					'title' 		=> __( 'Padding', Advertikon_Notifications::LNS ),
-					'class'			=> 'adk-slider',
+					'class'         => 'adk-widget-control',
 					'default'		=> '10',
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_font_height' ),
-					'type'			=> 'number',
+					'name'          => $section . '[' . 'font_height' . ']',
+					'type'			=> 'adk_number',
 					'title' 		=> __( 'Text height', Advertikon_Notifications::LNS ),
-					'class'			=> 'adk-slider',
+					'class'         => 'adk-widget-control',
 					'default'		=> '14',
 				),
 				array(
@@ -801,15 +808,13 @@ json;
 			),
 			array(
 				'id'			=> Advertikon_Notifications::prefix( 'button_bg_color' ),
-				'type'			=> 'color',
+				'type'			=> 'adk_color',
 				'title' 		=> __( 'Background color', Advertikon_Notifications::LNS ),
-				'class'			=> 'adk-color',
 			),
 			array(
 				'id'			=> Advertikon_Notifications::prefix( 'button_text_color' ),
-				'type'			=> 'color',
+				'type'			=> 'adk_color',
 				'title' 		=> __( 'Text color', Advertikon_Notifications::LNS ),
-				'class'			=> 'adk-color',
 			),
 			array(
 				'id'			=> Advertikon_Notifications::prefix( 'button_padding' ),
@@ -841,9 +846,8 @@ json;
 			),
 			array(
 				'id'			=> Advertikon_Notifications::prefix( 'button_border_color' ),
-				'type'			=> 'color',
+				'type'			=> 'adk_color',
 				'title' 		=> __( 'Border color', Advertikon_Notifications::LNS ),
-				'class'			=> 'adk-color',
 			),
 			array(
 				'type' => 'sectionend',
