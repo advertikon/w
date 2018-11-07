@@ -73,8 +73,8 @@ class Advertikon_Library_Renderer_Admin {
 		$custom_attributes = array();
 		self::get_field_description( $data, $description, $tooltip_html );
 
-		$data['description']  = esc_attr( $description );
-		$data['tooltip_html'] = esc_attr( $tooltip_html );
+		$data['description']  = esc_html( $description );
+		$data['tooltip_html'] = $tooltip_html;
 
 		if ( !empty( $data['custom_attributes'] ) && is_array( $data['custom_attributes'] ) ) {
 			foreach ( $data['custom_attributes'] as $attribute => $attribute_value ) {

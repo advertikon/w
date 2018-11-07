@@ -9,8 +9,8 @@ class Advertikon_Notification_Includes_Template_Extended extends Advertikon_Noti
 	public function get_controls() {
 		$controls = array_merge( parent::get_controls(), array(
 			array(
-				'id'			=> Advertikon_Notifications::prefix( 'name' ),
-				'type' 			=> 'text',
+				'id'			=> 'name',
+				'type' 			=> 'adk_text',
 				'title' 		=> __( 'Widget name', Advertikon_Notifications::LNS ),
 				'value' 		=> '',
 				'default'		=> 'default',

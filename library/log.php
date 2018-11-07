@@ -89,6 +89,33 @@ class Advertikon_Library_Log {
 	    $this->log( wp_scripts()->registered );
 	}
 
+	public function stack() {
+		if ( version_compare( PHP_VERSION, '5.3.6', '>=' ) ) {
+			$t = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+
+		} else {
+			$t = debug_backtrace();
+		}
+
+		$stack = array();
+		$count = count( $t );
+
+		foreach( $t as $i ) {
+			$stack[] = sprintf(
+				"%2d - %s%s%s(%s) in %s:%s",
+				$count--,
+				!empty( $i['class'] )    ? $i['class']    : '',
+				!empty( $i['type'] )     ? $i['type']     : '',
+				!empty( $i['function'] ) ? $i['function'] : '',
+				!empty( $i['args'] )     ? implode( ', ', $i['args'] ) : '',
+				!empty( $i['file'] )     ? $i['file']     : '',
+				!empty( $i['line'] )     ? $i['line']     : ''
+			);
+		}
+
+		$this->log( "\n" . implode( "\n", $stack ) );
+	}
+
 	protected function trim_log() {
 		$size = filesize( $this->log );
 		

@@ -1,3 +1,5 @@
+var ADK = {};
+
 + function( $ ) {
 "use strict";
 
@@ -128,6 +130,58 @@
 		} );
 
 		console.log( data );
+		ADK.buttonClick.call( this, data );
+	}
+
+	ADK.buttonClick = function( data ) {
+		var
+			url = $( this ).attr( "data-url" ),
+			def = $.Deferred();
+
+		if ( !url ) {
+			ADK.showError( adkLang.missUrl );
+		}
+
+		$.post( url, data )
+
+		.done( function( ret ) {
+			if ( ret.success ) {
+				def.resolveWith( ret );
+				ADK.showSuccess( ret.success );
+			}
+
+			if ( ret.error ) {
+				def.rejectWith( ret );
+				ADK.showError( ret.error );
+			}
+		} )
+
+		.fail( function( ret ) {
+			var message;
+
+			def.reject();
+
+			if ( typeof ret === "string" ) {
+				message = ret;
+
+			} else if( ret.statusText ) {
+				message = ret.statusText;
+			}
+
+			if ( message ) {
+				ADK.showError( message );
+			}
+		} );
+
+		return def.promise();
+	}
+
+	ADK.showError = function( message ) {
+		alert( message );
+	}
+
+	ADK.showSuccess = function( message ) {
+		alert( message );
 	}
 
 	$( document ).ready( function() {

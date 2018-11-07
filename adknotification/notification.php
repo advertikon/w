@@ -23,10 +23,10 @@ require_once( plugin_dir_path( __FILE__ ) . '../library/advertikon.php' );
 //if( true || ! class_exists( 'Advertikon_Notifications' ) ) :
 class Advertikon_Notifications extends Advertikon {
 
-	protected $FILE         = __FILE__;
-	protected $name         = 'Smart Notification';
-	protected $class_prefix = 'Advertikon_Notification';
-	static protected $prefix       = 'advertikon_notifications_';
+	protected $FILE          = __FILE__;
+	protected $name          = 'Smart Notification';
+	protected $class_prefix  = 'Advertikon_Notification';   // autoloader class prefix (base)
+	static protected $prefix = 'advertikon_notifications_'; // module prefix
 
 	const LNS = 'advertikon_notification';
 
@@ -34,6 +34,9 @@ class Advertikon_Notifications extends Advertikon {
 	 * @var String ID Module name
 	 */
 	const ID = 'adk_notification';
+
+	const AJAX_SAVE_WIDGET = 'save_widget';
+	const AJAX_SAVE_BUTTON = 'save_button';
 
 	/**
 	 * @var Object $shipping_method Free shipping method instance
@@ -61,22 +64,6 @@ class Advertikon_Notifications extends Advertikon {
 	protected $nonce_action = 'adk_edit_notification';
 
 	protected $widget;
-
-	/**
-	 * Activation hook handler
-	 */
-	// static public function activate() {
-
-	// 	if( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-	// 		preg_match( '/Plugin Name:\s*((?: |\w)+)/i', file_get_contents( __FILE__ ), $m );
-	// 		self::$message->error(
-	// 			sprintf(
-	// 				__( 'Plugin "%s" requires plugin "WooCommerce" to be installed', 'advertikon' ),
-	// 				$m[ 1 ]
-	// 			)
-	// 		);
-	// 	}
-	// }
 
 	/**
 	 * Class constructor
@@ -143,9 +130,12 @@ class Advertikon_Notifications extends Advertikon {
 				add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_scripts' ) );
 			}
 
-			// $widget = new Advertikon_Notification_Includes_Widget();
-			// $widget->init_admin();
 			add_action( 'woocommerce_get_settings_pages', function(){ new Advertikon_Notification_Includes_Setting( $this->widget ); } );
+
+			foreach( array( self::AJAX_SAVE_WIDGET, self::AJAX_SAVE_BUTTON ) as $a ) {
+				add_action( 'wp_ajax_' . $a, [ $this, $a ] );
+			}
+
 		} else {
 
 			// Hook on page render events
@@ -172,6 +162,21 @@ class Advertikon_Notifications extends Advertikon {
 
 		// Add ajax template redirect to products list fetcher
 		add_action( 'wc_ajax_adk_coupons_list', array( $this, 'get_coupons_list' ) );
+	}
+
+	public function save_widget() {
+		$ret = array();
+
+		try {
+			$this->widget->save( $_POST );
+			$ret['success'] = __( 'The wigdet has been saved', self::LNS );
+
+		} catch ( Exception $e ) {
+			$ret['error'] = $e->getMessage();
+			Advertikon::log( $e );
+		}
+
+		wp_send_json( $ret );
 	}
 
 	/**
@@ -744,14 +749,14 @@ jQuery( function documentOnReady( $ ) {
 		);
 		
 		wp_enqueue_script(
-		    'select2',
-		    plugins_url( 'assets/js/select2/select2.js', 'woocommerce/woocommerce.php' ),
-		    array(
-		        'jquery',
-		    ),
-		    false,
-		    true
-		    );
+			'select2',
+			plugins_url( 'assets/js/select2/select2.js', 'woocommerce/woocommerce.php' ),
+			array(
+				'jquery',
+			),
+			false,
+			true
+		);
 		
 		wp_enqueue_script(
 		    'spectrum',
@@ -789,10 +794,11 @@ jQuery( function documentOnReady( $ ) {
 				'query_max_length'         => __( 'Query may be maximum % character(s) long', 'advertikon' ),
 				'no_matches'               => __( 'No matches found', 'advertikon' ),
 				'parse_error'              => __( 'Response parsing error', 'advertikon' ),
-				'ajax_save_notification'   => site_url() . '?wc-ajax=' . $this->save_notification_hook,
+				'ajaxSaveWidget'   => add_query_arg( [ 'action' => self::AJAX_SAVE_WIDGET, ] ),
 				'ajax_delete_notification' => site_url() . '?wc-ajax=' . $this->delete_notification_hook,
 				'wpnonce'                  => wp_create_nonce( $this->nonce_action ),
 				'prefix'                   => Advertikon_Notifications::prefix( '' ),
+				'missUrl'                  => __( 'URL is missing', self::LNS ),
 			) ) . ";",
 			'before'
 		);

@@ -6,6 +6,7 @@
  */
 
 class Advertikon_Notification_Includes_Template {
+	
 	public function get_controls() {
 		return array(
 			array(

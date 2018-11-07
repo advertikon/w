@@ -33,6 +33,11 @@ abstract class Advertikon {
 
 		$this->register_autoloader();
 		register_activation_hook( $this->FILE, [ $this, 'on_activate', ] );
+
+		if ( !self::$logger ) {
+			self::$logger = new Advertikon_Library_Log();
+		}
+
 		Advertikon_Library_Renderer_Admin::init();
 	}
 
@@ -68,10 +73,6 @@ abstract class Advertikon {
 	}
 
 	public static function log( $message, $severity = Advertikon_Library_Log::LEVEL_NORMAL ) {
-		if ( !self::$logger ) {
-			self::$logger = new Advertikon_Library_Log();
-		}
-
 		self::$logger->log( $message, '', $severity );
 	}
 
