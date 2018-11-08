@@ -184,13 +184,82 @@ var ADK = {};
 		alert( message );
 	}
 
+	function loadWidget() {
+		var name = $( this ).val();
+
+		if ( 0 == name ) {
+			return;
+		}
+
+		$.get( $( this ).attr( "data-url" ), { name: name } )
+
+		.done( function( ret ) {
+			if ( ret.error ) {
+				ADK.showError( ret.error );
+			}
+
+			if ( ret.success ) {
+				console.log( ret.data );
+				populateWidgetControls( ret.data );
+			}
+		} )
+
+		.fail( function( ret ) {
+			if ( typeof ret === "string" ) {
+				message = ret;
+
+			} else if( ret.statusText ) {
+				message = ret.statusText;
+			}
+
+			if ( message ) {
+				ADK.showError( message );
+			}
+		} );
+	}
+
+	function populateWidgetControls( data, section ) {
+		var s = section ? section : '';
+
+		$.each( data, function( k, v ) {
+			var
+				name,
+				element;
+
+			if ( typeof v === "object" ) {
+				var new_section = s ? s + '_' + k : k;
+
+				populateWidgetControls( v, new_section );
+				return;
+
+			} else {
+				if ( s ) {
+					name = s + '[' + k + ']';
+
+				} else {
+					name = k;
+				}
+			}
+
+			element = $( "[name='" + name + "']" );
+
+			if ( element.length ) {
+				element.val( v );
+
+				if ( element.hasClass( "adk-color" ) ) {
+					element.spectrum( "set", v );
+				}
+			}
+		} );
+	}
+
 	$( document ).ready( function() {
 		$( "h2" ).on( "click", toggleSection );
 		$( "#" + adkLang.prefix + "template" ).on( "change", showTemplateSections );
 		$( "#" + adkLang.prefix + "template" ).select2( { templateResult: select2TemplatePreview } );
 		$( ".adk-color" ).each( initColor );
 		$( ".adk-save-widget" ).on( "click", saveWidget );
-		
+		$( "#load-widget" ).on( "change", loadWidget );
 	} );
 
 }( jQuery );

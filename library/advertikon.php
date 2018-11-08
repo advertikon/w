@@ -22,6 +22,30 @@ abstract class Advertikon {
 		return static::$prefix . $v;
 	}
 
+	static public function ajax_url( array $query = array() ) {
+		return self::url( 'wp-admin/admin-ajax.php', $query );
+	}
+
+	static public function url( $page, $query = array() ) {
+		return add_query_arg( $query, get_site_url( null, $page ) );
+	}
+
+	static public function post( $name, $default = null ) {
+		if ( isset( $_POST[ $name ] ) ) {
+			return $_POST[ $name ];
+		}
+
+		return $default;
+	}
+
+	static public function request( $name, $default = null ) {
+		if ( isset( $_REQUEST[ $name ] ) ) {
+			return $_REQUEST[ $name ];
+		}
+
+		return $default;
+	}
+
 	public function __construct() {
 		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
 	}

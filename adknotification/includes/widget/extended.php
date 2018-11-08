@@ -23,26 +23,31 @@ class Advertikon_Notification_Includes_Widget_Extended extends Advertikon_Notifi
 	public function get_controls() {
 		$controls = array_merge( parent::get_controls(), array(
 			array(
-				'id'			=> 'name',
-				'type' 			=> 'adk_text',
-				'title' 		=> __( 'Widget name', Advertikon_Notifications::LNS ),
-				'value' 		=> '',
-				'default'		=> 'default',
-				'desc'			=> __( 'Widget\'s name', Advertikon_Notifications::LNS ),
-				'desc_tip'		=> true,
-				'sort'          => 10,
-				'class'         => 'adk-widget-control',
+				'id'			    => 'name',
+				'type' 			    => 'adk_text',
+				'title' 		    => __( 'Widget name', Advertikon_Notifications::LNS ),
+				'value' 		    => '',
+				'default'		    => 'default',
+				'desc'			    => __( 'Widget\'s name', Advertikon_Notifications::LNS ),
+				'desc_tip'		    => true,
+				'sort'              => 10,
+				'class'             => 'adk-widget-control',
 			),
 			array(
-				'id'			=> 'load-widget',
-				'type' 			=> 'adk_select',
-				'title' 		=> __( 'Load widget', Advertikon_Notifications::LNS ),
-				'value' 		=> '',
-				'options'       => $this->get_list(),
-				'default'		=> 'default',
-				'desc'			=> __( 'Select a widget to modify', Advertikon_Notifications::LNS ),
-				'desc_tip'		=> true,
-				'sort'          => 1,
+				'id'			    => 'load-widget',
+				'type' 			    => 'adk_select',
+				'title' 		    => __( 'Load widget', Advertikon_Notifications::LNS ),
+				'value' 		    => '',
+				'options'           => $this->get_list(),
+				'default'		    => 'default',
+				'desc'			    => __( 'Select a widget to modify', Advertikon_Notifications::LNS ),
+				'desc_tip'		    => true,
+				'sort'              => 1,
+				'custom_attributes' => array(
+					'data-url' => Advertikon::ajax_url( array(
+						'action' => Advertikon_Notifications::$ajax_endpoints['load_widget']
+					) )
+				),
 			),
 		) );
 

@@ -37,7 +37,8 @@ class Advertikon_Notification_Includes_Widget {
 			),
 		);
 
-		$this->storage_dir = plugin_dir_path( __DIR__ ) . 'storage/widgets/';
+		$this->storage_dir  = plugin_dir_path( __DIR__ ) . 'storage/widgets/';
+		$this->tempalte_dir = plugin_dir_path( __DIR__ ) . 'storage/templates/';
 
 		if ( !is_a( $this, 'Advertikon_Notification_Includes_Widget_Extended' ) ) {
 			$this->is_simple = true;
@@ -47,6 +48,8 @@ class Advertikon_Notification_Includes_Widget {
 
 			} catch ( Exception $e ) {}
 		}
+
+		add_action( 'wp_footer', [ $this, 'render' ] );
 	}
 
 	public function is_simple() {
@@ -216,7 +219,44 @@ class Advertikon_Notification_Includes_Widget {
 		return is_array( $pointer ) ? 'Array' : $pointer;
 	}
 
+	public function render() {
+		if ( !is_woocommerce() ) {
+			return;
+		}
+
+		if ( is_shop() ) {
+			echo 'shop';
+		}
+
+		foreach( $this->load_all() as $widget ) {
+			if ( $this->filter( $widget ) ) {
+				$this->render_widget( $widget );
+			}
+		}
+
+		// is_product()
+		// is_cart()
+		// is_checkout()
+		// is_account_page()
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	protected function render_widget( array $widget ) {
+
+	}
+
+	protected function filter( array $widget ) {
+		$template = isset( $widget['template'] ) ? $widget['template'] : 'simple';
+
+		if ( !file_exists( $this->template_dir . $template ) ) {
+			Advertikon::error( 'Template ' . $template . ' doesn\'t exist' );
+			return;
+		}
+
+		extract( $widget );
+		require( $this->template_dir . $template );
+	}
 
 	protected function get_available_templates() {
 		return array(
@@ -248,7 +288,26 @@ class Advertikon_Notification_Includes_Widget {
 	}
 
 	protected function sanitaze_name( $name ) {
-		return preg_replace( '/[^a-zA-Z0-9_.-]/', '', $name );
+		return strtolower( preg_replace( '/[^a-zA-Z0-9_.-]/', '', $name ) );
+	}
+
+	protected function load_all() {
+		$ret = array();
+
+		if ( !is_dir( $this->storage_dir ) ) {
+			return $ret;
+		}
+
+		foreach( scandir( $this->storage_dir ) as $item ) {
+			if ( '.' === $item[ 0 ] || !is_file( $this->storage_dir . $item ) ) {
+				continue;
+			}
+
+			$widget = $this->load( $item );
+			$ret[ $item ] = $widget;
+		}
+
+		return $ret;
 	}
 	
 }

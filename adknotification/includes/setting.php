@@ -874,12 +874,9 @@ json;
 			'class'			    => 'adk-save-widget button-primary',
 			'button_type'       => 'button',
 			'custom_attributes' => array(
-				'data-url' => add_query_arg(
-					array(
-						'action' => Advertikon_Notifications::AJAX_SAVE_WIDGET
-					),
-					get_site_url( null, 'wp-admin/admin-ajax.php' )
-				)
+				'data-url' => Advertikon::ajax_url( array(
+					'action' => Advertikon_Notifications::$ajax_endpoints['save_widget']
+				) )
 			),
 		);
 	}

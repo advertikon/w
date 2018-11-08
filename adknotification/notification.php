@@ -35,8 +35,12 @@ class Advertikon_Notifications extends Advertikon {
 	 */
 	const ID = 'adk_notification';
 
-	const AJAX_SAVE_WIDGET = 'save_widget';
-	const AJAX_SAVE_BUTTON = 'save_button';
+	static public $ajax_endpoints = array(
+		'save_widget'   => 'save_widget',
+		'save_button'   => 'save_button',
+		'delete_widget' => 'delete_widget',
+		'load_widget'   => 'load_widget',
+	);
 
 	/**
 	 * @var Object $shipping_method Free shipping method instance
@@ -132,7 +136,7 @@ class Advertikon_Notifications extends Advertikon {
 
 			add_action( 'woocommerce_get_settings_pages', function(){ new Advertikon_Notification_Includes_Setting( $this->widget ); } );
 
-			foreach( array( self::AJAX_SAVE_WIDGET, self::AJAX_SAVE_BUTTON ) as $a ) {
+			foreach( self::$ajax_endpoints as $a ) {
 				add_action( 'wp_ajax_' . $a, [ $this, $a ] );
 			}
 
@@ -164,12 +168,50 @@ class Advertikon_Notifications extends Advertikon {
 		add_action( 'wc_ajax_adk_coupons_list', array( $this, 'get_coupons_list' ) );
 	}
 
+	/**
+	 * Saves widget
+	 * AJAX endpoint
+	 */
 	public function save_widget() {
 		$ret = array();
 
 		try {
+			if( !current_user_can( 'manage_woocommerce' ) ) {
+				throw new Exception( __( 'You must have permission to manage WooCommerce store' ) );
+			}
+
 			$this->widget->save( $_POST );
 			$ret['success'] = __( 'The wigdet has been saved', self::LNS );
+
+		} catch ( Exception $e ) {
+			$ret['error'] = $e->getMessage();
+			Advertikon::log( $e );
+		}
+
+		wp_send_json( $ret );
+	}
+
+	/**
+	 * Loads specific widget
+	 * AJAX endpoint
+	 */
+	public function load_widget() {
+		$ret = array();
+
+		try {
+			if( !current_user_can( 'manage_woocommerce' ) ) {
+				throw new Exception( __( 'You must have permission to manage WooCommerce store', self::LNS ) );
+			}
+
+			$name = Advertikon::request( 'name' );
+
+			if ( !$name ) {
+				throw new Exception( __( 'Name is missing', self::LNS ) );
+			}
+
+			$data = $this->widget->load( $name );
+			$ret['success'] = true;
+			$ret['data'] = $data;
 
 		} catch ( Exception $e ) {
 			$ret['error'] = $e->getMessage();
@@ -794,7 +836,6 @@ jQuery( function documentOnReady( $ ) {
 				'query_max_length'         => __( 'Query may be maximum % character(s) long', 'advertikon' ),
 				'no_matches'               => __( 'No matches found', 'advertikon' ),
 				'parse_error'              => __( 'Response parsing error', 'advertikon' ),
-				'ajaxSaveWidget'   => add_query_arg( [ 'action' => self::AJAX_SAVE_WIDGET, ] ),
 				'ajax_delete_notification' => site_url() . '?wc-ajax=' . $this->delete_notification_hook,
 				'wpnonce'                  => wp_create_nonce( $this->nonce_action ),
 				'prefix'                   => Advertikon_Notifications::prefix( '' ),
@@ -999,46 +1040,46 @@ script;
 	* Save notification data
 	* AJAX endpoint
 	*/
-	public function save_notification() {
-		check_ajax_referer( $this->nonce_action );
+	// public function save_notification() {
+	// 	check_ajax_referer( $this->nonce_action );
 
-		$resp = array();
-		try {
+	// 	$resp = array();
+	// 	try {
 
-			if( ! current_user_can( 'manage_woocommerce' ) ) {
-				throw new ADK_Error( __( 'You must have permission to manage WooCommerce store' ) );
-			}
+	// 		if( ! current_user_can( 'manage_woocommerce' ) ) {
+	// 			throw new ADK_Error( __( 'You must have permission to manage WooCommerce store' ) );
+	// 		}
 
-			$data = $_POST;
+	// 		$data = $_POST;
 
-			if( ! $data ) {
-				throw new ADK_Error( __( 'Empty request' ), 'advertikon' );
-			}
+	// 		if( ! $data ) {
+	// 			throw new ADK_Error( __( 'Empty request' ), 'advertikon' );
+	// 		}
 
-			if( empty( $data['advertikon_notifications_name'] ) ) {
-				throw new ADK_Error( __( 'Notificaton need to have a name', 'advertikon' ) );
-			}
+	// 		if( empty( $data['advertikon_notifications_name'] ) ) {
+	// 			throw new ADK_Error( __( 'Notificaton need to have a name', 'advertikon' ) );
+	// 		}
 
-			if( empty ( $data['advertikon_notifications_text'] ) ) {
-				throw new ADK_Error( __( 'Notification heed to have a text', 'advertikon' ) );
-			}
+	// 		if( empty ( $data['advertikon_notifications_text'] ) ) {
+	// 			throw new ADK_Error( __( 'Notification heed to have a text', 'advertikon' ) );
+	// 		}
 
-			unset( $data['_wpnonce'] );
+	// 		unset( $data['_wpnonce'] );
 
-			$option = get_option( self::ID, array() );
+	// 		$option = get_option( self::ID, array() );
 
-			$option[ $data['advertikon_notifications_name'] ] = $data;
+	// 		$option[ $data['advertikon_notifications_name'] ] = $data;
 
-			if( update_option( self::ID, $option, '', false ) ) {
-				$resp['success'] = true;
-			}
+	// 		if( update_option( self::ID, $option, '', false ) ) {
+	// 			$resp['success'] = true;
+	// 		}
 
-		} catch( ADK_Error $e ) {
-			$resp['error'] = __( 'Error', 'advertikon' ) . ':' . $e->getMessage();
-		}
+	// 	} catch( ADK_Error $e ) {
+	// 		$resp['error'] = __( 'Error', 'advertikon' ) . ':' . $e->getMessage();
+	// 	}
 
-		echo json_encode( $resp );
-	}
+	// 	echo json_encode( $resp );
+	// }
 
 	/**
 	* Delete notification data
