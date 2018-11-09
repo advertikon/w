@@ -22,6 +22,7 @@ class Advertikon_Library_Renderer_Admin {
 		'adk_url',
 		'adk_tel',
 		'adk_select',
+		'adk_textarea',
 	);
 
 	static public function init() {
@@ -59,6 +60,9 @@ class Advertikon_Library_Renderer_Admin {
 				break;
 			case 'adk_select':
 				echo self::select( $data );
+				break;
+			case 'adk_textarea':
+				echo self::textarea( $data );
 				break;
 		}
 	}
@@ -159,7 +163,7 @@ class Advertikon_Library_Renderer_Admin {
 	static protected function button( array $data ) {
 		extract( $data );
 
-		return sprintf(
+		$element = sprintf(
 			'<button id="%s" class="%s" %s type="%s">%s</button>',
 			esc_attr( $id ),
 			esc_attr( $class ),
@@ -167,6 +171,8 @@ class Advertikon_Library_Renderer_Admin {
 			isset( $button_type )       ? esc_attr( $button_type ) : 'button',
 			isset( $caption )           ? esc_html( $caption ) : __( 'Button', Advertikon::LNS )
 		);
+
+		return empty( $data['standalone'] ) ? self::table_row( $data, $element ) : $element;
 	}
 
 	static protected function color( array $data ) {
@@ -237,7 +243,8 @@ class Advertikon_Library_Renderer_Admin {
 		);
 
 		foreach ( $options as $key => $val ) {
-			$element .= '<option value="' . $key . '">' . $val . '</option>'  . PHP_EOL;
+			$selected = $key == $value ? ' selected="selected" ' : '';
+			$element .= '<option value="' . $key . '"' . $selected . '>' . $val . '</option>'  . PHP_EOL;
 		}
 			
 		$element .= '</select>';

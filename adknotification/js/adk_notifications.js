@@ -133,6 +133,23 @@ var ADK = {};
 		ADK.buttonClick.call( this, data );
 	}
 
+	function saveButton() {
+		var data = {};
+
+		$( ".adk-button-control" ).each( function() {
+			var
+				name = this.name,
+				parts,
+				pointer,
+				value = $( this ).hasClass( "adk-color" ) ? $( this ).spectrum( "get" ).toRgbString() : $( this ).val();
+
+			data[ name.substr( 7 ) ] = value;
+		} );
+
+		console.log( data );
+		ADK.buttonClick.call( this, data );
+	}
+
 	ADK.buttonClick = function( data ) {
 		var
 			url = $( this ).attr( "data-url" ),
@@ -215,6 +232,8 @@ var ADK = {};
 			if ( message ) {
 				ADK.showError( message );
 			}
+
+			console.log( ret );
 		} );
 	}
 
@@ -227,7 +246,7 @@ var ADK = {};
 				element;
 
 			if ( typeof v === "object" ) {
-				var new_section = s ? s + '_' + k : k;
+				var new_section = s ? s + '[' + k + ']' : k;
 
 				populateWidgetControls( v, new_section );
 				return;
@@ -251,6 +270,64 @@ var ADK = {};
 				}
 			}
 		} );
+
+		$( "#advertikon_notifications_template" ).trigger( "change" );
+	}
+
+	function loadButton() {
+		var name = $( this ).val();
+
+		if ( 0 == name ) {
+			return;
+		}
+
+		$.get( $( this ).attr( "data-url" ), { name: name } )
+
+		.done( function( ret ) {
+			if ( ret.error ) {
+				ADK.showError( ret.error );
+			}
+
+			if ( ret.success ) {
+				console.log( ret.data );
+				populateButtonControls( ret.data );
+			}
+		} )
+
+		.fail( function( ret ) {
+			if ( typeof ret === "string" ) {
+				message = ret;
+
+			} else if( ret.statusText ) {
+				message = ret.statusText;
+			}
+
+			if ( message ) {
+				ADK.showError( message );
+			}
+
+			console.log( ret );
+		} );
+	}
+
+	function populateButtonControls( data ) {
+		$.each( data, function( k, v ) {
+			var
+				name = "button-" + k,
+				element;
+
+			element = $( "[name='" + name + "']" );
+
+			if ( element.length ) {
+				element.val( v );
+
+				if ( element.hasClass( "adk-color" ) ) {
+					element.spectrum( "set", v );
+				}
+			}
+		} );
+
+		// $( "#advertikon_notifications_template" ).trigger( "change" );
 	}
 
 	$( document ).ready( function() {
@@ -259,7 +336,9 @@ var ADK = {};
 		$( "#" + adkLang.prefix + "template" ).select2( { templateResult: select2TemplatePreview } );
 		$( ".adk-color" ).each( initColor );
 		$( ".adk-save-widget" ).on( "click", saveWidget );
+		$( ".adk-save-button" ).on( "click", saveButton );
 		$( "#load-widget" ).on( "change", loadWidget );
+		$( "#load-button" ).on( "change", loadButton );
 	} );
 
 }( jQuery );

@@ -14,6 +14,22 @@ class Advertikon_Notification_Includes_Widget {
 		'padding'     => 10,
 		'text_color'  => '#000000',
 		'text'        => '',
+		'align'       => 'center',
+		'valign'      => 'middle',
+		'height'      => 'auto',
+	);
+
+	protected $button_defaults = array(
+		'bg_color'      => 'blue',
+		'font_height'   => '14',
+		'padding'       => 10,
+		'text_color'    => 'white',
+		'text'          => 'Click Me!',
+		'url'           => '',
+		'border_width'  => 2,
+		'border_radius' => 5,
+		'border_color'  => 'white',
+		'name'          => 'default',
 	);
 
 	protected $storage_dir;
@@ -38,7 +54,8 @@ class Advertikon_Notification_Includes_Widget {
 		);
 
 		$this->storage_dir  = plugin_dir_path( __DIR__ ) . 'storage/widgets/';
-		$this->tempalte_dir = plugin_dir_path( __DIR__ ) . 'storage/templates/';
+		$this->template_dir = plugin_dir_path( __DIR__ ) . 'storage/templates/';
+		$this->button_dir   = plugin_dir_path( __DIR__ ) . 'storage/buttons/';
 
 		if ( !is_a( $this, 'Advertikon_Notification_Includes_Widget_Extended' ) ) {
 			$this->is_simple = true;
@@ -49,7 +66,8 @@ class Advertikon_Notification_Includes_Widget {
 			} catch ( Exception $e ) {}
 		}
 
-		add_action( 'wp_footer', [ $this, 'render' ] );
+		// add_action( 'wp_footer', [ $this, 'render' ] );
+		add_action( 'get_template_part_template-parts/header/header', array( $this, 'render' ) );
 	}
 
 	public function is_simple() {
@@ -58,15 +76,7 @@ class Advertikon_Notification_Includes_Widget {
 
 	public function save( array $data ) {
 		$params = array();
-
-		foreach( $this->defaults as $k => $v ) {
-			if ( isset( $data[ $k ] ) ) {
-				$params[ $k ] = $data[ $k ];
-
-			} else {
-				$params[ $k ] = $v;
-			}
-		}
+		$this->fill_with_defaults( $data, $params );
 
 		if ( !$params['name'] ) {
 			throw new Exception( __( 'Widget\'s name is missing', Advertikon_Notifications::LNS ) );
@@ -83,6 +93,54 @@ class Advertikon_Notification_Includes_Widget {
 		file_put_contents( $this->storage_dir . $params['name'], wp_json_encode( $params ) );
 	}
 
+	protected function fill_with_defaults( $data, &$out, $def = null ) {
+		$defaults = is_null( $def ) ? $this->defaults : $def;
+
+		foreach( $defaults as $k => $v ) {
+			if ( isset( $data[ $k ] ) ) {
+				if ( is_array( $v ) ) {
+					$out[ $k ] = array();
+					$this->fill_with_defaults( $data[ $k ], $out[ $k ], $v );
+
+				} else {
+					$out[ $k ] = $data[ $k ];
+				}
+
+			} else {
+				$out[ $k ] = $v;
+			}
+		}
+	}
+
+	public function save_button( array $data ) {
+		$params = array();
+		
+		foreach( $this->button_defaults as $k => $v ) {
+			if ( isset( $data[ $k ] ) ) {
+				$params[ $k ] = $data[ $k ];
+
+			} else {
+				$params[ $k ] = $v;
+			}
+		}
+
+		Advertikon::log( $params );
+
+		if ( !$params['name'] ) {
+			throw new Exception( __( 'Buttons\'s name is missing', Advertikon_Notifications::LNS ) );
+		}
+
+		if ( !is_dir( $this->button_dir ) ) {
+			Advertikon::log( 'Creating widget storage dir...' );
+
+			if( false === mkdir( $this->button_dir, 0777, true ) ) {
+				throw new Exception( __( 'Failed to create widget\'s storage folder', Advertikon_Notifications::LNS ) );
+			}
+		}
+
+		file_put_contents( $this->button_dir . $params['name'], wp_json_encode( $params ) );
+	}
+
 	public function load( $name ) {
 		if ( !is_file( $this->storage_dir . $name ) ) {
 			throw new Exception( __( 'Widget doesn\'t exist', Advertikon_Notifications::LNS ) );
@@ -92,6 +150,20 @@ class Advertikon_Notification_Includes_Widget {
 
 		if ( is_null( $content ) ) {
 			throw new Exception( __( 'Failed to read widget\'s data', Advertikon_Notifications::LNS ) );
+		}
+
+		return $content;
+	}
+
+	public function load_button( $name ) {
+		if ( !is_file( $this->button_dir . $name ) ) {
+			throw new Exception( __( 'Button doesn\'t exist', Advertikon_Notifications::LNS ) );
+		}
+
+		$content = json_decode( file_get_contents( $this->button_dir . $name ), true );
+
+		if ( is_null( $content ) ) {
+			throw new Exception( __( 'Failed to read button\'s data', Advertikon_Notifications::LNS ) );
 		}
 
 		return $content;
@@ -219,13 +291,22 @@ class Advertikon_Notification_Includes_Widget {
 		return is_array( $pointer ) ? 'Array' : $pointer;
 	}
 
+	public function get_button_default( $name ) {
+		if ( !isset( $this->button_defaults[ $name ] ) ) {
+				Advertikon::error( 'Missing default button value: ' . $name );
+				return '';
+		}
+
+		return $this->button_defaults[ $name ];
+	}
+
 	public function render() {
 		if ( !is_woocommerce() ) {
 			return;
 		}
 
 		if ( is_shop() ) {
-			echo 'shop';
+			//echo 'shop';
 		}
 
 		foreach( $this->load_all() as $widget ) {
@@ -240,22 +321,67 @@ class Advertikon_Notification_Includes_Widget {
 		// is_account_page()
 	}
 
+	public function get_button_list() {
+		$ret = array();
+
+		if ( !is_dir( $this->button_dir ) ) {
+			return $ret;
+		}
+
+		foreach( scandir( $this->button_dir ) as $item ) {
+			if ( '.' === $item[ 0 ] || !is_file( $this->button_dir . $item ) ) {
+				continue;
+			}
+
+			$button = $this->load_button( $item );
+			$ret[ $item ] = $button['name'];
+		}
+
+		if ( $ret ) {
+			array_unshift( $ret, __( 'Select a button', Advertikon_Notifications::LNS ) );
+		}
+
+		return $ret;
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	protected function render_widget( array $widget ) {
+		$template_path = $this->template_dir . ( isset( $widget['template'] ) ? $widget['template'] : 'simple' ) . '.php';
 
-	}
-
-	protected function filter( array $widget ) {
-		$template = isset( $widget['template'] ) ? $widget['template'] : 'simple';
-
-		if ( !file_exists( $this->template_dir . $template ) ) {
-			Advertikon::error( 'Template ' . $template . ' doesn\'t exist' );
+		if ( !file_exists( $template_path) ) {
+			Advertikon::error( 'Template ' . $template_path . ' doesn\'t exist' );
 			return;
 		}
 
 		extract( $widget );
-		require( $this->template_dir . $template );
+		$id = uniqid();
+
+		foreach( $section as $section_name => $section_data ) {
+			$$section_name = $this->render_section( $section_data, $section_name );
+		}
+
+		require( $template_path );
+	}
+
+	protected function render_section( array $data, $name ) {
+		$height = (int)( isset( $data['height'] ) ? $data['height'] : $this->get_default( "section/$name/height" ) );
+
+		return sprintf(
+			'<td style="color: %s; font-size: %spx; background-color: %s; padding: %spx; height: %s" align="%s" valign="%s">%s</td>',
+			isset( $data['text_color'] )  ? $data['text_color']  : $this->get_default( "section/$name/text_color" ),
+			isset( $data['font_height'] ) ? $data['font_height'] : $this->get_default( "section/$name/font_height" ),
+			isset( $data['bg_color'] )    ? $data['bg_color']    : $this->get_default( "section/$name/bg_color" ),
+			isset( $data['padding'] )     ? $data['padding']     : $this->get_default( "section/$name/padding" ),
+			$height > 0                   ? $height . 'px'       : 'auto',
+			isset( $data['align'] )       ? $data['align']       : $this->get_default( "section/$name/align" ),
+			isset( $data['valign'] )      ? $data['valign']      : $this->get_default( "section/$name/valign" ),
+			isset( $data['text'] )        ? $data['text']        : $this->get_default( "section/$name/text" )
+		);
+	}
+
+	protected function filter( array $widget ) {
+		return true;
 	}
 
 	protected function get_available_templates() {

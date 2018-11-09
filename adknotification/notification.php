@@ -40,6 +40,7 @@ class Advertikon_Notifications extends Advertikon {
 		'save_button'   => 'save_button',
 		'delete_widget' => 'delete_widget',
 		'load_widget'   => 'load_widget',
+		'load_button'   => 'load_button',
 	);
 
 	/**
@@ -151,7 +152,6 @@ class Advertikon_Notifications extends Advertikon {
 			// foreach( array_unique( $pos ) as $p ) {
 			// 	add_action( $p, array( $this, 'render_notification' ) );
 			// }
-
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
 		}
 
@@ -210,6 +210,59 @@ class Advertikon_Notifications extends Advertikon {
 			}
 
 			$data = $this->widget->load( $name );
+			$ret['success'] = true;
+			$ret['data'] = $data;
+
+		} catch ( Exception $e ) {
+			$ret['error'] = $e->getMessage();
+			Advertikon::log( $e );
+		}
+
+		wp_send_json( $ret );
+	}
+
+	/**
+	 * Saves button
+	 * AJAX endpoint
+	 */
+	public function save_button() {
+		$ret = array();
+
+		try {
+			if( !current_user_can( 'manage_woocommerce' ) ) {
+				throw new Exception( __( 'You must have permission to manage WooCommerce store' ) );
+			}
+
+			$this->widget->save_button( $_POST );
+			$ret['success'] = __( 'The button has been saved', self::LNS );
+
+		} catch ( Exception $e ) {
+			$ret['error'] = $e->getMessage();
+			Advertikon::log( $e );
+		}
+
+		wp_send_json( $ret );
+	}
+
+	/**
+	 * Loads specific button
+	 * AJAX endpoint
+	 */
+	public function load_button() {
+		$ret = array();
+
+		try {
+			if( !current_user_can( 'manage_woocommerce' ) ) {
+				throw new Exception( __( 'You must have permission to manage WooCommerce store', self::LNS ) );
+			}
+
+			$name = Advertikon::request( 'name' );
+
+			if ( !$name ) {
+				throw new Exception( __( 'Name is missing', self::LNS ) );
+			}
+
+			$data = $this->widget->load_button( $name );
 			$ret['success'] = true;
 			$ret['data'] = $data;
 
@@ -854,26 +907,26 @@ jQuery( function documentOnReady( $ ) {
 
 		// Plugin main script - at footer
 		wp_enqueue_script(
-			'adk_function_parser',
-			plugins_url( 'js/adk_function_parser.js', __FILE__ ),
-			array(),
+			'adk-widget',
+			plugins_url( 'js/adk_widget.js', __FILE__ ),
+			array( 'jquery' ),
 			false,
 			true
 		);
 
-		wp_script_add_data(
-			'adk_function_parser',
-			'data',
-			$this->minify_script(
+		// wp_script_add_data(
+		// 	'adk_function_parser',
+		// 	'data',
+		// 	$this->minify_script(
 
-				// Notification text and call-to-action button responsive functionality
-				$this->fix_banner_css_script() ) . ';' . PHP_EOL .
+		// 		// Notification text and call-to-action button responsive functionality
+		// 		$this->fix_banner_css_script() ) . ';' . PHP_EOL .
 
-				// Notification's text parser functions templates
-				// Such complication (the way to inject JavaScript to page) needed
-				// so to decrease code support efforts - one code for front-end and back-end.
-				'var adkParserData = ' . require( dirname( __FILE__ ) . '/includes/functions.json.php' )
-			);
+		// 		// Notification's text parser functions templates
+		// 		// Such complication (the way to inject JavaScript to page) needed
+		// 		// so to decrease code support efforts - one code for front-end and back-end.
+		// 		'var adkParserData = ' . require( dirname( __FILE__ ) . '/includes/functions.json.php' )
+		// 	);
 
 		$this->add_styles();
 	}
