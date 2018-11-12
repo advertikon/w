@@ -68,6 +68,8 @@ class Advertikon_Notification_Includes_Widget {
 
 		// add_action( 'wp_footer', [ $this, 'render' ] );
 		add_action( 'get_template_part_template-parts/header/header', array( $this, 'render' ) );
+		// CTA button shortcode
+		add_shortcode( 'adk_widget_button', array( $this, 'widget_button' ) );
 	}
 
 	public function is_simple() {
@@ -157,7 +159,7 @@ class Advertikon_Notification_Includes_Widget {
 
 	public function load_button( $name ) {
 		if ( !is_file( $this->button_dir . $name ) ) {
-			throw new Exception( __( 'Button doesn\'t exist', Advertikon_Notifications::LNS ) );
+			throw new Exception( __( 'Button doesn\'t exist', Advertikon_Notifications::LNS ) . '(' . $name . ')' );
 		}
 
 		$content = json_decode( file_get_contents( $this->button_dir . $name ), true );
@@ -344,6 +346,42 @@ class Advertikon_Notification_Includes_Widget {
 		return $ret;
 	}
 
+	public function widget_button( $attr, $content ) {
+		$ret = '';
+
+		try {
+			$b = $this->load_button( $content );
+			$css = array();
+			$style = array();
+
+			$border_color = $this->get_button_value( 'border_color', $b );
+			$border_width = $this->get_button_value( 'border_width', $b );
+
+			$css['background-color'] = $this->get_button_value( 'bg_color', $b );
+			$css['color']            = $this->get_button_value( 'text_color', $b );
+			$css['padding']          = $this->get_button_value( 'padding', $b ) . 'px';
+			$css['font-size']        = $this->get_button_value( 'font_height', $b ) . 'px';
+			$css['border-radius']    = $this->get_button_value( 'border_radius', $b ) . 'px';
+			$css['border']           = "solid ${border_width}px ${border_color}";
+
+			foreach( $css as $k => $v ) {
+				$style[] = $k . ': ' . esc_attr( $v );
+			}
+
+			$ret = sprintf(
+				'<a href="%s" style="%s" target="_blank">%s</a>',
+				isset( $b['url'] ) ? esc_attr( $b['url'] ) : '#',
+				implode( ';', $style ),
+				isset( $b['text'] ) ? esc_html( $b['text'] ) : ''
+			);
+
+		} catch ( Exception $e ) {
+			Advertikon::log( $e );
+		}
+
+		return $ret;
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	protected function render_widget( array $widget ) {
@@ -364,6 +402,10 @@ class Advertikon_Notification_Includes_Widget {
 		require( $template_path );
 	}
 
+	protected function get_button_value( $name, array $data ) {
+		return isset( $data[ $name ] ) ? esc_html( $data[ $name ] ) : $this->button_defaults[ $name ];
+	}
+
 	protected function render_section( array $data, $name ) {
 		$height = (int)( isset( $data['height'] ) ? $data['height'] : $this->get_default( "section/$name/height" ) );
 
@@ -376,7 +418,7 @@ class Advertikon_Notification_Includes_Widget {
 			$height > 0                   ? $height . 'px'       : 'auto',
 			isset( $data['align'] )       ? $data['align']       : $this->get_default( "section/$name/align" ),
 			isset( $data['valign'] )      ? $data['valign']      : $this->get_default( "section/$name/valign" ),
-			isset( $data['text'] )        ? $data['text']        : $this->get_default( "section/$name/text" )
+			isset( $data['text'] )        ? do_shortcode( $data['text'] ) : $this->get_default( "section/$name/text" )
 		);
 	}
 
