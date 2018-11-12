@@ -339,6 +339,8 @@ var ADK = {};
 		$( ".adk-save-button" ).on( "click", saveButton );
 		$( "#load-widget" ).on( "change", loadWidget );
 		$( "#load-button" ).on( "change", loadButton );
+		 
+		$( "#advertikon_notifications_template" ).trigger( "change" ); // hide unused sections
 	} );
 
 }( jQuery );
