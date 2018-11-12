@@ -68,7 +68,11 @@ class Advertikon_Notifications extends Advertikon {
 	 */
 	protected $nonce_action = 'adk_edit_notification';
 
+	/** @var Advertikon_Notification_Includes_Widget */
 	protected $widget;
+	
+	/** @var Advertikon_Notification_Includes_Filter */
+	protected $filter;
 
 	/**
 	 * Class constructor
@@ -76,59 +80,21 @@ class Advertikon_Notifications extends Advertikon {
 	public function __construct() {
 		parent::__construct();
 		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
+
 		$this->init();
-
-		// require_once( dirname( __FILE__ ) . '/includes/error.php' );
-
-		// load_plugin_textdomain( 'advertikon', false,  dirname( __FILE__ ) . '.languages' );
-
-		// if( is_admin() ) {
-		// 	if( isset( $_GET['tab'] ) && $_GET['tab'] == Advertikon_Notifications::ID ) {
-
-		// 		// Add admin scripts
-		// 		add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_scripts' ) );
-
-		// 		// Add notification preview renderer
-		// 		// add_action(
-		// 		// 	'woocommerce_admin_field_adk-notification-preview',
-		// 		// 	array( $this, 'render_notification_preview' )
-		// 		// );
-		// 	}
-
-		// 	// Add Notifications setting page
-		// 	add_action( 'woocommerce_get_settings_pages', array( $this, 'add_setting_tab' ) );
-		// } else {
-
-		// 	// Hook on page render events
-		// 	$pos = array();
-		// 	foreach( get_option( 'adk_notification', array() ) as $name => $config ) {
-		// 		$pos = array_merge( $pos, array_values( $config['advertikon_notifications_position'] ) );
-		// 	}
-
-		// 	foreach( array_unique( $pos ) as $p ) {
-		// 		add_action( $p, array( $this, 'render_notification' ) );
-		// 	}
-
-		// 	add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
-		// }
-
-		// // Add ajax template redirect to save notification hook
-		// add_action( 'wc_ajax_' . $this->save_notification_hook, array( $this, 'save_notification' ) );
-
-		// // Add ajax template redirect to delete notification hook
-		// add_action( 'wc_ajax_' . $this->delete_notification_hook, array( $this, 'delete_notification' ) );
-
-		// // Add ajax template redirect to products list fetcher
-		// add_action( 'wc_ajax_adk_products_list', array( $this, 'get_products_list' ) );
-
-		// // Add ajax template redirect to products list fetcher
-		// add_action( 'wc_ajax_adk_coupons_list', array( $this, 'get_coupons_list' ) );
 	}
 
 	protected function init() {
 		parent::init();
-		$this->widget = class_exists( 'Advertikon_Notification_Includes_Widget_Extended' ) ?
-			new Advertikon_Notification_Includes_Widget_Extended() : new Advertikon_Notification_Includes_Widget();
+		$widget_class = class_exists( 'Advertikon_Notification_Includes_Widget_Extended', false ) ?
+			'Advertikon_Notification_Includes_Widget_Extended' : 'Advertikon_Notification_Includes_Widget';
+		
+		$this->widget = new $widget_class();
+			
+		$filter_class = class_exists( 'Advertikon_Notification_Includes_Filter_Extended', false ) ?
+			'Advertikon_Notification_Includes_Filter_Extended' : 'Advertikon_Notification_Includes_Filter';
+		
+		$this->filter = new $filter_class();
 
 		if( is_admin() ) {
 			if( isset( $_GET['tab'] ) && $_GET['tab'] == Advertikon_Notifications::ID ) {
@@ -142,24 +108,8 @@ class Advertikon_Notifications extends Advertikon {
 			}
 
 		} else {
-
-			// Hook on page render events
-			// $pos = array();
-			// foreach( get_option( 'adk_notification', array() ) as $name => $config ) {
-			// 	$pos = array_merge( $pos, array_values( $config['advertikon_notifications_position'] ) );
-			// }
-
-			// foreach( array_unique( $pos ) as $p ) {
-			// 	add_action( $p, array( $this, 'render_notification' ) );
-			// }
 			add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) );
 		}
-
-		// Add ajax template redirect to save notification hook
-		// add_action( 'wc_ajax_' . $this->save_notification_hook, array( $this, 'save_notification' ) );
-
-		// Add ajax template redirect to delete notification hook
-		// add_action( 'wc_ajax_' . $this->delete_notification_hook, array( $this, 'delete_notification' ) );
 
 		// Add ajax template redirect to products list fetcher
 		add_action( 'wc_ajax_adk_products_list', array( $this, 'get_products_list' ) );
@@ -293,106 +243,6 @@ class Advertikon_Notifications extends Advertikon {
 		}
 
 		return $this->shipping_method;
-	}
-
-	/**
-	 * Render notification on catalog side
-	 */
-	public function render_notification() {
-
-		foreach( get_option( self::ID ) as $name => $config ) {
-
-			// Filter notifications base on position webhook
-			if( ! in_array( current_filter(), $config['advertikon_notifications_position'] ) ) {
-				continue;
-			}
-
-			// Filter notification base on triggers
-			if( ! $this->is_triggered( $config ) ) {
-				continue;
-			}
-
-			$container_css = 'style="'
-						. 'height:'           . $config['advertikon_notifications_height'] . ';'
-						. 'width:'            . '100%;'
-						. '"';
-
-			$border_css = 'style="'
-						. 'background-color:' . $config['advertikon_notifications_bg_color'] . ';'
-						. 'border-radius:'    . $config['advertikon_notifications_border_radius'] . ';'
-						. 'box-shadow:'       . $config['advertikon_notifications_box_shadow'] . ';'
-						. 'border-width:'     . $config['advertikon_notifications_border_width'] . ';'
-						. 'border-color:'     . $config['advertikon_notifications_border_color'] . ';'
-						. 'border-style:'     . $config['advertikon_notifications_border_style'] . ';'
-						. 'height:'           . $config['advertikon_notifications_height'] . ';'
-						. 'width:'            . $config['advertikon_notifications_width'] . ';'
-						. 'left:'             . $config['advertikon_notifications_left'] . ';'
-						. 'bottom:'           . $config['advertikon_notifications_bottom'] . ';'
-						. '"';
-
-			$text_css = 'style="'
-						. 'color:'            . $config['advertikon_notifications_text_color'] . ';'
-						. 'font-size:'        . $config['advertikon_notifications_font_height'] . ';'
-						. '"';
-
-			$button_css = 'style="'
-						. ( $config['advertikon_notifications_button'] == 'no' ? 'display:none;' : '' )
-						. '"';
-
-			$button_action = 'onclick="';
-			if( $config['advertikon_notifications_button_url'] ) {
-				if( $config['advertikon_notifications_button_url_samepage'] == 'yes' ) {
-					$button_action .= "window.location.assign('{$config['advertikon_notifications_button_url']}')";
-				}
-				else {
-					$button_action .= "window.open('{$config['advertikon_notifications_button_url']}', 'adkPopUp' )";
-				}
-			}
-			$button_action .= '"';
-
-			$this->notification( '', $container_css, $border_css, $text_css, $config['advertikon_notifications_text'], $config['advertikon_notifications_button_text'], $button_css, $button_action );
-		}
-?>
-<script>
-/*
-	global
-
-	jQuery:false
-	ADKFunctionParser: false
-	adkParserData: false,
-	window: false,
-	adkFixTextHeight: false
-*/
-jQuery( function documentOnReady( $ ) {
-
-	var
-		adkParser = null,
-		fixHeightDilay = 500;
-
-	if ( typeof ADKFunctionParser === 'function' && adkParserData ) {
-		adkParser = new ADKFunctionParser( adkParserData );
-		$( '.adk-teaser-text' ).each(function iterateOverNotifications() {
-			$( this ).html(
-				adkParser.parse( $( this ).html() )
-
-					// NlToBr
-					.replace( /\n\r*/g, '<br>' )
-
-					// StripSlashes
-					.replace( /\\(.)/g, '$1' )
-			);
-		});
-	}
-
-	window.setTimeout( function fixNotificationActionDelay() {
-		$( '.adk-teaser-body' ).each(function iterateOverNotifications() {
-			adkFixTextHeight( $( this ) );
-		});
-
-	}, fixHeightDilay );
-} );
-</script>
-<?php
 	}
 
 	/**
@@ -689,62 +539,6 @@ jQuery( function documentOnReady( $ ) {
 	}
 
 	/**
-	* Match value against dataset
-	* Match made regard on data returned from select2 drop downs, e.g. id:text, we use id part
-	*
-	* @param String $value Needle
-	* @param Array $values Haystack
-	* @return Boolean
-	*/
-	protected function match_select2( $value, $values ) {
-		if( gettype( $values ) === 'string' ) {
-			$values = explode( ',', $values );
-		}
-
- 		foreach( (array)$values as $v ) {
-			if( strpos( $v,  ':' ) !== false ) {
-				$v = strstr( $v, ':', true );
-			}
-
-			// Value may be string or number
-			if( $v == $value ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	* Sorts array(like) list and return new one based on priority values
-	* List need to have priority value
-	*
-	* @return Array
-	*/
-	protected function priority_sort( $data ) {
-		$sorted = array();
-		foreach( $data as $k => $v ) {
-
-			if( ( ! isset( $v['priority'] ) ) || ! is_numeric( $v['priority'] ) ) {
-				$v['priority'] = 10;
-			}
-
-			$v['name'] = $k;
-
-			for( $i = count( $sorted ) - 1; $i >= 0; $i-- ) {
-				if( $v['priority'] < $sorted[ $i ]['priority'] ) {
-					continue;
-				} else {
-					array_splice( $sorted, ++$i, 0, array( $v ) );
-					continue 2;
-				}
-			}
-
-			array_unshift( $sorted, $v );
-		}
-		return $sorted;
-	}
-
-	/**
 	 * Checks if free shipping is available.
 	 *
 	 * @param array $package
@@ -932,246 +726,11 @@ jQuery( function documentOnReady( $ ) {
 	}
 
 	/**
-	 * Returns javaScript function to fix notification contents layout
-	 *
-	 * @return String
-	 */
-	protected function fix_banner_css_script() {
-		return <<<script
-
-function adkFixTextHeight( p ) {
-
-	var
-		b = p.find( '.adk-teaser-button-wrapper' ),
-		bH = parseInt( b.css( 'height' ), 10 ),
-		bP = b.position(),
-		pH = parseInt( p.css( 'height' ), 10 ),
-		pW = parseInt( p.css( 'width' ), 10 ),
-		t = p.find( '.adk-teaser-text' ),
-		tH = null;
-
-	t.css( 'width', ( bP.left ? bP.left: pW ) );
-	b.css( 'margin-top', Math.max( 0, ( pH - bH ) / 2 ) );
-
-	tH = parseInt( t.css( 'height' ), 10 );
-
-	t.css( 'margin-top', Math.max( 0, ( pH - tH ) / 2 ) );
-};
-
-jQuery( window ).on( 'resize', function windowResizeHandle( evt ) {
-	jQuery( '.adk-teaser-body' ).each(function iterateOverNotifications() {
-		adkFixTextHeight( jQuery( this ) );
-	});
-} );
-
-jQuery( '.adk-teaser-body' ).each(function iterateOverNotifications() {
-	adkFixTextHeight( jQuery( this ) );
-});
-
-script;
-	}
-
-	/**
 	 * Add styles
 	 */
 	public function add_styles() {
 		wp_enqueue_style( 'adk_notifications', plugins_url( 'css/adk_notifications.css', __FILE__ ) );
 		wp_enqueue_style( 'spectrum', plugins_url( 'css/spectrum.css', __FILE__ ) );
-	}
-
-	/**
-	 * Minify script
-	 *
-	 * @param String $script Script string
-	 * @param Boolean $ignore If set to true - will return script as is
-	 * @return String
-	 */
-	protected function minify_script( $script, $ignore = false ) {
-		if( $ignore ) {
-			return $script;
-		}
-
-		$filters = array(
-			array( '|//[^\n]*\n|', '' ),
-			array( '|/\*.*?\*/|s', '' ),
-			array( '|\s+|', ' ' ),
-			);
-
-		foreach( $filters as $filter ) {
-			$script = preg_replace( $filter[ 0 ], $filter[ 1 ], $script ); 
-		}
-
-		return $script;
-	}
-
-	/**
-	* Add Notifications settings tab to existing collection
-	*
-	* @param Array $settings Setting pages collection
-	*/
-	public function add_setting_tab( $settings ) {
-		require_once( dirname( __FILE__ ) . '/includes/setting-page.php' );
-		$settings[] = new ADK_Setting_Notifications;
-	}
-
-	/**
-	* Render notification live preview at admin area
-	*/
-	public function render_notification_preview( $input ) {
-		$field_description = WC_Admin_Settings::get_field_description( $input );
-		extract( $field_description );
-
-		// Custom attribute handling
-		$custom_attributes = array();
-
-		if ( ! empty( $input['custom_attributes'] ) && is_array( $input['custom_attributes'] ) ) {
-			foreach ( $input['custom_attributes'] as $attribute => $attribute_value ) {
-				$custom_attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
-			}
-		}
-
-		$height = '';
-		if( isset( $input['custom_attributes']['data-max-height'] ) ) {
-			$height = 'style="height:' . $input['custom_attributes']['data-max-height'] . 'px"';
-		}
-?>
-<tr valign="top">
-	<th scope="row" class="titledesc">
-		<label for="<?php echo esc_attr( $input['id'] ); ?>"><?php echo esc_html( $input['title'] ); ?></label>
-		<?php echo $tooltip_html; ?>
-		<?php echo $description; ?>
-	</th>
-	<td class="forminp forminp-<?php echo sanitize_title( $input['type'] ) ?>" id="adk-put-there" <?php echo $height; ?> >
-		<?php $this->notification( implode( ' ', $custom_attributes) ); ?>
-	</td>
-</tr>
-<tr>
-	<td colspan="2" style="padding:0">
-		<label>
-			<input id="adk-fix-preview" type="checkbox"><?php _e( 'For the convenience sake fix preview on the page/make draggable' ); ?>
-		</label>
-	</td>
-</tr>
-<?php
-	}
-
-	/**
-	* Render notification itself
-	*
-	* @param String $custom_attributes Custom attributes
-	* @param String $container_css Notification container css rules
-	* @param String $css_body Notification body css rules
-	* @param String $css_text Notification text css rules
-	* @param String $text Notification text
-	* @param String $button_text CTA button text
-	* @param String $button_css CTA button css rules
-	* @param String $button_function CTA button click handler
-	*/
-	protected function notification(
-		$custom_attributes = '',
-		$container_css = '',
-		$css_body = '',
-		$css_text = '',
-		$text = ' ',
-		$button_text = '',
-		$button_css = '',
-		$button_function = ''
-	) {
-?>
-<div class="adk-teaser" <?php echo $custom_attributes; ?> <?php echo $container_css; ?> >
-	<div class="adk-teaser-body" <?php echo $css_body; ?> >
-		<div class="adk-teaser-text" <?php echo $css_text; ?> ><?php echo $text; ?></div>
-		<div class="adk-teaser-button-wrapper" <?php echo $button_css; ?> >
-			<button type="button" <?php echo $button_function; ?> ><?php echo $button_text; ?></button>
-		</div>
-	</div>
-</div>
-<?php
-	}
-
-	/**
-	* Save notification data
-	* AJAX endpoint
-	*/
-	// public function save_notification() {
-	// 	check_ajax_referer( $this->nonce_action );
-
-	// 	$resp = array();
-	// 	try {
-
-	// 		if( ! current_user_can( 'manage_woocommerce' ) ) {
-	// 			throw new ADK_Error( __( 'You must have permission to manage WooCommerce store' ) );
-	// 		}
-
-	// 		$data = $_POST;
-
-	// 		if( ! $data ) {
-	// 			throw new ADK_Error( __( 'Empty request' ), 'advertikon' );
-	// 		}
-
-	// 		if( empty( $data['advertikon_notifications_name'] ) ) {
-	// 			throw new ADK_Error( __( 'Notificaton need to have a name', 'advertikon' ) );
-	// 		}
-
-	// 		if( empty ( $data['advertikon_notifications_text'] ) ) {
-	// 			throw new ADK_Error( __( 'Notification heed to have a text', 'advertikon' ) );
-	// 		}
-
-	// 		unset( $data['_wpnonce'] );
-
-	// 		$option = get_option( self::ID, array() );
-
-	// 		$option[ $data['advertikon_notifications_name'] ] = $data;
-
-	// 		if( update_option( self::ID, $option, '', false ) ) {
-	// 			$resp['success'] = true;
-	// 		}
-
-	// 	} catch( ADK_Error $e ) {
-	// 		$resp['error'] = __( 'Error', 'advertikon' ) . ':' . $e->getMessage();
-	// 	}
-
-	// 	echo json_encode( $resp );
-	// }
-
-	/**
-	* Delete notification data
-	* AJAX endpoint
-	*/
-	public function delete_notification() {
-		check_ajax_referer( $this->nonce_action );
-
-		$resp = array();
-		try {
-
-			if( ! current_user_can( 'manage_woocommerce' ) ) {
-				throw new ADK_Error( __( 'You must have permission to manage WooCommerce store' ) );
-			}
-
-			$name = isset( $_REQUEST['name'] ) ? $_REQUEST['name'] : '';
-
-			if( ! $name ) {
-				throw new ADK_Error( __( 'Empty request' ), 'advertikon' );
-			}
-
-			$option = get_option( self::ID );
-
-			if( $option && isset( $option[ $name ] ) ) {
-
-				unset( $option[ $name ] );
-
-				if( update_option( self::ID, $option ) ) {
-					$resp['success'] = true;
-				}
-
-			} else {
-				$resp['success'] = true;
-			}
-		} catch( ADK_Error $e ) {
-			$resp['error'] = __( 'Error', 'advertikon' ) . ':' . $e->getMessage();
-		}
-
-		echo json_encode( $resp );
 	}
 
 	/**
@@ -1243,12 +802,4 @@ script;
 	}
 }
 
-// require_once( dirname(__FILE__ ) . '/includes/admin_message.php' );
-// Advertikon_Notifications::$message = new Advertikon_Admin_Message;
-
 $advertikon_notifications = new Advertikon_Notifications();
-
-// Activation hook
-//register_activation_hook( __FILE__, 'Advertikon_Notifications::activate' );
-//endif;
-?>

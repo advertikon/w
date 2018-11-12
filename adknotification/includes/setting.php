@@ -15,14 +15,6 @@ class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
 
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 100 );
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
-
-		// Register custom form renderer
-		// require_once( 'admin_renderer.php' );
-		// new ADK_Admin_Input_Renderer;
-
-		// foreach( $this->widget->get_controls() as $control ) {
-		// 	$control->register_renderer();
-		// }
 	}
 
 	/**
@@ -42,23 +34,11 @@ class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
 		$hide_save_button = true;
 
 		$ret = array();
-		// $ret = array( array(
-		// 	'type'  => 'title',
-		// 	'title' => __( 'Settings', Advertikon_Notifications::LNS ),
-		// ) );
-
-		// foreach( $this->widget->get_controls() as $control ) {
-		// 	$ret[] = $control->get();
-		// }
 
 		$ret = array_merge( $ret, $this->widget->get_controls() );
 		$ret = array_merge( $ret, $this->get_section_controls() );
 		$ret[] = $this->get_save_button();
 		$ret = array_merge( $ret, $this->get_button_controls() );
-
-		// $ret[] = array(
-		// 	'type' => 'sectionend',
-		// );
 
 		return $ret;
 
