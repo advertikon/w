@@ -86,12 +86,12 @@ class Advertikon_Notifications extends Advertikon {
 
 	protected function init() {
 		parent::init();
-		$widget_class = class_exists( 'Advertikon_Notification_Includes_Widget_Extended', false ) ?
+		$widget_class = class_exists( 'Advertikon_Notification_Includes_Widget_Extended' ) ?
 			'Advertikon_Notification_Includes_Widget_Extended' : 'Advertikon_Notification_Includes_Widget';
 		
 		$this->widget = new $widget_class();
 			
-		$filter_class = class_exists( 'Advertikon_Notification_Includes_Filter_Extended', false ) ?
+		$filter_class = class_exists( 'Advertikon_Notification_Includes_Filter_Extended' ) ?
 			'Advertikon_Notification_Includes_Filter_Extended' : 'Advertikon_Notification_Includes_Filter';
 		
 		$this->filter = new $filter_class();
@@ -101,7 +101,7 @@ class Advertikon_Notifications extends Advertikon {
 				add_action( 'admin_enqueue_scripts', array( $this, 'add_admin_scripts' ) );
 			}
 
-			add_action( 'woocommerce_get_settings_pages', function(){ new Advertikon_Notification_Includes_Setting( $this->widget ); } );
+			add_action( 'woocommerce_get_settings_pages', function(){ new Advertikon_Notification_Includes_Setting( $this ); } );
 
 			foreach( self::$ajax_endpoints as $a ) {
 				add_action( 'wp_ajax_' . $a, [ $this, $a ] );
@@ -116,6 +116,14 @@ class Advertikon_Notifications extends Advertikon {
 
 		// Add ajax template redirect to products list fetcher
 		add_action( 'wc_ajax_adk_coupons_list', array( $this, 'get_coupons_list' ) );
+	}
+
+	public function get_widget() {
+		return $this->widget;
+	}
+
+	public function get_filter() {
+		return $this->filter;
 	}
 
 	/**

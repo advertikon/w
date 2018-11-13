@@ -77,12 +77,22 @@ abstract class Advertikon {
 		if ( 0 === strpos( $name, $this->class_prefix ) ) {
 			$classes_dir = realpath( plugin_dir_path( $this->FILE ) );
 			$class_file = strtolower( str_replace( '_', DIRECTORY_SEPARATOR, substr( $name, strlen( $this->class_prefix ) ) ) . '.php' );
+
+			if ( !is_file( $classes_dir . $class_file ) ) {
+				return false;
+			}
+
 			require_once $classes_dir . $class_file;
 		}
 
 		if ( 0 === strpos( $name, 'Advertikon_Library' ) ) {
 			$classes_dir = realpath( plugin_dir_path( $this->FILE ) );
 			$class_file = strtolower( str_replace( '_', DIRECTORY_SEPARATOR, substr( $name, 10 ) ) . '.php' );
+
+			if ( !is_file( $classes_dir . $class_file ) ) {
+				return false;
+			}
+
 			require_once $classes_dir . $class_file;
 		}
 	}

@@ -5,13 +5,14 @@
  */
 
 class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
-	protected $widget;
+	/** @var Advertikon_Notifications */
+	protected $notificaiton;
 
-	public function __construct( Advertikon_Notification_Includes_Widget $widget ) {
+	public function __construct( Advertikon_Notifications $notification ) {
 		$this->id    = Advertikon_Notifications::ID;
 		$this->label = __( 'Notifications', Advertikon_Notifications::LNS );
 
-		$this->widget = $widget;
+		$this->notification = $notification;
 
 		add_filter( 'woocommerce_settings_tabs_array', array( $this, 'add_settings_page' ), 100 );
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
@@ -35,11 +36,12 @@ class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
 
 		$ret = array();
 
-		$ret = array_merge( $ret, $this->widget->get_controls() );
+		$ret = array_merge( $ret, $this->notification->get_widget()->get_controls() );
 		$ret = array_merge( $ret, $this->get_section_controls() );
+		$ret = array_merge( $ret, $this->notification->get_filter()->get_controls() );
 		$ret[] = $this->get_save_button();
 		$ret = array_merge( $ret, $this->get_button_controls() );
-
+Advertikon::log( $ret );
 		return $ret;
 
 		$teaser_max_height = 100;
@@ -707,7 +709,7 @@ json;
 	protected function get_section_controls() {
 		$ret = array();
 
-		if ( $this->widget->is_simple() ) {
+		if ( $this->notification->get_widget()->is_simple() ) {
 			$sections = array( 'content' );
 
 		} else {
@@ -728,7 +730,7 @@ json;
 					'name'          => 'section[' . $section_name . '][' . 'text' . ']',
 					'type' 			=> 'adk_textarea',
 					'title' 		=> __( 'Text', Advertikon_Notifications::LNS ),
-					'default' 		=> $this->widget->get_default( "section/$section_name/text" ),
+					'default' 		=>  $this->notification->get_widget()->get_default( "section/$section_name/text" ),
 					'class'         => 'adk-widget-control',
 					'css'			=> 'height: 200px;',
 				),
@@ -738,7 +740,7 @@ json;
 					'type'			=> 'adk_color',
 					'title' 		=> __( 'Text color', Advertikon_Notifications::LNS ),
 					'class'         => 'adk-widget-control',
-					'default'       => $this->widget->get_default( "section/$section_name/text_color" ),
+					'default'       =>  $this->notification->get_widget()->get_default( "section/$section_name/text_color" ),
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_align' ),
@@ -746,7 +748,7 @@ json;
 					'type'			=> 'adk_select',
 					'title' 		=> __( 'Align', Advertikon_Notifications::LNS ),
 					'class'         => 'adk-widget-control',
-					'default'       => $this->widget->get_default( "section/$section_name/align" ),
+					'default'       =>  $this->notification->get_widget()->get_default( "section/$section_name/align" ),
 					'options'       => array(
 						'left'    => __( 'Left', Advertikon_Notifications::LNS ),
 						'center'  => __( 'Center', Advertikon_Notifications::LNS ),
@@ -760,7 +762,7 @@ json;
 					'type'			=> 'adk_select',
 					'title' 		=> __( 'Vertical align', Advertikon_Notifications::LNS ),
 					'class'         => 'adk-widget-control',
-					'default'       => $this->widget->get_default( "section/$section_name/valign" ),
+					'default'       =>  $this->notification->get_widget()->get_default( "section/$section_name/valign" ),
 					'options'       => array(
 						'top'    => __( 'Top', Advertikon_Notifications::LNS ),
 						'middle' => __( 'Middle', Advertikon_Notifications::LNS ),
@@ -773,7 +775,7 @@ json;
 					'type'			=> 'adk_color',
 					'title' 		=> __( 'Background color', Advertikon_Notifications::LNS ),
 					'class'         => 'adk-widget-control',
-					'default'       => $this->widget->get_default( "section/$section_name/bg_color" ),
+					'default'       =>  $this->notification->get_widget()->get_default( "section/$section_name/bg_color" ),
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_font_height' ),
@@ -781,7 +783,7 @@ json;
 					'type'			=> 'adk_number',
 					'title' 		=> __( 'Text height', Advertikon_Notifications::LNS ),
 					'class'         => 'adk-widget-control',
-					'default'		=> $this->widget->get_default( "section/$section_name/font_height" ),
+					'default'		=>  $this->notification->get_widget()->get_default( "section/$section_name/font_height" ),
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_padding' ),
@@ -789,7 +791,7 @@ json;
 					'type'			=> 'adk_number',
 					'title' 		=> __( 'Padding', Advertikon_Notifications::LNS ),
 					'class'         => 'adk-widget-control',
-					'default'		=> $this->widget->get_default( "section/$section_name/padding" ),
+					'default'		=>  $this->notification->get_widget()->get_default( "section/$section_name/padding" ),
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_height' ),
@@ -797,7 +799,7 @@ json;
 					'type'			=> 'adk_number',
 					'title' 		=> __( 'Height', Advertikon_Notifications::LNS ),
 					'class'         => 'adk-widget-control',
-					'default'		=> $this->widget->get_default( "section/$section_name/height" ),
+					'default'		=>  $this->notification->get_widget()->get_default( "section/$section_name/height" ),
 				),
 				array(
 					'type' => 'sectionend',
@@ -821,13 +823,13 @@ json;
 				'title' 		=> __( 'Button\'s name', Advertikon_Notifications::LNS ),
 				'default'		=> 'default',
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'name' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'name' ),
 			),
 			array(
 				'id'			    => 'load-button',
 				'type' 			    => 'adk_select',
 				'title' 		    => __( 'Load button', Advertikon_Notifications::LNS ),
-				'options'           => $this->widget->get_button_list(),
+				'options'           => $this->notification->get_widget()->get_button_list(),
 				'desc'			    => __( 'Select a button to modify', Advertikon_Notifications::LNS ),
 				'desc_tip'		    => true,
 				'custom_attributes' => array(
@@ -840,7 +842,7 @@ json;
 				'id'			=> 'button-text',
 				'type' 			=> 'adk_text',
 				'title' 		=> __( 'Caption', Advertikon_Notifications::LNS ),
-				'default' 		=> $this->widget->get_button_default( 'text' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'text' ),
 				'desc'			=> __( 'Text to display on call to action button.', Advertikon_Notifications::LNS ),
 				'desc_tip'		=> true,
 				'class'         => 'adk-button-control',
@@ -852,56 +854,56 @@ json;
 				'desc'			=> __( 'URL to open in response to click on CTA button', Advertikon_Notifications::LNS ),
 				'desc_tip'		=> true,
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'url' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'url' ),
 			),
 			array(
 				'id'			=> 'button-bg_color',
 				'type'			=> 'adk_color',
 				'title' 		=> __( 'Background color', Advertikon_Notifications::LNS ),
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'bg_color' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'bg_color' ),
 			),
 			array(
 				'id'			=> 'button-text_color',
 				'type'			=> 'adk_color',
 				'title' 		=> __( 'Text color', Advertikon_Notifications::LNS ),
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'text_color' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'text_color' ),
 			),
 			array(
 				'id'			=> 'button-padding',
 				'type'			=> 'adk_number',
 				'title' 		=> __( 'Padding', Advertikon_Notifications::LNS ),
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'padding' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'padding' ),
 			),
 			array(
 				'id'			=> 'button-font_height',
 				'type'			=> 'adk_number',
 				'title' 		=> __( 'Text size', Advertikon_Notifications::LNS ),
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'font_height' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'font_height' ),
 			),
 			array(
 				'id'			=> 'button-border_width',
 				'type'			=> 'adk_number',
 				'title' 		=> __( 'Border width', Advertikon_Notifications::LNS ),
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'border_width' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'border_width' ),
 			),
 			array(
 				'id'			=> 'button-border_radius',
 				'type'			=> 'adk_number',
 				'title' 		=> __( 'Border radius', Advertikon_Notifications::LNS ),
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'border_radius' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'border_radius' ),
 			),
 			array(
 				'id'			=> 'button-border_color',
 				'type'			=> 'adk_color',
 				'title' 		=> __( 'Border color', Advertikon_Notifications::LNS ),
 				'class'         => 'adk-button-control',
-				'default' 		=> $this->widget->get_button_default( 'border_color' ),
+				'default' 		=> $this->notification->get_widget()->get_button_default( 'border_color' ),
 			),
 			array(
 				'id'			    => uniqid(),

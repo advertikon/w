@@ -23,6 +23,7 @@ class Advertikon_Library_Renderer_Admin {
 		'adk_tel',
 		'adk_select',
 		'adk_textarea',
+		'adk_pass',
 	);
 
 	static public function init() {
@@ -32,17 +33,15 @@ class Advertikon_Library_Renderer_Admin {
 	}
 
 	static public function render( array $element ) {
-		$data = self::prepare( $element );
-
 		switch( $element['type'] ) {
 			case 'adk_title':
-				self::title( $data );
+				self::title( $element );
 				break;
 			case 'adk_button':
-				echo self::button( $data );
+				echo self::button( $element );
 				break;
 			case 'adk_color':
-				echo self::color( $data );
+				echo self::color( $element );
 				break;
 			case 'adk_text':
 			case 'adk_password':
@@ -56,20 +55,33 @@ class Advertikon_Library_Renderer_Admin {
 			case 'adk_email':
 			case 'adk_url':
 			case 'adk_tel':
-				echo self::input( $data );
+				echo self::input( $element );
 				break;
 			case 'adk_select':
-				echo self::select( $data );
+				echo self::select( $element );
 				break;
 			case 'adk_textarea':
-				echo self::textarea( $data );
+				echo self::textarea( $element );
+				break;
+			case 'adk_pass':
+				echo self::pass( $element );
 				break;
 		}
 	}
 
-	static function prepare( array $data ) {
+	static public function prepare( array $data ) {
 		if ( !isset( $data['value'] ) ) {
 			$data['value'] = isset( $data['default'] ) ? esc_attr( $data['default'] ) : '';
+		}
+
+		foreach( array( 'desc_tip', 'description', 'type', 'placeholder' ) as $i ) {
+			if ( !isset( $data[ $i ] ) ) {
+				$data[ $i ] = '';
+			}
+		}
+
+		if ( substr( $data['type'], 4 ) == 'adk_' ) {
+			$data['type'] = esc_attr( substr( $data['type'], 4 ) ); //remove adk_ prefix
 		}
 
 		$description       = '';
@@ -98,7 +110,6 @@ class Advertikon_Library_Renderer_Admin {
 		$data['css']               = implode( $css );
 		$data['id']                = isset( $data['id'] ) ? esc_attr( $data['id'] ) : uniqid();
 		$data['name']              = isset( $data['name'] ) ? esc_attr( $data['name'] ) : $data['id'];
-		$data['type']              = esc_attr( substr( $data['type'], 4 ) ); //remove adk_ prefix
 
 		foreach( array( 'class', 'placeholder' ) as $i ) {
 			if ( $data[ $i ] ) {
@@ -142,7 +153,7 @@ class Advertikon_Library_Renderer_Admin {
 		}
 	}
 
-	static protected function title( array $value ) {
+	static public function title( array $value ) {
 		$id = isset( $value['id'] ) ? $value['id'] : uniqid();
 
 		if ( ! empty( $value['title'] ) ) {
@@ -160,24 +171,25 @@ class Advertikon_Library_Renderer_Admin {
 		}
 	}
 
-	static protected function button( array $data ) {
+	static public function button( array $element ) {
+		$data = self::prepare( $element );
 		extract( $data );
 
 		$element = sprintf(
-			'<button id="%s" class="%s" %s type="%s">%s</button>',
+			'<button id="%s" class="%s" %s type="%s" style="%s">%s</button>',
 			esc_attr( $id ),
 			esc_attr( $class ),
 			isset( $custom_attributes ) ? $custom_attributes : '',
 			isset( $button_type )       ? esc_attr( $button_type ) : 'button',
+			$css,
 			isset( $caption )           ? esc_html( $caption ) : __( 'Button', Advertikon::LNS )
 		);
 
 		return empty( $data['standalone'] ) ? self::table_row( $data, $element ) : $element;
 	}
 
-	static protected function color( array $data ) {
-		extract( $data );
-
+	static public function color( array $element ) {
+		$data = self::prepare( $element );
 		extract( $data );
 
 		$element = sprintf(
@@ -194,7 +206,8 @@ class Advertikon_Library_Renderer_Admin {
 		return self::table_row( $data, $element );
 	}
 
-	static protected function input( array $data ) {
+	static public function input( array $element ) {
+		$data = self::prepare( $element );
 		extract( $data );
 
 		$element = sprintf(
@@ -212,7 +225,8 @@ class Advertikon_Library_Renderer_Admin {
 		return self::table_row( $data, $element );
 	}
 
-	static protected function textarea( array $data ) {
+	static public function textarea( array $element ) {
+		$data = self::prepare( $element );
 		extract( $data );
 
 		$element = sprintf(
@@ -229,7 +243,8 @@ class Advertikon_Library_Renderer_Admin {
 		return self::table_row( $data, $element );
 	}
 
-	static protected function select( array $data ) {
+	static public function select( array $element ) {
+		$data = self::prepare( $element );
 		extract( $data );
 
 		$element = sprintf(
@@ -252,8 +267,12 @@ class Advertikon_Library_Renderer_Admin {
 		return self::table_row( $data, $element );
 	}
 
-	static protected function table_row( array $data, $element ) {
+	static public function table_row( array $data, $element ) {
 		extract( $data );
+
+		if ( isset( $standalone ) ) {
+			return $element;
+		}
 
 		$ret = <<<HTML
 		<tr valign="top">
@@ -266,5 +285,9 @@ class Advertikon_Library_Renderer_Admin {
 		</tr>
 HTML;
 		return $ret;
+	}
+
+	static protected function pass( array $element ) {
+		return isset( $element['content'] ) ? $element['content'] : '';
 	}
 }
