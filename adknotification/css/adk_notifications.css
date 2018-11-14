@@ -201,3 +201,30 @@ h2 + table {
 	margin: 2px;
 	box-sizing: border-box;
 }
+
+.filter-name {
+	width: 32%!important;
+}
+
+.filter-restrict {
+	width: 20%!important;
+}
+
+.filter-value-wrapper {
+	width: 31%!important;
+	display: inline-block!important;
+	vertical-align: middle!important;
+}
+
+.filter-value-wrapper > * {
+	width: 100%!important;
+}
+
+.filter-value-wrapper > input {
+	padding: 5px!important;
+}
+
+.filter-delete {
+	width: 13%!important;
+	padding: 5px!important;
+}

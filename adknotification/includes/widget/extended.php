@@ -6,8 +6,8 @@
  */
 
 class Advertikon_Notification_Includes_Widget_Extended extends Advertikon_Notification_Includes_Widget {
-	public function __construct() {
-		parent::__construct();
+	public function __construct( Advertikon_Notification_Includes_Filter $filter ) {
+		parent::__construct( $filter );
 
 		$section = array();
 

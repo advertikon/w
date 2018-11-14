@@ -80,7 +80,7 @@ class Advertikon_Library_Renderer_Admin {
 			}
 		}
 
-		if ( substr( $data['type'], 4 ) == 'adk_' ) {
+		if ( substr( $data['type'], 0, 4 ) == 'adk_' ) {
 			$data['type'] = esc_attr( substr( $data['type'], 4 ) ); //remove adk_ prefix
 		}
 
@@ -89,7 +89,7 @@ class Advertikon_Library_Renderer_Admin {
 		$custom_attributes = array();
 		self::get_field_description( $data, $description, $tooltip_html );
 
-		$data['description']  = esc_html( $description );
+		$data['description']  = $description;
 		$data['tooltip_html'] = $tooltip_html;
 
 		if ( !empty( $data['custom_attributes'] ) && is_array( $data['custom_attributes'] ) ) {
@@ -112,8 +112,11 @@ class Advertikon_Library_Renderer_Admin {
 		$data['name']              = isset( $data['name'] ) ? esc_attr( $data['name'] ) : $data['id'];
 
 		foreach( array( 'class', 'placeholder' ) as $i ) {
-			if ( $data[ $i ] ) {
+			if ( isset( $data[ $i ] ) ) {
 				$data[ $i ] = esc_attr( $data[ $i ] );
+
+			} else {
+				$data[ $i ] = '';
 			}
 		}
 
@@ -147,7 +150,6 @@ class Advertikon_Library_Renderer_Admin {
 
 		if ( $tooltip_html && in_array( $value['type'], array( 'checkbox' ), true ) ) {
 			$tooltip_html = '<p class="description">' . $tooltip_html . '</p>';
-
 		} elseif ( $tooltip_html ) {
 			$tooltip_html = wc_help_tip( $tooltip_html );
 		}
@@ -270,12 +272,14 @@ class Advertikon_Library_Renderer_Admin {
 	static public function table_row( array $data, $element ) {
 		extract( $data );
 
-		if ( isset( $standalone ) ) {
+		if ( !empty( $standalone ) ) {
 			return $element;
 		}
 
+		$display = !empty( $hidden ) ? 'none' : 'table-row';
+
 		$ret = <<<HTML
-		<tr valign="top">
+		<tr valign="top" style="display: $display;">
 			<th scope="row" class="titledesc">
 				<label for="$id">$title $tooltip_html</label>
 			</th>
@@ -288,6 +292,11 @@ HTML;
 	}
 
 	static protected function pass( array $element ) {
-		return isset( $element['content'] ) ? $element['content'] : '';
+		$data = self::prepare( $element );
+		extract( $data );
+
+		$element = isset( $content ) ? $content : '';
+
+		return self::table_row( $data, $element );
 	}
 }

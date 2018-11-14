@@ -15,6 +15,7 @@ abstract class Advertikon {
 	static protected $prefix = ''; // module prefix
 
 	static protected $logger;
+	static public $instances = array();
 
 	const LNS = 'advertikon'; // Language name space
 
@@ -47,6 +48,7 @@ abstract class Advertikon {
 	}
 
 	public function __construct() {
+		self::$instances['default'] = $this;
 		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
 	}
 
@@ -120,5 +122,15 @@ abstract class Advertikon {
 	    }
 
 	    return self::$logger;
+	}
+}
+
+if ( !function_exists( 'ADK' ) ) {
+	function ADK( $code = null ) {
+		if ( is_null( $code ) || !isset( Advertikon::$instances[ $code ] ) ) {
+			return Advertikon::$instances['default'];
+		}
+
+		return Advertikon::$instances[ $code ];
 	}
 }

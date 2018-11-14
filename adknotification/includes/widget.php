@@ -36,7 +36,13 @@ class Advertikon_Notification_Includes_Widget {
 	protected $data = array();
 	protected $is_simple = false;
 
-	public function __construct() {
+	/** $var Advertikon_Notification_Includes_Shortcode */
+	protected $shortcode;
+
+	/** @var Advertikon_Notification_Includes_Filter */
+	protected $filter;
+
+	public function __construct( Advertikon_Notification_Includes_Filter $filter ) {
 		$this->defaults = array(
 			'name'              => 'default',
 			'border_color'      => '#00ff00',
@@ -48,9 +54,10 @@ class Advertikon_Notification_Includes_Widget {
 			'shadow_vertical'   => 0,
 			'template'          => 'simple',
 			'width'             => 800,
-			'section' => array(
+			'section'           => array(
 				'content' => $this->section_defaults,
 			),
+			'filter'            => null,
 		);
 
 		$this->storage_dir  = plugin_dir_path( __DIR__ ) . 'storage/widgets/';
@@ -66,6 +73,10 @@ class Advertikon_Notification_Includes_Widget {
 			} catch ( Exception $e ) {}
 		}
 
+		$this->filter = $filter;
+		$this->shortcode = class_exists( 'Advertikon_Notification_Includes_Shortcode_Extended' ) ?
+			new Advertikon_Notification_Includes_Shortcode_Extended() : new Advertikon_Notification_Includes_Shortcode();
+
 		// add_action( 'wp_footer', [ $this, 'render' ] );
 		add_action( 'get_template_part_template-parts/header/header', array( $this, 'render' ) );
 		// CTA button shortcode
@@ -74,6 +85,10 @@ class Advertikon_Notification_Includes_Widget {
 
 	public function is_simple() {
 		return $this->is_simple;
+	}
+
+	public function get_shortcode() {
+		return $this->shortcode;
 	}
 
 	public function save( array $data ) {
@@ -303,24 +318,17 @@ class Advertikon_Notification_Includes_Widget {
 	}
 
 	public function render() {
-		if ( !is_woocommerce() ) {
-			return;
-		}
-
-		if ( is_shop() ) {
-			//echo 'shop';
-		}
+		// if ( !is_woocommerce() ) {
+		// 	return;
+		// }
 
 		foreach( $this->load_all() as $widget ) {
-			if ( $this->filter( $widget ) ) {
+			if ( empty( $widget['filter'] ) || !is_array( $widget['filter'] ) ||
+				$this->filter->filter( $widget['filter'] ) ) {
+
 				$this->render_widget( $widget );
 			}
 		}
-
-		// is_product()
-		// is_cart()
-		// is_checkout()
-		// is_account_page()
 	}
 
 	public function get_button_list() {
@@ -346,42 +354,6 @@ class Advertikon_Notification_Includes_Widget {
 		return $ret;
 	}
 
-	public function widget_button( $attr, $content ) {
-		$ret = '';
-
-		try {
-			$b = $this->load_button( $content );
-			$css = array();
-			$style = array();
-
-			$border_color = $this->get_button_value( 'border_color', $b );
-			$border_width = $this->get_button_value( 'border_width', $b );
-
-			$css['background-color'] = $this->get_button_value( 'bg_color', $b );
-			$css['color']            = $this->get_button_value( 'text_color', $b );
-			$css['padding']          = $this->get_button_value( 'padding', $b ) . 'px';
-			$css['font-size']        = $this->get_button_value( 'font_height', $b ) . 'px';
-			$css['border-radius']    = $this->get_button_value( 'border_radius', $b ) . 'px';
-			$css['border']           = "solid ${border_width}px ${border_color}";
-
-			foreach( $css as $k => $v ) {
-				$style[] = $k . ': ' . esc_attr( $v );
-			}
-
-			$ret = sprintf(
-				'<a href="%s" style="%s" target="_blank">%s</a>',
-				isset( $b['url'] ) ? esc_attr( $b['url'] ) : '#',
-				implode( ';', $style ),
-				isset( $b['text'] ) ? esc_html( $b['text'] ) : ''
-			);
-
-		} catch ( Exception $e ) {
-			Advertikon::log( $e );
-		}
-
-		return $ret;
-	}
-
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	protected function render_widget( array $widget ) {
@@ -402,10 +374,6 @@ class Advertikon_Notification_Includes_Widget {
 		require( $template_path );
 	}
 
-	protected function get_button_value( $name, array $data ) {
-		return isset( $data[ $name ] ) ? esc_html( $data[ $name ] ) : $this->button_defaults[ $name ];
-	}
-
 	protected function render_section( array $data, $name ) {
 		$height = (int)( isset( $data['height'] ) ? $data['height'] : $this->get_default( "section/$name/height" ) );
 
@@ -420,10 +388,6 @@ class Advertikon_Notification_Includes_Widget {
 			isset( $data['valign'] )      ? $data['valign']      : $this->get_default( "section/$name/valign" ),
 			isset( $data['text'] )        ? do_shortcode( $data['text'] ) : $this->get_default( "section/$name/text" )
 		);
-	}
-
-	protected function filter( array $widget ) {
-		return true;
 	}
 
 	protected function get_available_templates() {

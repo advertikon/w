@@ -82,19 +82,23 @@ class Advertikon_Notifications extends Advertikon {
 		load_plugin_textdomain( self::LNS, false,  dirname( __FILE__ ) . '/languages' );
 
 		$this->init();
+
+		parent::$instances['notification'] = $this;
 	}
 
 	protected function init() {
 		parent::init();
-		$widget_class = class_exists( 'Advertikon_Notification_Includes_Widget_Extended' ) ?
-			'Advertikon_Notification_Includes_Widget_Extended' : 'Advertikon_Notification_Includes_Widget';
-		
-		$this->widget = new $widget_class();
-			
+
 		$filter_class = class_exists( 'Advertikon_Notification_Includes_Filter_Extended' ) ?
 			'Advertikon_Notification_Includes_Filter_Extended' : 'Advertikon_Notification_Includes_Filter';
 		
 		$this->filter = new $filter_class();
+
+		$widget_class = class_exists( 'Advertikon_Notification_Includes_Widget_Extended' ) ?
+			'Advertikon_Notification_Includes_Widget_Extended' : 'Advertikon_Notification_Includes_Widget';
+		
+		$this->widget = new $widget_class( $this->filter );
+			
 
 		if( is_admin() ) {
 			if( isset( $_GET['tab'] ) && $_GET['tab'] == Advertikon_Notifications::ID ) {

@@ -41,7 +41,7 @@ class Advertikon_Notification_Includes_Setting extends WC_Settings_Page {
 		$ret = array_merge( $ret, $this->notification->get_filter()->get_controls() );
 		$ret[] = $this->get_save_button();
 		$ret = array_merge( $ret, $this->get_button_controls() );
-Advertikon::log( $ret );
+
 		return $ret;
 
 		$teaser_max_height = 100;
@@ -732,7 +732,9 @@ json;
 					'title' 		=> __( 'Text', Advertikon_Notifications::LNS ),
 					'default' 		=>  $this->notification->get_widget()->get_default( "section/$section_name/text" ),
 					'class'         => 'adk-widget-control',
-					'css'			=> 'height: 200px;',
+					'css'			=> array( 'height' => '200px' ),
+					'desc'          => __( 'Supported shortcodes', Advertikon_Notifications::LNS ) .
+										'<br>' . implode( '<br>', $this->notification->get_widget()->get_shortcode()->get_list() ),
 				),
 				array(
 					'id'			=> Advertikon_Notifications::prefix( $section_name . '_text_color' ),

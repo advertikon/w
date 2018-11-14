@@ -1,6 +1,6 @@
 var ADK = {};
 
-+ function( $ ) {
++function( $ ) {
 "use strict";
 
 	function toggleSection() {
@@ -129,6 +129,26 @@ var ADK = {};
 			}
 		} );
 
+		data.filter = {};
+
+		$( ".filter-line:not(.template)" ).each( function() {
+			var
+				name     = $( this ).find( ".filter-name" ).val(),
+				restrict = $( this ).find( ".filter-restrict" ).val(),
+				value    = $( this ).find( ".filter-value" ).val();
+
+			if ( !data.filter[ name ] ) {
+				data.filter[ name ] = {};
+			}
+
+			if ( !data.filter[ name ][ restrict ] ) {
+				data.filter[ name ][ restrict ] = [];
+			}
+
+			data.filter[ name ][ restrict ].push( value );
+
+		} );
+
 		console.log( data );
 		ADK.buttonClick.call( this, data );
 	}
@@ -245,6 +265,11 @@ var ADK = {};
 				name,
 				element;
 
+			if ( "filter" === k ) {
+				populateFilters( v );
+				return;
+			}
+
 			if ( typeof v === "object" ) {
 				var new_section = s ? s + '[' + k + ']' : k;
 
@@ -272,6 +297,27 @@ var ADK = {};
 		} );
 
 		$( "#advertikon_notifications_template" ).trigger( "change" );
+	}
+
+	function populateFilters( data ) {
+		$( ".filter-line:not(.template)" ).remove();
+
+		$.each( data, function( k, v ) {
+			var name = k;
+
+			$.each( v, function( k1, v1 ) {
+				var restrict = k1;
+
+				$.each( v1, function() {
+					var line = addFilter();
+
+					line.find( ".filter-name" ).val( name ).trigger( "change" );
+					line.find( ".filter-restrict" ).val( restrict ).trigger( "change" );
+					line.find( ".filter-value" ).val( this ).trigger( "change" );
+				} );
+			} );
+		} );
+
 	}
 
 	function loadButton() {
@@ -330,6 +376,43 @@ var ADK = {};
 		// $( "#advertikon_notifications_template" ).trigger( "change" );
 	}
 
+	function initFilterValue() {
+		var
+			option   = $( this ).find( "option:selected" ),
+			input    = $( option.attr( "data-input" ) ),
+			restrict = JSON.parse( option.attr( "data-restrict" ) ),
+			value    = option.attr( "data-value" ),
+			wrapper  = $( this ).closest( "td" ),
+			restricts = wrapper.find( ".filter-restrict" );
+
+		input.addClass( "filter-value" );
+		wrapper.find( ".filter-value-wrapper" ).html( input );
+
+		restricts.empty();
+
+		$.each( restrict, function( k, v ) {
+			restricts.append( '<option value="' + k + '">' +  v + '</option>' );
+		} );
+	}
+
+	function addFilter() {
+		var
+			clone = $( ".filter-line.template" ).eq( 0 ).closest( "tr" ).clone(),
+			filters = $( ".filter-line" );
+
+		clone.find( ".filter-line" ).removeClass( "template" );
+		clone.css( "display", "table-row" );
+
+		clone.insertAfter( filters.eq( filters.length - 1 ).closest( "tr" ) );
+		clone.find( ".filter-name" ).trigger( "change" ); // init filter inputs
+
+		return clone;
+	}
+
+	function deleteFilter() {
+		$( this ).closest( "tr" ).remove();
+	}
+
 	$( document ).ready( function() {
 		$( "h2" ).on( "click", toggleSection );
 		$( "#" + adkLang.prefix + "template" ).on( "change", showTemplateSections );
@@ -339,6 +422,9 @@ var ADK = {};
 		$( ".adk-save-button" ).on( "click", saveButton );
 		$( "#load-widget" ).on( "change", loadWidget );
 		$( "#load-button" ).on( "change", loadButton );
+		$( document ).on( "change", ".filter-name", initFilterValue );
+		$( "#add-filter" ).on( "click", addFilter );
+		$( document ).on( "click", ".filter-delete", deleteFilter );
 		 
 		$( "#advertikon_notifications_template" ).trigger( "change" ); // hide unused sections
 	} );
