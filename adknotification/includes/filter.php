@@ -10,6 +10,9 @@ class Advertikon_Notification_Includes_Filter {
 	const RESTRICT_NO_EQUAL = 2;
 	const RESTRICT_LESSER   = 3;
 	const RESTRICT_GREATER  = 4;
+	
+	/** @var $free_shipping WC_Shipping_Free_Shipping */
+	protected $free_shipping;
 
 	public function get_controls() {
 		return array(
@@ -48,6 +51,16 @@ class Advertikon_Notification_Includes_Filter {
 					if ( $this->filter_page( $set ) ) {
 						return true;
 					}
+				break;
+				case 'customer':
+				    if ( $this->filter_customer( $set ) ) {
+				        return true;
+				    }
+				break;
+				case 'free_shipping':
+				    if ( $this->filter_free_shipping( $set ) ) {
+				        return true;
+				    }
 				break;
 			}
 		}
@@ -128,6 +141,16 @@ class Advertikon_Notification_Includes_Filter {
 					self::RESTRICT_NO_EQUAL => __( 'not is', Advertikon_Notifications::LNS ),
 				),
 			),
+		    
+		    'free_shipping' => array(
+		        'name'       => __( 'Insufficient amount for free shipping', Advertikon_Notifications::LNS ),
+		        'input'      => $this->get_shipping_input(),
+		        'standalone' => true,
+		        'restrict'   => array(
+		            self::RESTRICT_EQUAL    => __( 'Yes', Advertikon_Notifications::LNS ),
+		            self::RESTRICT_NO_EQUAL => __( 'No', Advertikon_Notifications::LNS ),
+		        ),
+		    ),
 		);
 	}
 
@@ -149,6 +172,14 @@ class Advertikon_Notification_Includes_Filter {
 				'guest'    => __( 'Guest', Advertikon_Notifications::LNS ),
 			),
 		) );
+	}
+	
+	protected function get_shipping_input() {
+	    return Advertikon_Library_Renderer_Admin::input( array(
+	        'standalone'        => true,
+	        'custom_attributes' => array( 'disabled' => 'disabled' ),
+	        'value'             => ' ',
+	    ) );
 	}
 
 	protected function filter_page( array $data ) {
@@ -204,5 +235,150 @@ class Advertikon_Notification_Includes_Filter {
 			}
 		}
 	}
-    
+	
+	protected function filter_customer( array $data ) {
+	    foreach( $data as $restrict => $values ) {
+	        foreach( $values as $value ) {
+	            $match = false;
+	            
+	            switch( $value ) {
+	                case 'loggedin':
+	                    $match = is_user_logged_in();
+	                    break;
+	                case 'guest':
+	                    $match = !is_user_logged_in();
+	                    break;
+	            }
+	            
+	            if ( $restrict == self::RESTRICT_EQUAL ) {
+	                if ( $match ) {
+	                    return true;
+	                }
+	                
+	            } else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
+	                if ( !$match ) {
+	                    return true;
+	                }
+	                
+	            } else {
+	                Advertikon::error( 'Customer filter: unsupported restriction: ' . $restrict );
+	            }
+	            
+	            return false;
+	        }
+	    }
+	}
+	
+	protected function filter_free_shipping( array $data ) {
+	    foreach( $data as $restrict => $values ) {
+	        foreach( $values as $value ) {
+	            $match = false;
+
+	            if( WC()->cart && $this->get_free_shipping() ) {
+	                foreach( WC()->cart->get_shipping_packages() as $package ) {
+	                    if( $this->is_need_more_for_free_shipping( $package ) ) {
+	                        $match = true;
+	                        break;
+	                    }
+	                }
+	            }
+	            
+	            if ( $restrict == self::RESTRICT_EQUAL ) {
+	                if ( $match ) {
+	                    return true;
+	                }
+	                
+	            } else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
+	                if ( !$match ) {
+	                    return true;
+	                }
+	                
+	            } else {
+	                Advertikon::error( 'Customer filter: unsupported restriction: ' . $restrict );
+	            }
+	            
+	            return false;
+	        }
+	    }
+	}
+	
+	/**
+	 * Returns free shipping object
+	 *
+	 * @return WC_Shipping_Free_Shipping
+	 */
+	protected function get_free_shipping() {
+	    if( !$this->free_shipping ) {
+	        $shipping_methods = WC()->shipping->get_shipping_methods();
+
+	        if( !$shipping_methods ) {
+	            WC()->shipping->load_shipping_methods();
+	            $shipping_methods = WC()->shipping->get_shipping_methods();
+	        }
+	        
+	        if( isset( $shipping_methods['free_shipping'] ) ) {
+	            $this->free_shipping = $shipping_methods['free_shipping'];
+	        }
+	    }
+	    
+	    return $this->free_shipping;
+	}
+	
+	/**
+	 * Checks if free shipping is available.
+	 *
+	 * @param array $package
+	 * @return bool
+	 */
+	public function is_need_more_for_free_shipping( array $package ) {
+	    $has_coupon         = false;
+	    $has_met_min_amount = false;
+	    
+	    if ( in_array( $this->get_free_shipping()->requires, array( 'coupon', 'either', 'both' ), true ) ) {
+	        $coupons = WC()->cart->get_coupons();
+	        
+	        if ( $coupons ) {
+	            foreach ( $coupons as $code => $coupon ) {
+	                if ( $coupon->is_valid() && $coupon->get_free_shipping() ) {
+	                    $has_coupon = true;
+	                    break;
+	                }
+	            }
+	        }
+	    }
+	    
+	    if ( in_array( $this->get_free_shipping()->requires, array( 'min_amount', 'either', 'both' ), true ) ) {
+	        $total = WC()->cart->get_displayed_subtotal();
+	        
+	        if ( WC()->cart->display_prices_including_tax() ) {
+	            $total = round( $total - ( WC()->cart->get_discount_total() + WC()->cart->get_discount_tax() ), wc_get_price_decimals() );
+	        } else {
+	            $total = round( $total - WC()->cart->get_discount_total(), wc_get_price_decimals() );
+	        }
+	        
+	        if ( $total >= $this->get_free_shipping()->min_amount ) {
+	            $has_met_min_amount = true;
+	        }
+	    }
+	    
+	    switch ( $this->get_free_shipping()->requires ) {
+	        case 'min_amount':
+	            $is_available = $has_met_min_amount;
+	            break;
+	        case 'coupon':
+	            $is_available = false; // Skip
+	            break;
+	        case 'both':
+	            $is_available = $has_met_min_amount && $has_coupon;
+	            break;
+	        case 'either':
+	            $is_available = $has_met_min_amount || !$has_coupon;
+	            break;
+	        default:
+	            $is_available = true;
+	            break;
+	    }
+	    
+	    return apply_filters( 'woocommerce_shipping_' . $this->get_free_shipping()->id . '_is_available', $is_available, $package, $this->get_free_shipping() );
+	}
 }

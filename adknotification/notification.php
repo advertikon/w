@@ -263,9 +263,9 @@ class Advertikon_Notifications extends Advertikon {
 	 * @param Mixed $val
 	 * @return Boolean
 	 */
-	protected function is_true( $val ) {
-		return $val === true || strtolower( $val ) === 'true' || strtolower( $val ) === 'yes';
-	}
+// 	protected function is_true( $val ) {
+// 		return $val === true || strtolower( $val ) === 'true' || strtolower( $val ) === 'yes';
+// 	}
 
 	/**
 	 * Checks fired triggers

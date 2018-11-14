@@ -79,8 +79,6 @@ class Advertikon_Notification_Includes_Widget {
 
 		// add_action( 'wp_footer', [ $this, 'render' ] );
 		add_action( 'get_template_part_template-parts/header/header', array( $this, 'render' ) );
-		// CTA button shortcode
-		add_shortcode( 'adk_widget_button', array( $this, 'widget_button' ) );
 	}
 
 	public function is_simple() {
