@@ -10,9 +10,14 @@ class Advertikon_Notification_Includes_Filter {
 	const RESTRICT_NO_EQUAL = 2;
 	const RESTRICT_LESSER   = 3;
 	const RESTRICT_GREATER  = 4;
+
+	const MATCH_AND = 1;
+	const MATCH_OR  = 2;
 	
 	/** @var $free_shipping WC_Shipping_Free_Shipping */
 	protected $free_shipping;
+
+	protected $match_logic = self::MATCH_AND;
 
 	public function get_controls() {
 		return array(
@@ -46,26 +51,51 @@ class Advertikon_Notification_Includes_Filter {
 		}
 
 		foreach ( $data as $name => $set ) {
+			$match = false;
+
 			switch( $name ) {
 				case 'page':
 					if ( $this->filter_page( $set ) ) {
-						return true;
+						Advertikon::log( 'Filtered in for page' );
+						$match =  true;
 					}
 				break;
 				case 'customer':
 				    if ( $this->filter_customer( $set ) ) {
-				        return true;
+				    	Advertikon::log( 'Filtered in for customer' );
+				        $match = true;
 				    }
 				break;
 				case 'free_shipping':
 				    if ( $this->filter_free_shipping( $set ) ) {
-				        return true;
+				    	Advertikon::log( 'Filtered in for shipping' );
+				        $match = true;
 				    }
 				break;
 			}
+
+			if ( $this->match_logic == self::MATCH_AND ) {
+				if ( !$match ) {
+					return false;
+				}
+
+			} else if ( $this->match_logic == self::MATCH_OR ) {
+				if ( $match ) {
+					return true;
+				}
+
+			} else {
+				Advertikon::error( new Exception( 'invalid match logic condition: ' . $this->match_logic ) );
+				return false;
+			}
 		}
 
-		return false;
+		if ( $this->match_logic == self::MATCH_AND ) {
+				return true;
+
+		} else {
+			return false;
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +304,7 @@ class Advertikon_Notification_Includes_Filter {
 	        foreach( $values as $value ) {
 	            $match = false;
 
-	            if( WC()->cart && $this->get_free_shipping() ) {
+	            if( WC()->cart ) {
 	                foreach( WC()->cart->get_shipping_packages() as $package ) {
 	                    if( $this->is_need_more_for_free_shipping( $package ) ) {
 	                        $match = true;
@@ -307,19 +337,25 @@ class Advertikon_Notification_Includes_Filter {
 	 *
 	 * @return WC_Shipping_Free_Shipping
 	 */
-	protected function get_free_shipping() {
-	    if( !$this->free_shipping ) {
-	        $shipping_methods = WC()->shipping->get_shipping_methods();
-
-	        if( !$shipping_methods ) {
-	            WC()->shipping->load_shipping_methods();
-	            $shipping_methods = WC()->shipping->get_shipping_methods();
+	protected function get_free_shipping( array $package ) {
+	    // if( !$this->free_shipping ) {
+	        // $shipping_methods = WC()->shipping->get_shipping_methods();
+	       $shipping_zone =  WC_Shipping_Zones::get_zone_matching_package( $package );
+	       $shipping_methods = $shipping_zone->get_shipping_methods( true );
+	        // if( !$shipping_methods ) {
+	        //     WC()->shipping->load_shipping_methods();
+	        //     $shipping_methods = WC()->shipping->get_shipping_methods();
+	        // }
+	        Advertikon::log( $shipping_methods );
+	        foreach( $shipping_methods as $method ) {
+	        	if ( 'free_shipping' === $method->id ) {
+	        		$this->free_shipping = $method;
+	        	}
 	        }
-	        
-	        if( isset( $shipping_methods['free_shipping'] ) ) {
-	            $this->free_shipping = $shipping_methods['free_shipping'];
-	        }
-	    }
+	        // if( isset( $shipping_methods['free_shipping'] ) ) {
+	        //     $this->free_shipping = $shipping_methods['free_shipping'];
+	        // }
+	    // }
 	    
 	    return $this->free_shipping;
 	}
@@ -333,10 +369,20 @@ class Advertikon_Notification_Includes_Filter {
 	public function is_need_more_for_free_shipping( array $package ) {
 	    $has_coupon         = false;
 	    $has_met_min_amount = false;
-	    
-	    if ( in_array( $this->get_free_shipping()->requires, array( 'coupon', 'either', 'both' ), true ) ) {
+
+	    if ( WC()->cart->is_empty() ) {
+	    	return false;
+	    }
+
+	    $free_shipping = $this->get_free_shipping( $package );
+
+	    if ( !$free_shipping ) {
+	    	return false;
+	    }
+
+	    if ( in_array( $free_shipping->requires, array( 'coupon', 'either', 'both' ), true ) ) {
 	        $coupons = WC()->cart->get_coupons();
-	        
+
 	        if ( $coupons ) {
 	            foreach ( $coupons as $code => $coupon ) {
 	                if ( $coupon->is_valid() && $coupon->get_free_shipping() ) {
@@ -346,8 +392,8 @@ class Advertikon_Notification_Includes_Filter {
 	            }
 	        }
 	    }
-	    
-	    if ( in_array( $this->get_free_shipping()->requires, array( 'min_amount', 'either', 'both' ), true ) ) {
+
+	    if ( in_array( $free_shipping->requires, array( 'min_amount', 'either', 'both' ), true ) ) {
 	        $total = WC()->cart->get_displayed_subtotal();
 	        
 	        if ( WC()->cart->display_prices_including_tax() ) {
@@ -355,30 +401,30 @@ class Advertikon_Notification_Includes_Filter {
 	        } else {
 	            $total = round( $total - WC()->cart->get_discount_total(), wc_get_price_decimals() );
 	        }
-	        
-	        if ( $total >= $this->get_free_shipping()->min_amount ) {
+
+	        if ( $total >= $free_shipping->min_amount ) {
 	            $has_met_min_amount = true;
 	        }
 	    }
 	    
-	    switch ( $this->get_free_shipping()->requires ) {
+	    switch ( $free_shipping->requires ) {
 	        case 'min_amount':
-	            $is_available = $has_met_min_amount;
+	            $is_available = !$has_met_min_amount; // Show in case of insufficient amount
 	            break;
 	        case 'coupon':
 	            $is_available = false; // Skip
 	            break;
 	        case 'both':
-	            $is_available = $has_met_min_amount && $has_coupon;
+	            $is_available = !$has_met_min_amount && $has_coupon; // Insufficient amount + coupon
 	            break;
 	        case 'either':
-	            $is_available = $has_met_min_amount || !$has_coupon;
+	            $is_available = !$has_met_min_amount && !$has_coupon; // Insufficient amount - coupon
 	            break;
 	        default:
-	            $is_available = true;
+	            $is_available = false;
 	            break;
 	    }
-	    
-	    return apply_filters( 'woocommerce_shipping_' . $this->get_free_shipping()->id . '_is_available', $is_available, $package, $this->get_free_shipping() );
+
+	    return $is_available;
 	}
 }

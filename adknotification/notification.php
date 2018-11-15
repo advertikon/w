@@ -241,18 +241,19 @@ class Advertikon_Notifications extends Advertikon {
 	 *
 	 * @return Object
 	 */
-	protected function get_free_shipping() {
-		if( ! $this->shipping_method ) {
-			$shipping_methods = WC()->shipping->get_shipping_methods();
-			if( ! $shipping_methods ) {
-				WC()->shipping->load_shipping_methods();
-				$shipping_methods = WC()->shipping->get_shipping_methods();
-			}
+	protected function get_free_shipping( array $package ) {
+		// if( ! $this->shipping_method ) {
+			// $shipping_methods = WC()->shipping->get_shipping_methods();
+			$shipping_methods = WC_Shipping_Zones::get_zone_matching_package( $package );
+			// if( ! $shipping_methods ) {
+			// 	WC()->shipping->load_shipping_methods();
+			// 	$shipping_methods = WC()->shipping->get_shipping_methods();
+			// }
 
 			if( isset( $shipping_methods['free_shipping'] ) ) {
 				$this->shipping_method = $shipping_methods['free_shipping'];
 			}
-		}
+		// }
 
 		return $this->shipping_method;
 	}

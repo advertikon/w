@@ -21,6 +21,8 @@ class Advertikon_Library_Log {
 	protected $ICyan="\e[0;96m";       # Cyan
 	protected $IWhite="\e[0;97m";      # White
 	protected $off = "\e[0m";
+	protected $dim = "\e[2m";           # Dim
+	protected $IGray = '\e[90m';       # Gray
 
 	const LOG_MAX_SIZE = 10000000;
 	const LOG_MIN_SIZE = 5000000;
@@ -49,11 +51,14 @@ class Advertikon_Library_Log {
 	    if ( is_null( $this->fd ) ) {
 	        return;
 	    }
+
+	    $add_line = true;
 	    
 	    if ( is_a( $msg, 'Exception' ) || is_a( $msg, 'Error' ) ) {
 	        $msg = $msg->getMessage() . "\n" . $msg->getTraceAsString();
 	        $urgency = self::LEVEL_ERROR;
-	        
+	        $add_line = false;
+
 	    } else if ( is_bool( $msg ) ) {
 	        $msg = '(boolean) ' . ( $msg ? 'true' : 'false' );
 	        
@@ -64,7 +69,7 @@ class Advertikon_Library_Log {
 	        $msg = print_r( $msg, 1 );
 	    }
 	    
-	    $msg = rtrim( $msg, PHP_EOL ) . $line . "\n";
+	    $msg = rtrim( $msg, PHP_EOL );
 	    
 	    if ( $this->first_log_line ) {
 	        $prefix = $this->color( $this->get_log_prefix( $urgency ), 'blue' );
@@ -77,6 +82,12 @@ class Advertikon_Library_Log {
 	    if ( $urgency >= self::LEVEL_ERROR ) {
 	        $msg = $this->color( $msg, 'red' );
 	    }
+
+	    if ( $add_line ) {
+	    	$msg .= $this->get_fileline();
+	    }
+
+	    $msg .= "\n";
 	    
 	    fwrite( $this->fd, $prefix . $msg );
 	}
@@ -114,6 +125,16 @@ class Advertikon_Library_Log {
 		}
 
 		$this->log( "\n" . implode( "\n", $stack ) );
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	protected function get_fileline() {
+		$t = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+		$record = $t[ 2 ];
+ 
+		return $this->dim . ' in ' . ( isset( $record['file'] ) ? $record['file'] : '' ) .
+			( isset( $record['line'] ) ? ':' . $record['line'] : '' ) . $this->off;
 	}
 
 	protected function trim_log() {
