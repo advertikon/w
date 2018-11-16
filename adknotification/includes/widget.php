@@ -322,7 +322,7 @@ class Advertikon_Notification_Includes_Widget {
 
 		foreach( $this->load_all() as $widget ) {
 			if ( empty( $widget['filter'] ) || !is_array( $widget['filter'] ) ||
-				$this->filter->filter( $widget['filter'] ) ) {
+				$this->filter->filter( $widget['filter'], $widget['name'] ) ) {
 
 				$this->render_widget( $widget );
 			}

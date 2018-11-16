@@ -10,7 +10,7 @@ class Advertikon_Notification_Includes_Shortcode extends Advertikon_Library_Shor
 
 		$list = array(
 			'button' => array(
-				'description'  => __( 'Call to action button', Advertikon_Notifications::LNS ),
+				'description'  => __( 'Call to action button created at "Call to action button" section', Advertikon_Notifications::LNS ),
 				'content'      => __( 'Button name', Advertikon_Notifications::LNS ),
 			),
 		);

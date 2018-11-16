@@ -13,6 +13,9 @@ class Advertikon_Library_Shortcode {
 			'customer_name' => array(
 				'description'  => __( 'Name of the current customer', Advertikon::LNS ),
 			),
+			'customer_email' => array(
+				'description'  => __( 'Email of the current customer', Advertikon::LNS ),
+			),
 		);
 
 		$this->register_shortcodes( $this->list );
@@ -34,9 +37,17 @@ class Advertikon_Library_Shortcode {
 	}
 
 	public function customer_name() {
-		$customer = new WC_Customer();
+		/** @var $customer WC_User */
+		$customer = wp_get_current_user();
 
-		return $customer->get_display_name();
+		return $customer->display_name;
+	}
+
+	public function customer_email() {
+		/** @var $customer WC_User */
+		$customer = wp_get_current_user();
+
+		return $customer->email;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

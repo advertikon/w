@@ -237,28 +237,6 @@ class Advertikon_Notifications extends Advertikon {
 	}
 
 	/**
-	 * Gets free shipping method instance
-	 *
-	 * @return Object
-	 */
-	protected function get_free_shipping( array $package ) {
-		// if( ! $this->shipping_method ) {
-			// $shipping_methods = WC()->shipping->get_shipping_methods();
-			$shipping_methods = WC_Shipping_Zones::get_zone_matching_package( $package );
-			// if( ! $shipping_methods ) {
-			// 	WC()->shipping->load_shipping_methods();
-			// 	$shipping_methods = WC()->shipping->get_shipping_methods();
-			// }
-
-			if( isset( $shipping_methods['free_shipping'] ) ) {
-				$this->shipping_method = $shipping_methods['free_shipping'];
-			}
-		// }
-
-		return $this->shipping_method;
-	}
-
-	/**
 	 * Checks whether value is true
 	 *
 	 * @param Mixed $val
@@ -661,25 +639,25 @@ class Advertikon_Notifications extends Advertikon {
 		);
 		
 		wp_enqueue_script(
-		    'spectrum',
-		    plugins_url( 'js/spectrum.js', __FILE__ ),
-		    array(
-		        'jquery',
-		        'tinycolor'
-		    ),
-		    false,
-		    true
+			'spectrum',
+			plugins_url( 'js/spectrum.js', __FILE__ ),
+			array(
+				'jquery',
+				'tinycolor'
+			),
+			false,
+			true
 		);
 		
-        wp_enqueue_script(
-            'tinycolor',
-            plugins_url( 'js/tinycolor-min.js', __FILE__ ),
-            array(
-                'jquery',
-            ),
-            false,
-            true
-        );
+		wp_enqueue_script(
+			'tinycolor',
+			plugins_url( 'js/tinycolor-min.js', __FILE__ ),
+			array(
+				'jquery',
+			),
+			false,
+			true
+		);
 
 		wp_scripts()->add_inline_script(
 			'adk_notifications',

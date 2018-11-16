@@ -6,10 +6,10 @@
  */
 
 class Advertikon_Notification_Includes_Filter {
-	const RESTRICT_EQUAL    = 1;
-	const RESTRICT_NO_EQUAL = 2;
-	const RESTRICT_LESSER   = 3;
-	const RESTRICT_GREATER  = 4;
+	const RESTRICT_EQUAL     = 1;
+	const RESTRICT_NOT_EQUAL = 2;
+	const RESTRICT_LESSER    = 3;
+	const RESTRICT_GREATER   = 4;
 
 	const MATCH_AND = 1;
 	const MATCH_OR  = 2;
@@ -45,7 +45,7 @@ class Advertikon_Notification_Includes_Filter {
 		);
 	}
 
-	public function filter( array $data ) {
+	public function filter( array $data, $w_name = '' ) {
 		if ( !$data ) {
 			return true;
 		}
@@ -56,21 +56,21 @@ class Advertikon_Notification_Includes_Filter {
 			switch( $name ) {
 				case 'page':
 					if ( $this->filter_page( $set ) ) {
-						Advertikon::log( 'Filtered in for page' );
+						Advertikon::log( '[' . $w_name . '] Filtered in for page' );
 						$match =  true;
 					}
 				break;
 				case 'customer':
-				    if ( $this->filter_customer( $set ) ) {
-				    	Advertikon::log( 'Filtered in for customer' );
-				        $match = true;
-				    }
+					if ( $this->filter_customer( $set ) ) {
+						Advertikon::log( '[' . $w_name . '] Filtered in for customer' );
+						$match = true;
+					}
 				break;
 				case 'free_shipping':
-				    if ( $this->filter_free_shipping( $set ) ) {
-				    	Advertikon::log( 'Filtered in for shipping' );
-				        $match = true;
-				    }
+					if ( $this->filter_free_shipping( $set ) ) {
+						Advertikon::log( '[' . $w_name . '] Filtered in for shipping' );
+						$match = true;
+					}
 				break;
 			}
 
@@ -99,6 +99,45 @@ class Advertikon_Notification_Includes_Filter {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	protected function check_step( $match, $logic = null ) {
+		if ( is_null( $logic ) ) {
+			$logic = $this->match_logic;
+		}
+
+		if ( $logic == self::MATCH_AND ) {
+			if ( !$match ) {
+				return false;
+			}
+
+		} else if ( $logic == self::MATCH_OR ) {
+			if ( $match ) {
+				return true;
+			}
+
+		} else {
+			Advertikon::error( new Exception( 'invalid match logic condition: ' . $logic ) );
+			return false;
+		}
+	}
+
+	protected function check_overall( $match, $logic = null ) {
+		if ( is_null( $logic ) ) {
+			$logic = $this->match_logic;
+		}
+
+		if ( !is_null( $match ) ) {
+			Advertikon::log( new Exception( 'Match value supposed to be NULL' ) );
+			return false;
+		}
+
+		if ( $logic == self::MATCH_AND ) {
+			return true;
+
+		} else {
+			return false;
+		}
+	}
 
 	protected function render_template() {
 		$data = array(
@@ -171,16 +210,16 @@ class Advertikon_Notification_Includes_Filter {
 					self::RESTRICT_NO_EQUAL => __( 'not is', Advertikon_Notifications::LNS ),
 				),
 			),
-		    
-		    'free_shipping' => array(
-		        'name'       => __( 'Insufficient amount for free shipping', Advertikon_Notifications::LNS ),
-		        'input'      => $this->get_shipping_input(),
-		        'standalone' => true,
-		        'restrict'   => array(
-		            self::RESTRICT_EQUAL    => __( 'Yes', Advertikon_Notifications::LNS ),
-		            self::RESTRICT_NO_EQUAL => __( 'No', Advertikon_Notifications::LNS ),
-		        ),
-		    ),
+			
+			'free_shipping' => array(
+				'name'       => __( 'Insufficient amount for free shipping', Advertikon_Notifications::LNS ),
+				'input'      => $this->get_shipping_input(),
+				'standalone' => true,
+				'restrict'   => array(
+					self::RESTRICT_EQUAL    => __( 'Yes', Advertikon_Notifications::LNS ),
+					self::RESTRICT_NO_EQUAL => __( 'No', Advertikon_Notifications::LNS ),
+				),
+			),
 		);
 	}
 
@@ -205,11 +244,11 @@ class Advertikon_Notification_Includes_Filter {
 	}
 	
 	protected function get_shipping_input() {
-	    return Advertikon_Library_Renderer_Admin::input( array(
-	        'standalone'        => true,
-	        'custom_attributes' => array( 'disabled' => 'disabled' ),
-	        'value'             => ' ',
-	    ) );
+		return Advertikon_Library_Renderer_Admin::input( array(
+			'standalone'        => true,
+			'custom_attributes' => array( 'disabled' => 'disabled' ),
+			'value'             => ' ',
+		) );
 	}
 
 	protected function filter_page( array $data ) {
@@ -248,183 +287,159 @@ class Advertikon_Notification_Includes_Filter {
 				}
 
 				if ( $restrict == self::RESTRICT_EQUAL ) {
-					if ( $match ) {
-						return true;
-					}
+					// do nothing
 
 				} else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
-					if ( !$match ) {
-						return true;
-					}
+					$match = !$match;
 
 				} else {
 					Advertikon::error( 'Page filter: unsupported restriction: ' . $restrict );
 				}
 
+				$step_result = $this->check_step( $match, self::MATCH_OR );
+
+				if ( !is_null( $step_result ) ) {
+					break;
+				}
+			}
+
+			$result = $this->check_step( $step_result );
+
+			if ( !is_null( $result ) ) {
+				return $result;
+			}
+		}
+
+		return $this->check_overall( $result );
+	}
+	
+	protected function filter_customer( array $data ) {
+		foreach( $data as $restrict => $values ) {
+			foreach( $values as $value ) {
+				$match = false;
+				
+				switch( $value ) {
+					case 'loggedin':
+						$match = is_user_logged_in();
+						break;
+					case 'guest':
+						$match = !is_user_logged_in();
+						break;
+				}
+				
+				if ( $restrict == self::RESTRICT_EQUAL ) {
+					if ( $match ) {
+						return true;
+					}
+					
+				} else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
+					if ( !$match ) {
+						return true;
+					}
+					
+				} else {
+					Advertikon::error( 'Customer filter: unsupported restriction: ' . $restrict );
+				}
+				
 				return false;
 			}
 		}
 	}
 	
-	protected function filter_customer( array $data ) {
-	    foreach( $data as $restrict => $values ) {
-	        foreach( $values as $value ) {
-	            $match = false;
-	            
-	            switch( $value ) {
-	                case 'loggedin':
-	                    $match = is_user_logged_in();
-	                    break;
-	                case 'guest':
-	                    $match = !is_user_logged_in();
-	                    break;
-	            }
-	            
-	            if ( $restrict == self::RESTRICT_EQUAL ) {
-	                if ( $match ) {
-	                    return true;
-	                }
-	                
-	            } else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
-	                if ( !$match ) {
-	                    return true;
-	                }
-	                
-	            } else {
-	                Advertikon::error( 'Customer filter: unsupported restriction: ' . $restrict );
-	            }
-	            
-	            return false;
-	        }
-	    }
-	}
-	
 	protected function filter_free_shipping( array $data ) {
-	    foreach( $data as $restrict => $values ) {
-	        foreach( $values as $value ) {
-	            $match = false;
+		foreach( $data as $restrict => $values ) {
+			foreach( $values as $value ) { // always one pass
+				$match = $this->is_need_more_for_free_shipping();
+				
+				if ( $restrict == self::RESTRICT_EQUAL ) {
+					if ( $match ) {
+						return true;
+					}
+					
+				} else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
+					if ( !$match ) {
+						return true;
+					}
+					
+				} else {
+					Advertikon::error( 'Customer filter: unsupported restriction: ' . $restrict );
+				}
+				
+				return false;
+			}
+		}
+	}
 
-	            if( WC()->cart ) {
-	                foreach( WC()->cart->get_shipping_packages() as $package ) {
-	                    if( $this->is_need_more_for_free_shipping( $package ) ) {
-	                        $match = true;
-	                        break;
-	                    }
-	                }
-	            }
-	            
-	            if ( $restrict == self::RESTRICT_EQUAL ) {
-	                if ( $match ) {
-	                    return true;
-	                }
-	                
-	            } else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
-	                if ( !$match ) {
-	                    return true;
-	                }
-	                
-	            } else {
-	                Advertikon::error( 'Customer filter: unsupported restriction: ' . $restrict );
-	            }
-	            
-	            return false;
-	        }
-	    }
-	}
-	
-	/**
-	 * Returns free shipping object
-	 *
-	 * @return WC_Shipping_Free_Shipping
-	 */
-	protected function get_free_shipping( array $package ) {
-	    // if( !$this->free_shipping ) {
-	        // $shipping_methods = WC()->shipping->get_shipping_methods();
-	       $shipping_zone =  WC_Shipping_Zones::get_zone_matching_package( $package );
-	       $shipping_methods = $shipping_zone->get_shipping_methods( true );
-	        // if( !$shipping_methods ) {
-	        //     WC()->shipping->load_shipping_methods();
-	        //     $shipping_methods = WC()->shipping->get_shipping_methods();
-	        // }
-	        Advertikon::log( $shipping_methods );
-	        foreach( $shipping_methods as $method ) {
-	        	if ( 'free_shipping' === $method->id ) {
-	        		$this->free_shipping = $method;
-	        	}
-	        }
-	        // if( isset( $shipping_methods['free_shipping'] ) ) {
-	        //     $this->free_shipping = $shipping_methods['free_shipping'];
-	        // }
-	    // }
-	    
-	    return $this->free_shipping;
-	}
-	
 	/**
 	 * Checks if free shipping is available.
 	 *
-	 * @param array $package
 	 * @return bool
 	 */
-	public function is_need_more_for_free_shipping( array $package ) {
-	    $has_coupon         = false;
-	    $has_met_min_amount = false;
+	public function is_need_more_for_free_shipping() {
+		foreach( ADK()->get_free_shipping() as $shipping ) {
+			if ( $this->do_show_free_shipping( $shipping ) ) {
+				return true;
+			}
+		}
 
-	    if ( WC()->cart->is_empty() ) {
-	    	return false;
-	    }
+		return false;
+	}
+	
+	/**
+	 * Checks if to show notification for specific free shipping object
+	 *
+	 * @param array $free_shipping WC_Shipping_Free_Shipping
+	 * @return bool
+	 */
+	public function do_show_free_shipping( WC_Shipping_Free_Shipping $free_shipping ) {
+		$has_coupon		 = false;
+		$has_met_min_amount = false;
 
-	    $free_shipping = $this->get_free_shipping( $package );
+		if ( in_array( $free_shipping->requires, array( 'coupon', 'either', 'both' ), true ) ) {
+			$coupons = WC()->cart->get_coupons();
 
-	    if ( !$free_shipping ) {
-	    	return false;
-	    }
+			if ( $coupons ) {
+				foreach ( $coupons as $code => $coupon ) {
+					if ( $coupon->is_valid() && $coupon->get_free_shipping() ) {
+						$has_coupon = true;
+						break;
+					}
+				}
+			}
+		}
 
-	    if ( in_array( $free_shipping->requires, array( 'coupon', 'either', 'both' ), true ) ) {
-	        $coupons = WC()->cart->get_coupons();
+		if ( in_array( $free_shipping->requires, array( 'min_amount', 'either', 'both' ), true ) ) {
+			$total = WC()->cart->get_displayed_subtotal();
+			
+			if ( WC()->cart->display_prices_including_tax() ) {
+				$total = round( $total - ( WC()->cart->get_discount_total() + WC()->cart->get_discount_tax() ), wc_get_price_decimals() );
+			} else {
+				$total = round( $total - WC()->cart->get_discount_total(), wc_get_price_decimals() );
+			}
 
-	        if ( $coupons ) {
-	            foreach ( $coupons as $code => $coupon ) {
-	                if ( $coupon->is_valid() && $coupon->get_free_shipping() ) {
-	                    $has_coupon = true;
-	                    break;
-	                }
-	            }
-	        }
-	    }
+			if ( $total >= $free_shipping->min_amount ) {
+				$has_met_min_amount = true;
+			}
+		}
+		
+		switch ( $free_shipping->requires ) {
+			case 'min_amount':
+				$is_available = !$has_met_min_amount; // Show in case of insufficient amount
+				break;
+			case 'coupon':
+				$is_available = false; // Skip
+				break;
+			case 'both':
+				$is_available = !$has_met_min_amount && $has_coupon; // Insufficient amount + coupon
+				break;
+			case 'either':
+				$is_available = !$has_met_min_amount && !$has_coupon; // Insufficient amount - coupon
+				break;
+			default:
+				$is_available = false;
+				break;
+		}
 
-	    if ( in_array( $free_shipping->requires, array( 'min_amount', 'either', 'both' ), true ) ) {
-	        $total = WC()->cart->get_displayed_subtotal();
-	        
-	        if ( WC()->cart->display_prices_including_tax() ) {
-	            $total = round( $total - ( WC()->cart->get_discount_total() + WC()->cart->get_discount_tax() ), wc_get_price_decimals() );
-	        } else {
-	            $total = round( $total - WC()->cart->get_discount_total(), wc_get_price_decimals() );
-	        }
-
-	        if ( $total >= $free_shipping->min_amount ) {
-	            $has_met_min_amount = true;
-	        }
-	    }
-	    
-	    switch ( $free_shipping->requires ) {
-	        case 'min_amount':
-	            $is_available = !$has_met_min_amount; // Show in case of insufficient amount
-	            break;
-	        case 'coupon':
-	            $is_available = false; // Skip
-	            break;
-	        case 'both':
-	            $is_available = !$has_met_min_amount && $has_coupon; // Insufficient amount + coupon
-	            break;
-	        case 'either':
-	            $is_available = !$has_met_min_amount && !$has_coupon; // Insufficient amount - coupon
-	            break;
-	        default:
-	            $is_available = false;
-	            break;
-	    }
-
-	    return $is_available;
+		return $is_available;
 	}
 }

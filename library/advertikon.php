@@ -117,11 +117,35 @@ abstract class Advertikon {
 	}
 	
 	public static function get_logger() {
-	    if ( !self::$logger ) {
-	        self::$logger = new Advertikon_Library_Log();
-	    }
+		if ( !self::$logger ) {
+			self::$logger = new Advertikon_Library_Log();
+		}
 
-	    return self::$logger;
+		return self::$logger;
+	}
+
+	/**
+	 * Returns free shipping objects for current car
+	 *
+	 * @return WC_Shipping_Free_Shipping[]
+	 */
+	public function get_free_shipping() {
+		$ret = array();
+
+		if( WC()->cart ) {
+			foreach( WC()->cart->get_shipping_packages() as $package ) {
+				$shipping_zone    =  WC_Shipping_Zones::get_zone_matching_package( $package );
+				$shipping_methods = $shipping_zone->get_shipping_methods( true );
+
+				foreach( $shipping_methods as $method ) {
+					if ( 'free_shipping' === $method->id ) {
+						$ret[] = $method;
+					}
+				}
+			}
+		}
+		
+		return $ret;
 	}
 }
 
