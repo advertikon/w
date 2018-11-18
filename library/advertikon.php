@@ -150,6 +150,11 @@ abstract class Advertikon {
 }
 
 if ( !function_exists( 'ADK' ) ) {
+	/**
+	 * Returns plugin main instance
+	 * @param string $code Plaugin code
+	 * @return Advertikon
+	 */
 	function ADK( $code = null ) {
 		if ( is_null( $code ) || !isset( Advertikon::$instances[ $code ] ) ) {
 			return Advertikon::$instances['default'];

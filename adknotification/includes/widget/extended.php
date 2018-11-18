@@ -28,7 +28,7 @@ class Advertikon_Notification_Includes_Widget_Extended extends Advertikon_Notifi
 				'title' 		    => __( 'Widget name', Advertikon_Notifications::LNS ),
 				'value' 		    => '',
 				'default'		    => 'default',
-				'desc'			    => __( 'Widget\'s name', Advertikon_Notifications::LNS ),
+				'desc'			    => __( 'Widget\'s name for your reference', Advertikon_Notifications::LNS ),
 				'desc_tip'		    => true,
 				'sort'              => 10,
 				'class'             => 'adk-widget-control',

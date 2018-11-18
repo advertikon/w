@@ -74,28 +74,14 @@ class Advertikon_Notification_Includes_Filter {
 				break;
 			}
 
-			if ( $this->match_logic == self::MATCH_AND ) {
-				if ( !$match ) {
-					return false;
-				}
-
-			} else if ( $this->match_logic == self::MATCH_OR ) {
-				if ( $match ) {
-					return true;
-				}
-
-			} else {
-				Advertikon::error( new Exception( 'invalid match logic condition: ' . $this->match_logic ) );
-				return false;
+			$step_result = $this->check_step( $match );
+			
+			if ( !is_null( $step_result ) ) {
+				return $step_result;
 			}
 		}
 
-		if ( $this->match_logic == self::MATCH_AND ) {
-				return true;
-
-		} else {
-			return false;
-		}
+		return $this->check_overall( $step_result );
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,7 +184,7 @@ class Advertikon_Notification_Includes_Filter {
 				'standalone' => true,
 				'restrict'   => array(
 					self::RESTRICT_EQUAL    => __( 'is', Advertikon_Notifications::LNS ),
-					self::RESTRICT_NO_EQUAL => __( 'not is', Advertikon_Notifications::LNS ),
+					self::RESTRICT_NOT_EQUAL => __( 'not is', Advertikon_Notifications::LNS ),
 				),
 			),
 			'customer' => array(
@@ -207,7 +193,7 @@ class Advertikon_Notification_Includes_Filter {
 				'standalone' => true,
 				'restrict'   => array(
 					self::RESTRICT_EQUAL    => __( 'is', Advertikon_Notifications::LNS ),
-					self::RESTRICT_NO_EQUAL => __( 'not is', Advertikon_Notifications::LNS ),
+					self::RESTRICT_NOT_EQUAL => __( 'not is', Advertikon_Notifications::LNS ),
 				),
 			),
 			
@@ -217,7 +203,7 @@ class Advertikon_Notification_Includes_Filter {
 				'standalone' => true,
 				'restrict'   => array(
 					self::RESTRICT_EQUAL    => __( 'Yes', Advertikon_Notifications::LNS ),
-					self::RESTRICT_NO_EQUAL => __( 'No', Advertikon_Notifications::LNS ),
+					self::RESTRICT_NOT_EQUAL => __( 'No', Advertikon_Notifications::LNS ),
 				),
 			),
 		);
@@ -328,22 +314,29 @@ class Advertikon_Notification_Includes_Filter {
 				}
 				
 				if ( $restrict == self::RESTRICT_EQUAL ) {
-					if ( $match ) {
-						return true;
-					}
 					
 				} else if ( $restrict == self::RESTRICT_NOT_EQUAL ) {
-					if ( !$match ) {
-						return true;
-					}
+					$match = !$match;
 					
 				} else {
 					Advertikon::error( 'Customer filter: unsupported restriction: ' . $restrict );
 				}
 				
-				return false;
+				$step_result = $this->check_step( $match, self::MATCH_OR );
+				
+				if ( !is_null( $step_result ) ) {
+					break;
+				}
+			}
+			
+			$result = $this->check_step( $step_result );
+			
+			if ( !is_null( $result ) ) {
+				return $result;
 			}
 		}
+		
+		return $this->check_overall( $result );
 	}
 	
 	protected function filter_free_shipping( array $data ) {

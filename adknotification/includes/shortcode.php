@@ -13,6 +13,12 @@ class Advertikon_Notification_Includes_Shortcode extends Advertikon_Library_Shor
 				'description'  => __( 'Call to action button created at "Call to action button" section', Advertikon_Notifications::LNS ),
 				'content'      => __( 'Button name', Advertikon_Notifications::LNS ),
 			),
+			'free_shipping_min_amount' => array(
+				'description'  => __( 'Free Shipping miminum amount', Advertikon_Notifications::LNS ),
+			),
+			'free_shipping_diff' => array(
+				'description'  => __( 'Additional amount to get free shipping', Advertikon_Notifications::LNS ),
+			),
 		);
 
 		$this->list = array_merge( $this->list, $list );
@@ -54,6 +60,38 @@ class Advertikon_Notification_Includes_Shortcode extends Advertikon_Library_Shor
 		}
 
 		return $ret;
+	}
+	
+	public function free_shipping_min_amount() {
+		$sum = null;
+		
+		foreach( ADK()->get_free_shipping() as $shipping ) {
+			$sum = is_null( $sum ) ? $shipping->min_amount : max( $sum, $shipping->min_amount );
+		}
+		
+		return is_null( $sum ) ? '' : wc_price( $sum );
+	}
+	
+	public function free_shipping_diff() {
+		$total = WC()->cart->get_displayed_subtotal();
+		
+		if ( WC()->cart->display_prices_including_tax() ) {
+			$total = round( $total - ( WC()->cart->get_discount_total() + WC()->cart->get_discount_tax() ), wc_get_price_decimals() );
+		} else {
+			$total = round( $total - WC()->cart->get_discount_total(), wc_get_price_decimals() );
+		}
+		
+		$sum = null;
+		
+		foreach( ADK()->get_free_shipping() as $shipping ) {
+			$sum = is_null( $sum ) ? $shipping->min_amount : max( $sum, $shipping->min_amount );
+		}
+		
+		if ( $total < $sum ) {
+			return wc_price( $sum - $total );
+		}
+		
+		return '';
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////

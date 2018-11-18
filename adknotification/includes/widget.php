@@ -104,8 +104,30 @@ class Advertikon_Notification_Includes_Widget {
 				throw new Exception( __( 'Failed to create widget\'s storage folder', Advertikon_Notifications::LNS ) );
 			}
 		}
+		
+		$file_name = $this->storage_dir . $params['name'];
+		$is_new = false;
+		
+		if ( file_exists( $file_name ) ) {
+			if ( !is_writeable( $file_name ) ) {
+				throw new Exception ( 'File ' . $file_name . ' is not writeable' );
+			}
 
-		file_put_contents( $this->storage_dir . $params['name'], wp_json_encode( $params ) );
+		} else {
+			if ( !is_writeable( $this->storage_dir ) ) {
+				throw new Exception ( 'Directory ' . $this->storage_dir . ' is not writeable' );
+			}
+			
+			$is_new = true;
+		}
+
+		if ( false === file_put_contents( $file_name, wp_json_encode( $params ) ) ) {
+			throw new Exception( __( 'Failed to save widget', Advertikon_Notifications::LNS ) );
+		}
+		
+		if ( $is_new ) {
+			chmod( $file_name, 0777 );
+		}
 	}
 
 	protected function fill_with_defaults( $data, &$out, $def = null ) {

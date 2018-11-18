@@ -55,7 +55,7 @@ class Advertikon_Library_Log {
 	    $add_line = true;
 	    
 	    if ( is_a( $msg, 'Exception' ) || is_a( $msg, 'Error' ) ) {
-	        $msg = $msg->getMessage() . "\n" . $msg->getTraceAsString();
+	        $msg = sprintf( "%s in %s:%s\n", $msg->getMessage(), $msg->getFile(), $msg->getLine() ) . $msg->getTraceAsString();
 	        $urgency = self::LEVEL_ERROR;
 	        $add_line = false;
 

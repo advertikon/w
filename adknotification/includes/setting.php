@@ -823,6 +823,7 @@ json;
 				'id'			=> 'button-name',
 				'type' 			=> 'adk_text',
 				'title' 		=> __( 'Button\'s name', Advertikon_Notifications::LNS ),
+				'desc'          => __( 'Button\'s name for your reference', Advertikon_Notifications::LNS ),
 				'default'		=> 'default',
 				'class'         => 'adk-button-control',
 				'default' 		=> $this->notification->get_widget()->get_button_default( 'name' ),
