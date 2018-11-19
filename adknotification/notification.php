@@ -1,8 +1,8 @@
 <?php
 /**
-	Plugin Name: Notification
+	Plugin Name: Smart Notifications
 	Plugin URI:
-	Version: 1.0.0
+	Version: 2.0.0
 	Description: Woocommerce plug-in to create a highly customizable notifications at the store side
 	Author: Advertikon
 	Author URI:

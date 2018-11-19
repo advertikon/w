@@ -406,7 +406,7 @@ class Advertikon_Notification_Includes_Widget {
 			$height > 0                   ? $height . 'px'       : 'auto',
 			isset( $data['align'] )       ? $data['align']       : $this->get_default( "section/$name/align" ),
 			isset( $data['valign'] )      ? $data['valign']      : $this->get_default( "section/$name/valign" ),
-			isset( $data['text'] )        ? do_shortcode( $data['text'] ) : $this->get_default( "section/$name/text" )
+			isset( $data['text'] )        ? nl2br( do_shortcode( $data['text'] ) ) : $this->get_default( "section/$name/text" )
 		);
 	}
 
