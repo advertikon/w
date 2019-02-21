@@ -49,19 +49,30 @@ class Feed {
 		$this->requestor->getMetadata( $id );
 	}
 
-	public function getMasterList( $start = 1, $count = 10 ) {
-		$pointer = $start;
+	public function getMasterList() {
+		$pointer = 1;
+		$count = 100;
+		$ret = [];
+		$time1 = microtime( true );
+		$mem1 = memory_get_usage( true );
 
 		do {
-			$list = $this->requestor->getMasterList( $pointer, $count );
+			/** @var ResponseMasterList $list */
+			$list = $this->requestor->getMasterList( $count, $pointer );
+			$this->log->write( sprintf( 'Fetched %s master records', $list->getTotal() ) );
 			$pointer += $count;
-			echo 'Total count: ' . $list->getTotal() . "\n";
 
-			foreach( $list->getData() as $data ) {
-				echo implode( "\t", $data ) . "\n";
-			}
+			$list->getData( $ret );
 			
-		} while( $pointer < 20 );
+		} while( false );
+
+		$this->log->write( sprintf(
+			'Time: %.2f sec, Memory: %.2f MB',
+			microtime( true ) - $time1,
+			( memory_get_usage( true ) - $mem1 ) / ( 1024 * 1024 )
+		) );
+
+		return $ret;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,6 +2,7 @@
 require_once( __DIR__ . '/log.php' );
 
 class Response {
+	/** @var \SimpleXMLElement */
 	protected $xml;
 	public $ReplyCode = 0;
 	public $ReplyText = '';
@@ -21,7 +22,10 @@ class Response {
 
 		$this->log = new Log( get_class( $this ) );
 		$this->setXml( $xml );
-		$this->xml = null;
+
+		if ( !is_a( $this, 'ResponseMasterList' ) ) {
+			$this->xml = null;
+		}
 	}
 
 	public function __get( $name ) {
@@ -65,6 +69,9 @@ class Response {
 		}
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	protected function init() {
 		foreach( $this->xml->attributes() as $k => $v ) {
 			$this->$k = (string)$v;

@@ -7,8 +7,8 @@
  */
 
 function adk_render_admin_page() {
-	$user_value = get_option( ADK_FEED_CODE . 'user_name' );
-	$pwd_value = get_option( ADK_FEED_CODE . 'user_name' );
+	$user_value = get_option( ADK_FEED_CODE . 'user' );
+	$pwd_value = get_option( ADK_FEED_CODE . 'pwd' );
 
 	$user_text = __( 'User name', ADK_FEED_CODE );
 	$pwd_text = __( 'Password', ADK_FEED_CODE );

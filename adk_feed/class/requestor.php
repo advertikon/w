@@ -15,7 +15,7 @@ class Requestor {
 	protected $isPost = false;
 	protected $data = [];
 	protected $headersIn = '';
-	protected $headersOut = '';
+	protected $headersOut = [];
 	protected $persistent_headers = [
 		'RETS-Version' => "RETS/1.7.2",
 		'User-Agent'   => 'CURL',
@@ -31,6 +31,7 @@ class Requestor {
 	protected $auth_url = '';
 	protected $auth_cnonce = '';
 	protected $auth_request_count = 0;
+	protected $auth_response = '';
 
 	protected $url = '';
 	protected $debug = false;
@@ -40,7 +41,14 @@ class Requestor {
 
 	const LOGIN_ATTEMPTS = 2;
 
-	public function __construct( $name, $pwd, $debug ) {
+	/**
+	 * Requestor constructor.
+	 * @param $name
+	 * @param $pwd
+	 * @param $debug
+	 * @throws Exception
+	 */
+	public function __construct($name, $pwd, $debug ) {
 		$this->name  = $name;
 		$this->pwd   = $pwd;
 		$this->log   = new Log( 'Requester' );
@@ -48,25 +56,32 @@ class Requestor {
 		$this->login();
 	}
 
+	/**
+	 *
+	 * @throws Exception
+	 */
 	protected function login() {
-		$this->log->write( 'Trying to open new session...' );
+		try {
+			$this->log->write( 'Trying to open new session...' );
 
-		if ( $this->auth_request_count > self::LOGIN_ATTEMPTS ) {
-			throw new \Exception( sprintf( 'Limit of %s login attempts reached', self::LOGIN_ATTEMPTS ) );
-		}
-
-		$this->url = $this->loginUrl;
-
-		if ( 401 != $this->responseCode ) {
+			$this->url = $this->loginUrl;
 			$this->curl();
-		}
 
-		$this->auth_uri = $this->loginUrl;
-		$this->data = [];
-		$this->setAuthData();
-		$this->calculateDigestResponseCode();
-		$this->setAuthHeaders();
-		$this->curl();
+			$this->auth_uri = $this->loginUrl;
+			$this->data = [];
+			$this->setAuthData();
+			$this->calculateDigestResponseCode();
+			$this->setAuthHeaders();
+			$this->curl();
+
+			if ( 200 != $this->responseCode ) {
+				throw new \Exception( 'Failed to login' );
+			}
+
+		} catch ( \Exception $e ) {
+			$this->logout();
+			throw $e;
+		}
 	}
 
 	public function search( $days_since, $limit = 1, $offset = 1 ) {
@@ -90,22 +105,38 @@ class Requestor {
 		return new ResponsePropertyDetails( $this->response );
 	}
 
-	public function getMasterList( $offset = 1, $limit = 1 ) {
-		$this->url = $this->searchUrl;
-		$this->data = [
-			'SearchType' => 'Property',
-			'Class'      => 'Property',
-			'QueryType'  => 'DMQL2',
-			'Query'      =>  '(ID=*)',
-			'Format'     => 'COMPACT',
-			'Limit'      => $limit,
-			'Offset'     => $offset,
-		];
+	/**
+	 * @param int $limit
+	 * @param int $offset
+	 * @return ResponseMasterList
+	 * @throws Exception
+	 */
+	public function getMasterList($limit = 1, $offset = 1 ) {
+		try {
+			$this->url = $this->searchUrl;
+			$this->data = [
+				'SearchType' => 'Property',
+				'Class'      => 'Property',
+				'QueryType'  => 'DMQL2',
+				'Query'      =>  '(ID=*)',
+				'Format'     => 'COMPACT',
+//			'Limit'      => $limit,
+//			'Offset'     => $offset,
+			];
 
-		$this->setAuthHeaders();
-		$this->curl();
+			$this->setAuthHeaders();
+			$this->curl();
 
-		require_once( __DIR__ . '/response_master_list.php' );
+			if ( 200 != $this->responseCode ) {
+				throw new \Exception( 'Failed to fetch data' );
+			}
+
+			require_once( __DIR__ . '/response_master_list.php' );
+
+		} catch ( \Exception $e ) {
+			$this->logout();
+			throw $e;
+		}
 
 		return new ResponseMasterList( $this->response );
 	}
@@ -133,7 +164,11 @@ class Requestor {
 	public function getHeaders() {
 		$ret = [];
 
-		foreach( explode( "\r\n", $this->headersOut ) as $line ) {
+		foreach( $this->headersOut as $line ) {
+			if ( !$line ) {
+				continue;
+			}
+
 			$data = explode( ':', $line, 2 );
 
 			if ( count( $data ) === 1 ) {
@@ -141,24 +176,16 @@ class Requestor {
 			}
 
 			$k = trim( $data[ 0 ] );
-			$items = explode( ',', $data[ 1 ] );
 
-			if ( in_array( $k, [ 'Date' ] ) ||  count( $items ) === 1 ) {
-				$ret[ $k ] = trim( $data[ 1 ] );
-
-			} else {
-				$ret[ $k ] = [];
-
-				foreach( $items as $item ) {
-					$parts = explode( '=', $item, 2 );
-
-					if ( count( $parts ) === 1 ) {
-						$ret[ $k ][] = trim( $item );
-
-					} else {
-						$ret[ $k ][ trim( $parts[ 0 ] ) ] = trim( $parts[ 1 ], " \"'" );
-					}
-				}
+			switch( $k ) {
+				case 'Date':
+					$ret[ $k ] = $data[ 1 ];
+					break;
+				case 'WWW-Authenticate':
+					$ret[ $k ] = $this->parseAuthHeader( $data[ 1 ] );
+					break;
+				default:
+					$ret[ $k ] = trim( $data[ 1 ] );
 			}
 		}
 
@@ -173,6 +200,12 @@ class Requestor {
 		$this->curl();
 	}
 
+	public function saveHeaders( $ch, $line ) {
+		$this->headersOut[] = $line;
+
+		return strlen( $line );
+	}
+
 	public function __destruct() {
 		$this->logout();
 	}
@@ -182,7 +215,7 @@ class Requestor {
 	protected function init() {
 		$this->headersOut = [];
 		$this->responce = '';
-		$this->rawResponce = '';
+//		$this->rawResponce = '';
 	}
 
 	protected function getUrl() {
@@ -202,17 +235,16 @@ class Requestor {
 			CURLOPT_COOKIEJAR      => __DIR__ . '/cookie',
 			CURLOPT_COOKIEFILE     => __DIR__ . '/cookie',
 			CURLINFO_HEADER_OUT    => true,
-			CURLOPT_HEADER         => true,
+			CURLOPT_HEADER         => false,
 			CURLOPT_ENCODING       => 'gzip',
+			CURLOPT_HEADERFUNCTION => [ $this, 'saveHeaders' ],
+			CURLOPT_HTTPHEADER     => $this->makeHeaders(),
 		];
 
 		if ( $this->isPost ) {
 			$options[ CURLOPT_POST ]       = true;
-			$options[ CURLOPT_POSTFIELDS ] = json_encode( $this->$data );
+			$options[ CURLOPT_POSTFIELDS ] = json_encode( $this->data );
 		}
-
-		// $this->setUAAuth();
-		$options[ CURLOPT_HTTPHEADER ] = $this->makeHeaders();
 
 		if ( $this->debug ) {
 			$this->log->write( 'Sending request to ' . $this->getUrl() );
@@ -226,45 +258,21 @@ class Requestor {
 		}
 
 		$this->responseCode = curl_getinfo( $ch, CURLINFO_RESPONSE_CODE );
-		$this->headersIn = curl_getinfo( $ch, CURLINFO_HEADER_OUT );
+		$this->headersIn    = curl_getinfo( $ch, CURLINFO_HEADER_OUT );
 		curl_close( $ch );
 		$this->headers = [];
 
 		if ( $error ) {
-			throw new Error( $error );
+			throw new \Exception( $error );
 		}
 
-		$this->rawResponse = $result;
-
-		if ( preg_match( '/^(.*?)(\r\n){2}(.*?)$/s', $this->rawResponse, $m ) ) {
-			$this->headersOut = $m[ 1 ];
-			$this->response = $m[ 3 ];
-
-		} else {
-			throw new \Exception( 'Failed to parse server response' );
-		}
+		$this->response = $result;
 
 		if ( $this->debug ) {
 			$this->log->write( $this->headersIn );
-			$this->log->write( $this->rawResponse );	
+			$this->log->write( implode( "\n", array_map( function( $l ){ return '< ' . trim( $l ); }, $this->headersOut ) ) );
+			$this->log->write( $this->response );
 		}
-	}
-
-	protected function getError( array $response ) {
-		$e = [];
-		ADK()->error( $response );
-
-		if ( isset( $response['title'], $response['detail'] ) ) {
-			$e[] = $response['title'] . ': ' . $response['detail'];
-		}
-
-		if ( !empty( $response['errors'] ) ) {
-			foreach( $response['errors'] as $error ) {
-				$e[] = isset( $error['error'] ) ? $error['error'] : ( isset( $error['message'] ) ? $error['message'] : '' );
-			}
-		}
-
-		throw new Error( implode( "\n", $e ) );
 	}
 
 	protected function addQuery( $url ) {
@@ -290,7 +298,7 @@ class Requestor {
 		$h = $this->getHeaders();
 		$url = parse_url( $this->auth_uri );
 
-		if ( !isset( $h['WWW-Authenticate']['Digest realm'] ) ) {
+		if ( !isset( $h['WWW-Authenticate']['realm'] ) ) {
 			throw new \Exception( 'Failed to login: digest realm header is missing' );
 		}
 
@@ -306,7 +314,7 @@ class Requestor {
 			throw new \Exception( 'Failed to login: URL path part is missing' );
 		}
 
-		$this->auth_realm  = $h['WWW-Authenticate']['Digest realm'];
+		$this->auth_realm  = $h['WWW-Authenticate']['realm'];
 		$this->auth_nonce  = $h['WWW-Authenticate']['nonce'];
 		$this->auth_qop    = $h['WWW-Authenticate']['qop'];
 		$this->auth_url    = $url['path'];
@@ -342,13 +350,30 @@ class Requestor {
 		return $ret;
 	}
 
-	protected function setUAAuth() {
-		$headers = $this->persistent_headers;
-		$ua_a1 = md5( $headers['User-Agent'] .':'. $this->pwd );
-		$ua_dig_resp = md5(
-			trim( $ua_a1 ) .':'. trim( $this->request_id ) .':'. trim( $this->session_id ) .':'. trim( $headers['RETS-Version'] )
-		);
+	protected function parseAuthHeader( $line ) {
+		$ret = [];
 
-		$this->headers['RETS-UA-Authorization'] = "Digest $ua_dig_resp";
+		if ( !preg_match( '/^(\w+)\s+(.+)$/', trim( $line ), $m ) ) {
+			throw new \Exception( 'Failed to parse Auth header: ' . $line );
+		}
+
+		$ret[] = $m[ 1 ]; //Auth method
+
+		foreach( explode( ',', $m[ 2 ] ) as $i ) {
+			list( $k, $v ) = explode( '=', $i, 2 );
+			$ret[ trim( $k ) ] = trim( $v, " '\"" );
+		}
+
+		return $ret;
 	}
+
+//	protected function setUAAuth() {
+//		$headers = $this->persistent_headers;
+//		$ua_a1 = md5( $headers['User-Agent'] .':'. $this->pwd );
+//		$ua_dig_resp = md5(
+//			trim( $ua_a1 ) .':'. trim( $this->request_id ) .':'. trim( $this->session_id ) .':'. trim( $headers['RETS-Version'] )
+//		);
+//
+//		$this->headers['RETS-UA-Authorization'] = "Digest $ua_dig_resp";
+//	}
 }
