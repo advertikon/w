@@ -20,6 +20,7 @@ register_deactivation_hook( __FILE__, 'adk_feed_deactivate' );
 
 function adk_feed_activate() {
 	wp_schedule_event( time(), 'hourly', 'adk_feed_sync' );
+	create_table();
 }
 
 function adk_feed_deactivate() {
@@ -37,4 +38,17 @@ function adk_feed_menu_init(){
 
 function adk_feed_sync() {
 	echo 'hello';
+}
+
+function create_table() {
+	global $wpdb;
+
+	$charset_collate = $wpdb->get_charset_collate();
+
+	$wpdb->query( "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}adk_feed_master (
+            id int(11) NOT NULL,
+            last_update datetime NOT NULL,
+            UNIQUE KEY id (id)
+        ) $charset_collate;"
+	);
 }

@@ -49,6 +49,10 @@ class Feed {
 		$this->requestor->getMetadata( $id );
 	}
 
+	/**
+	 * @return array
+	 * @throws Exception
+	 */
 	public function getMasterList() {
 		$pointer = 1;
 		$count = 100;
