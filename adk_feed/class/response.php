@@ -1,6 +1,12 @@
 <?php
 require_once( __DIR__ . '/log.php' );
 
+/**
+ * Class Response
+ * @property string ReplyCode
+ * @property string ReplyText
+ *
+ */
 class Response {
 	/** @var \SimpleXMLElement */
 	protected $xml;
@@ -11,7 +17,12 @@ class Response {
 	protected $data = [];
 	protected $log;
 
-	public function __construct( $data ) {
+	/**
+	 * Response constructor.
+	 * @param $data
+	 * @throws Exception
+	 */
+	public function __construct($data ) {
 		if ( is_a( $data, 'SimpleXmlElement' ) ) {
 			$xml = $data;
 
@@ -33,8 +44,10 @@ class Response {
 			return $this->data[ $name ];
 		}
 
-		$this->log->write( sprintf( 'Object %s does not have property %s', get_class( $this ), $name ) );
-		// var_dump( array_keys( $this->data ) );
+//		$this->log->write( sprintf( 'Object %s does not have property %s', get_class( $this ), $name ) );
+//		$this->log->write( print_r( array_keys( $this->data ), 1 ) );
+
+		return '';
 	}
 
 	public function getData() {
@@ -42,18 +55,22 @@ class Response {
 	}
 
 	public function getReplyCode() {
-		return $this->replyCode;
+		return $this->ReplyCode;
 	}
 
 	public function getReplyText() {
-		return $this->replyText;
+		return $this->ReplyText;
 	}
 
 	public function getTotal() {
 		return $this->total;
 	}
 
-	public function setXml( \SimpleXmlElement $xml ) {
+	/**
+	 * @param SimpleXmlElement $xml
+	 * @throws Exception
+	 */
+	public function setXml(\SimpleXmlElement $xml ) {
 		$this->xml = $xml;
 		$this->init();
 		$this->runfillData();
@@ -67,6 +84,8 @@ class Response {
 				return (string)$v;
 			}
 		}
+
+		return '';
 	}
 
 	/**
@@ -86,17 +105,22 @@ class Response {
 		}
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	protected function runfillData() {
 		$this->fillData();
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	protected function fillData() {
 		foreach( $this->xml as $k => $v ) {
 			if ( is_a( $v, 'SimpleXmlElement' ) && $v->count() > 1 ) {
 				if ( !file_exists( __DIR__ . '/response_' . strtolower( $k ) . '.php' ) ) {
-					var_dump( $k );
-					var_dump( $v->children() );
-					die;
+					throw new \Exception(
+						'File ' . __DIR__ . '/response_' . strtolower( $k ) . '.php' . ' does not exist' );
 				}
 
 				require_once( __DIR__ . '/response_' . strtolower( $k ) ) . '.php';

@@ -84,15 +84,22 @@ class Requestor {
 		}
 	}
 
-	public function search( $days_since, $limit = 1, $offset = 1 ) {
-		$d = new \DateTime( sprintf( "now, -%s days", $days_since ) );
+	/**
+	 * @param string $date_since
+	 * @param int $limit
+	 * @param int $offset
+	 * @return ResponsePropertyDetails
+	 * @throws Exception
+	 */
+	public function search( $date_since, $limit = 1, $offset = 1 ) {
+//		$d = new \DateTime( sprintf( "now, -%s days", $days_since ) );
 		$this->url = $this->searchUrl;
 
 		$this->data = [
 			'SearchType' => 'Property',
 			'Class'      => 'Property',
 			'QueryType'  => 'DMQL2',
-			'Query'      => sprintf( '(LastUpdated=%s)', $d->format( 'c' ) ),
+			'Query'      => sprintf( '(LastUpdated=%s)', $date_since ),
 			'Limit'      => $limit,
 			'offset'     => $offset,
 		];
@@ -111,7 +118,7 @@ class Requestor {
 	 * @return ResponseMasterList
 	 * @throws Exception
 	 */
-	public function getMasterList($limit = 1, $offset = 1 ) {
+	public function getMasterList() {
 		try {
 			$this->url = $this->searchUrl;
 			$this->data = [
@@ -120,8 +127,6 @@ class Requestor {
 				'QueryType'  => 'DMQL2',
 				'Query'      =>  '(ID=*)',
 				'Format'     => 'COMPACT',
-//			'Limit'      => $limit,
-//			'Offset'     => $offset,
 			];
 
 			$this->setAuthHeaders();

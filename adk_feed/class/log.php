@@ -6,7 +6,7 @@ class Log {
 
 	public function __construct( $name = '' ) {
 		$this->name = $name ? '[' . $name . '] ' : '';
-		$this->log = fopen( dirname( __DIR__ ) . '/log', 'w' );
+		$this->log = fopen( dirname( __DIR__ ) . '/log', 'a' );
 	}
 
 	public function write( $msg ) {
