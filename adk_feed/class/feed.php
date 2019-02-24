@@ -7,6 +7,8 @@ class Feed {
 	protected $log;
 	protected $requestor;
 
+	const IMAGE_DIR = __DIR__ . '/../images/';
+
 	/**
 	 * Feed constructor.
 	 * @param $user
@@ -27,13 +29,14 @@ class Feed {
 	public function search(callable $cb, $date_since ) {
 		$pointer = 1;
 		$count = 100;
-		$memory = memory_get_usage( true );
-		$time = microtime( true );
 
 		$this->log->write( sprintf( 'Fetching all the updated listings since %s...', $date_since ) );
 
 		do {
+			$memory = memory_get_usage( true );
+			$time = microtime( true );
 			$data = $this->requestor->search( $date_since, $count, $pointer );
+
 			if ( $data->ReplyCode != 0 ) {
 				throw new \Exception( 'Error: ' . $data->ReplyText );
 			}
@@ -52,10 +55,6 @@ class Feed {
 			$data = null;
 
 		} while( $pointer < $total );
-	}
-
-	public function getMetadata( $id = '*' ) {
-		$this->requestor->getMetadata( $id );
 	}
 
 	/**
@@ -94,18 +93,61 @@ class Feed {
 	 * @throws Exception
 	 */
 	public function process() {
+		$time1 = microtime( true );
+
 		try {
 			set_time_limit( 300 );
-//		$this->fillMasterTable();
-//		$this->removeDeleted();
+			$this->fillMasterTable();
+			$this->removeDeleted();
 			$this->updateListings();
 
 		} catch ( \Exception $e ) {
 			$this->log->write( $e->getMessage() );
 		}
+
+		$this->log->write( sprintf( 'Total time spent: %.2f sec', microtime( true ) - $time1 ) );
 	}
 
+	/**
+	 * @param $id
+	 * @param array $data
+	 * @param string $size
+	 * @throws Exception
+	 */
+	public function getImage( $id, array $data, $size = 'LargePhoto' ) {
+		$fileName = Feed::IMAGE_DIR . $id . '.jpeg';
+		$fetchNew = true;
 
+		if ( file_exists( $fileName ) ) {
+			$this->log->write( 'File ' . $fileName . ' exists' );
+
+			if ( isset( $data[ 0 ]->PhotoLastUpdated ) ) {
+				$date = new \DateTime( $data[ 0 ]->PhotoLastUpdated );
+
+				if ( $date->getTimestamp() > filemtime( $fileName ) ) {
+					$this->log->write( 'File is state - fetch anew' );
+
+				} else {
+					$this->log->write( 'File is fresh. Serve cached copy' );
+					$fetchNew = false;
+				}
+
+			} else {
+				$this->log->write( 'No LastUpdated data - fetch anew' );
+			}
+
+		}
+
+		if ( $fetchNew ) {
+			$this->requestor->getImage( $id, $size );
+		}
+
+		return sprintf(
+			'<img src="%s" alt="%s" />',
+			plugin_dir_url( realpath( $fileName ) ) . basename( $fileName ),
+			isset( $data[ 0 ]->Description ) ? $data[ 0 ]->Description : ''
+		);
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -195,8 +237,8 @@ class Feed {
 		$this->log->write( 'Updating listings...' );
 		$from  = get_option( 'adk_feed_last_update', '1970-01-01 00:00:00' );
 
-		$d = new \DateTime( "today -1 day" );
-		$from = $d->format( 'c' );
+//		$d = new \DateTime( "today -1 day" );
+//		$from = $d->format( 'c' );
 		$this->search( [ $this, 'doUpdate' ], $from );
 
 		update_option( 'adk_feed_last_update', date( 'Y-m-d H:i:s' ) );

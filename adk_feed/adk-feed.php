@@ -52,6 +52,7 @@ function adk_feed_activate() {
 
 function adk_feed_deactivate() {
 	wp_clear_scheduled_hook('adk_feed_sync' );
+	delete_option( 'adk_feed_last_update' );
 }
 
 function adk_feed_menu(){
@@ -70,15 +71,7 @@ function adk_feed_sync() {
 function create_table() {
 	global $wpdb;
 
-	$charset_collate = $wpdb->get_charset_collate();
 	$wpdb->show_errors();
-
-//	$wpdb->query( "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}adk_feed_master (
-//            id int(11) NOT NULL,
-//            last_update datetime NOT NULL,
-//            UNIQUE KEY id (id)
-//        ) $charset_collate;"
-//	);
 
 	$wpdb->query( "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}adk_feed_data (
         id               int(11) NOT NULL,
@@ -99,6 +92,7 @@ function create_table() {
         is_open          tinyint(1) NOT NULL,
         photo            blob(1000) NOT NULL,
         last_update      datetime NOT NULL,
-        UNIQUE KEY id (id)
+        UNIQUE KEY id (id),
+  		INDEX primary (price,bedrooms,bathrooms)
     )" );
 }

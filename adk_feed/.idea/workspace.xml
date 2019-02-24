@@ -4,21 +4,10 @@
     <list default="true" id="dd439e3c-6a81-48aa-b812-2f4373ff841f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/adk-feed.php" beforeDir="false" afterPath="$PROJECT_DIR$/adk-feed.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/cookie" beforeDir="false" afterPath="$PROJECT_DIR$/class/cookie" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/class/feed.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/feed.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/class/log.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/log.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/class/requestor.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/requestor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response_address.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response_address.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response_building.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response_building.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response_event.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response_event.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response_land.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response_land.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response_openhouse.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response_openhouse.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response_propertydetail.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response_propertydetail.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/response_propertyphoto.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/response_propertyphoto.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/respose_propertyphoto.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log" beforeDir="false" afterPath="$PROJECT_DIR$/log" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,8 +34,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/adk-feed.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="84" column="32" selection-start-line="84" selection-start-column="32" selection-end-line="84" selection-end-column="32" />
+            <state relative-caret-position="761">
+              <caret line="95" column="47" selection-start-line="95" selection-start-column="47" selection-end-line="95" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-query.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="140">
+              <caret line="3084" column="20" selection-start-line="3084" selection-start-column="20" selection-end-line="3084" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -54,17 +61,44 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/uninstall.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
+            <state relative-caret-position="119">
               <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/class/feed.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="655">
-              <caret line="322" column="35" lean-forward="true" selection-start-line="322" selection-start-column="35" selection-end-line="322" selection-end-column="35" />
+            <state relative-caret-position="650">
+              <caret line="146" column="49" selection-start-line="146" selection-start-column="49" selection-end-line="146" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/class/log.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/class/ddf_image.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="595">
+              <caret line="39" selection-start-line="39" selection-end-line="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/class/requestor.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="89">
+              <caret line="154" column="40" selection-start-line="154" selection-start-column="40" selection-end-line="154" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -88,8 +122,6 @@
         <option value="$PROJECT_DIR$/page/admin.php" />
         <option value="$PROJECT_DIR$/class/response_master_list.php" />
         <option value="$PROJECT_DIR$/uninstall.php" />
-        <option value="$PROJECT_DIR$/class/requestor.php" />
-        <option value="$PROJECT_DIR$/class/log.php" />
         <option value="$PROJECT_DIR$/class/response_building.php" />
         <option value="$PROJECT_DIR$/class/response_land.php" />
         <option value="$PROJECT_DIR$/class/response_address.php" />
@@ -97,10 +129,14 @@
         <option value="$PROJECT_DIR$/class/response_event.php" />
         <option value="$PROJECT_DIR$/class/response_propertyphoto.php" />
         <option value="$PROJECT_DIR$/class/response_propertydetail.php" />
-        <option value="$PROJECT_DIR$/index.php" />
-        <option value="$PROJECT_DIR$/adk-feed.php" />
         <option value="$PROJECT_DIR$/class/response.php" />
+        <option value="$PROJECT_DIR$/class/image.php" />
+        <option value="$PROJECT_DIR$/class/ddf_image.php" />
+        <option value="$PROJECT_DIR$/class/requestor.php" />
+        <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/class/feed.php" />
+        <option value="$PROJECT_DIR$/class/log.php" />
+        <option value="$PROJECT_DIR$/adk-feed.php" />
       </list>
     </option>
   </component>
@@ -126,43 +162,7 @@
             <path>
               <item name="adk_feed" type="b2602c69:ProjectViewProjectNode" />
               <item name="wp" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="adk_feed" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wp" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="adk_feed" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wp" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-              <item name="adk_feed" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="adk_feed" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wp" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-              <item name="adk_feed" type="462c0819:PsiDirectoryNode" />
-              <item name="class" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="adk_feed" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wp" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-              <item name="adk_feed" type="462c0819:PsiDirectoryNode" />
-              <item name="page" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="adk_feed" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wp" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-              <item name="adknotification" type="462c0819:PsiDirectoryNode" />
+              <item name="wp-includes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -178,7 +178,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
+    <property name="settings.editor.selected.configurable" value="settings.php.quality.tools" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -209,18 +209,18 @@
       <workItem from="1550771979676" duration="6908000" />
       <workItem from="1550819324165" duration="9222000" />
       <workItem from="1550832790168" duration="11941000" />
+      <workItem from="1550860435208" duration="11905000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44744000" />
+    <option name="totallyTimeSpent" value="60625000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="-1" width="1368" height="749" extended-state="6" />
-    <editor active="true" />
+    <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4967742" visible="true" weight="0.25" />
-      <window_info id="Structure" order="1" sideWeight="0.5032258" side_tool="true" weight="0.20227273" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49624062" visible="true" weight="0.18905473" />
+      <window_info active="true" id="Structure" order="1" sideWeight="0.5037594" side_tool="true" visible="true" weight="0.18905473" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -320,32 +320,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/class/response_master_list.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
+        <state relative-caret-position="170">
           <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/class/respose_propertyphoto.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/class/log.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/class/requestor.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="93" column="39" selection-start-line="93" selection-start-column="39" selection-end-line="93" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/class/respose_propertyphoto.php" />
     <entry file="file://$PROJECT_DIR$/class/response_building.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
@@ -384,38 +364,10 @@
     <entry file="file://$PROJECT_DIR$/class/response_photo.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/uninstall.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/class/response_propertyphoto.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/adk-feed.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="84" column="32" selection-start-line="84" selection-start-column="32" selection-end-line="84" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/class/response.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="125" column="42" selection-start-line="125" selection-start-column="42" selection-end-line="125" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -433,10 +385,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/class/response.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="798">
+          <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uninstall.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/class/ddf_image.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/class/requestor.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="154" column="40" selection-start-line="154" selection-start-column="40" selection-end-line="154" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/class/feed.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="655">
-          <caret line="322" column="35" lean-forward="true" selection-start-line="322" selection-start-column="35" selection-end-line="322" selection-end-column="35" />
+        <state relative-caret-position="650">
+          <caret line="146" column="49" selection-start-line="146" selection-start-column="49" selection-end-line="146" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/class/log.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/adk-feed.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="761">
+          <caret line="95" column="47" selection-start-line="95" selection-start-column="47" selection-end-line="95" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-query.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="3084" column="20" selection-start-line="3084" selection-start-column="20" selection-end-line="3084" selection-end-column="20" />
         </state>
       </provider>
     </entry>

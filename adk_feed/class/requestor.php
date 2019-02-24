@@ -74,7 +74,7 @@ class Requestor {
 			$this->setAuthHeaders();
 			$this->curl();
 
-			if ( 200 != $this->responseCode ) {
+			if ( 200 !== (int)$this->responseCode ) {
 				throw new \Exception( 'Failed to login' );
 			}
 
@@ -146,20 +146,39 @@ class Requestor {
 		return new ResponseMasterList( $this->response );
 	}
 
-	public function getMetadata() {
-		$this->url = $this->metadataUrl;
-		$this->data = [
-			'Type' => 'METADATA-LOOKUP_TYPE',
-			'ID' => 'Property:Crop',
-		];
+	/**
+	 * @param $id
+	 * @param string $size
+	 * @return DDFImage
+	 * @throws Exception
+	 */
+	public function getImage( $id, $size ) {
+		try {
+			$this->url = $this->getObjectUrl;
+			$this->data = [
+				'Resource' => 'Property',
+				'Type'     => $size,
+				'ID'       => $id,
+			];
 
-		$this->setAuthHeaders();
-		$this->curl();
+			$this->setAuthHeaders();
+			$this->headers['Accept'] = 'Image/jpeg';
+			$this->log->write( 'Fetching images...' );
+			$this->curl();
 
-		// if ( $this->responseCode === 401 ) {
-		// 	$this->login();
-		// 	$this->getMetadata();
-		// }
+			if ( 200 !== (int)$this->responseCode ) {
+				throw new \ErrorException( 'Failed to fetch image' );
+			}
+
+			require_once __DIR__ . '/ddf_image.php';
+			$image = new DDFImage( $id, $this->response );
+
+		} catch ( \Exception $e ) {
+			$this->logout();
+			throw $e;
+		}
+
+		return $image;
 	}
 
 	public function getResponse() {
