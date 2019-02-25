@@ -3,11 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dd439e3c-6a81-48aa-b812-2f4373ff841f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adk-feed.php" beforeDir="false" afterPath="$PROJECT_DIR$/adk-feed.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/feed.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/feed.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/log.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/log.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/class/requestor.php" beforeDir="false" afterPath="$PROJECT_DIR$/class/requestor.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,20 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/adk-feed.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="761">
               <caret line="95" column="47" selection-start-line="95" selection-start-column="47" selection-end-line="95" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-query.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="3084" column="20" selection-start-line="3084" selection-start-column="20" selection-end-line="3084" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -70,7 +56,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/class/feed.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
+            <state relative-caret-position="2482">
               <caret line="146" column="49" selection-start-line="146" selection-start-column="49" selection-end-line="146" selection-end-column="49" />
             </state>
           </provider>
@@ -88,7 +74,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/class/ddf_image.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
+            <state relative-caret-position="663">
               <caret line="39" selection-start-line="39" selection-end-line="39" />
             </state>
           </provider>
@@ -97,7 +83,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/class/requestor.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="89">
+            <state relative-caret-position="2618">
               <caret line="154" column="40" selection-start-line="154" selection-start-column="40" selection-end-line="154" selection-end-column="40" />
             </state>
           </provider>
@@ -209,18 +195,20 @@
       <workItem from="1550771979676" duration="6908000" />
       <workItem from="1550819324165" duration="9222000" />
       <workItem from="1550832790168" duration="11941000" />
-      <workItem from="1550860435208" duration="11905000" />
+      <workItem from="1550860435208" duration="12091000" />
+      <workItem from="1551115376428" duration="17000" />
+      <workItem from="1551115410564" duration="30000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60625000" />
+    <option name="totallyTimeSpent" value="60858000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49624062" visible="true" weight="0.18905473" />
-      <window_info active="true" id="Structure" order="1" sideWeight="0.5037594" side_tool="true" visible="true" weight="0.18905473" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49409238" visible="true" weight="0.19347706" />
+      <window_info id="Structure" order="1" sideWeight="0.50590765" side_tool="true" visible="true" weight="0.19347706" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -392,24 +380,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/uninstall.php">
+    <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-query.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+        <state relative-caret-position="140">
+          <caret line="3084" column="20" selection-start-line="3084" selection-start-column="20" selection-end-line="3084" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/class/ddf_image.php">
+    <entry file="file://$PROJECT_DIR$/adk-feed.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/class/requestor.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="89">
-          <caret line="154" column="40" selection-start-line="154" selection-start-column="40" selection-end-line="154" selection-end-column="40" />
+        <state relative-caret-position="761">
+          <caret line="95" column="47" selection-start-line="95" selection-start-column="47" selection-end-line="95" selection-end-column="47" />
         </state>
       </provider>
     </entry>
@@ -420,9 +401,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/uninstall.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/class/feed.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
+        <state relative-caret-position="2482">
           <caret line="146" column="49" selection-start-line="146" selection-start-column="49" selection-end-line="146" selection-end-column="49" />
         </state>
       </provider>
@@ -434,17 +422,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/adk-feed.php">
+    <entry file="file://$PROJECT_DIR$/class/ddf_image.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="761">
-          <caret line="95" column="47" selection-start-line="95" selection-start-column="47" selection-end-line="95" selection-end-column="47" />
+        <state relative-caret-position="663">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../wp-includes/class-wp-query.php">
+    <entry file="file://$PROJECT_DIR$/class/requestor.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="3084" column="20" selection-start-line="3084" selection-start-column="20" selection-end-line="3084" selection-end-column="20" />
+        <state relative-caret-position="2618">
+          <caret line="154" column="40" selection-start-line="154" selection-start-column="40" selection-end-line="154" selection-end-column="40" />
         </state>
       </provider>
     </entry>
