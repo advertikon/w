@@ -8,6 +8,7 @@ class Feed {
 	protected $requestor;
 
 	const IMAGE_DIR = __DIR__ . '/../images/';
+	const MUTEX     = __DIR__ . '/../mutex';
 
 	/**
 	 * Feed constructor.
@@ -33,6 +34,10 @@ class Feed {
 		$this->log->write( sprintf( 'Fetching all the updated listings since %s...', $date_since ) );
 
 		do {
+			if ( !file_exists( self::MUTEX ) ) {
+				throw new Exception( 'MUTEX file is missing - abort operation' );
+			}
+
 			$memory = memory_get_usage( true );
 			$time = microtime( true );
 			$data = $this->requestor->search( $date_since, $count, $pointer );
@@ -94,9 +99,11 @@ class Feed {
 	 */
 	public function process() {
 		$time1 = microtime( true );
+		touch( self::MUTEX );
 
 		try {
 			set_time_limit( 300 );
+			ignore_user_abort( true );
 			$this->fillMasterTable();
 			$this->removeDeleted();
 			$this->updateListings();
@@ -115,31 +122,42 @@ class Feed {
 	 * @throws Exception
 	 */
 	public function getImage( $id, array $data, $size = 'LargePhoto' ) {
-		$fileName = Feed::IMAGE_DIR . $id . '.jpeg';
+		$dirName = Feed::IMAGE_DIR  . $id . '/';
 		$fetchNew = true;
+		$list = [];;
 
-		if ( file_exists( $fileName ) ) {
-			$this->log->write( 'File ' . $fileName . ' exists' );
+		if ( !is_dir( $dirName ) ) {
+			$this->log->write( 'Property ' . $id . ' does not have files. Fetch them' );
+			$list[] = '*';
 
-			if ( isset( $data[ 0 ]->PhotoLastUpdated ) ) {
-				$date = new \DateTime( $data[ 0 ]->PhotoLastUpdated );
+		} else {
+			$files = scandir( $dirName );
 
-				if ( $date->getTimestamp() > filemtime( $fileName ) ) {
-					$this->log->write( 'File is state - fetch anew' );
+			foreach( $data as $photoInfo ) {
+				$fileName = $dirName  . $photoInfo->SequenceId . '.jpeg';
+
+				if ( !in_array( $photoInfo->SequenceId . '.jpeg', $files ) ) {
+					$list[] = $photoInfo->SequenceId;
+					$this->log->write( 'File ' . $fileName . ' does not exist' );
 
 				} else {
-					$this->log->write( 'File is fresh. Serve cached copy' );
-					$fetchNew = false;
+					$this->log->write( 'File ' . $fileName . ' exists' );
+					$date = new \DateTime( $photoInfo->PhotoLastUpdated );
+
+					if ( $date->getTimestamp() > filemtime( $fileName ) ) {
+						$this->log->write( sprintf( 'File %s is stale - fetch anew', $fileName ) );
+
+					} else {
+						$this->log->write( sprintf( 'File %s is fresh. Serve cached copy', $fileName ) );
+						$fetchNew = false;
+					}
+					
 				}
-
-			} else {
-				$this->log->write( 'No LastUpdated data - fetch anew' );
-			}
-
+			} 
 		}
 
-		if ( $fetchNew ) {
-			$this->requestor->getImage( $id, $size );
+		if ( $list ) {
+			$this->requestor->getImage( $id, $list, $size );
 		}
 
 		return sprintf(
@@ -148,6 +166,10 @@ class Feed {
 			isset( $data[ 0 ]->Description ) ? $data[ 0 ]->Description : ''
 		);
 	}
+
+	// public function search() {
+
+	// }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -214,10 +236,8 @@ class Feed {
 		$mem1 = memory_get_usage( true );
 
 		$wpdb->query(
-			"DELETE FROM {$wpdb->prefix}adk_feed_data WHERE id IN (
-					SELECT ad.id FROM {$wpdb->prefix}adk_feed_data ad LEFT JOIN {$wpdb->prefix}adk_feed_master am USING (id) 
-						WHERE am.id IS NULL  
-				)"
+			"DELETE fd FROM {$wpdb->prefix}adk_feed_data fd RIGHT JOIN {$wpdb->prefix}adk_feed_master am USING (id) 
+				WHERE fd.id IS NULL"
 		);
 
 		$this->log->write( sprintf(
@@ -236,6 +256,7 @@ class Feed {
 	protected function updateListings() {
 		$this->log->write( 'Updating listings...' );
 		$from  = get_option( 'adk_feed_last_update', '1970-01-01 00:00:00' );
+		// $from = '1970-01-01 00:00:00';
 
 //		$d = new \DateTime( "today -1 day" );
 //		$from = $d->format( 'c' );
