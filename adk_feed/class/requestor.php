@@ -152,13 +152,13 @@ class Requestor {
 	 * @return DDFImage
 	 * @throws Exception
 	 */
-	public function getImage( $id, $size ) {
+	public function getImage( $id, $list = ['*'], $size = 'LargePhoto' ) {
 		try {
 			$this->url = $this->getObjectUrl;
 			$this->data = [
 				'Resource' => 'Property',
 				'Type'     => $size,
-				'ID'       => $id,
+				'ID'       => $id . ':' . implode( ',', $list ),
 			];
 
 			$this->setAuthHeaders();
@@ -171,7 +171,7 @@ class Requestor {
 			}
 
 			require_once __DIR__ . '/ddf_image.php';
-			$image = new DDFImage( $id, $this->response );
+			$image = new DDFImage( $id, $this->response, DDFImage::getObjectsList( $this->headersOut) );
 
 		} catch ( \Exception $e ) {
 			$this->logout();
