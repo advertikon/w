@@ -60,7 +60,7 @@ function adk_feed_menu(){
 }
 
 function adk_feed_menu_init(){
-	require_once( plugin_dir_path( __FILE__ ) . 'page/admin.php' );
+	require_once plugin_dir_path( __FILE__ ) . 'page/admin.php';
 	adk_render_admin_page();
 }
 
@@ -92,6 +92,7 @@ function create_table() {
         is_open          tinyint(1) NOT NULL,
         photo            blob(1000) NOT NULL,
         last_update      datetime NOT NULL,
+  		notes            text(2000) NOT NULL,
         UNIQUE KEY id (id),
   		INDEX primary (price,bedrooms,bathrooms)
     )" );

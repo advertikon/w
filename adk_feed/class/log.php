@@ -9,7 +9,7 @@ class Log {
 		$this->name = $name ? '[' . $name . '] ' : '';
 
 		if ( !self::$log ) {
-			self::$log = fopen( dirname( __DIR__ ) . '/log', 'a' );
+			self::$log = fopen( dirname( __DIR__ ) . '/log', 'ab' );
 			self::rotate();
 		}
 	}

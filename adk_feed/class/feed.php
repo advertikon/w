@@ -35,14 +35,14 @@ class Feed {
 
 		do {
 			if ( !file_exists( self::MUTEX ) ) {
-				throw new Exception( 'MUTEX file is missing - abort operation' );
+				throw new \ErrorException( 'MUTEX file is missing - abort operation' );
 			}
 
 			$memory = memory_get_usage( true );
 			$time = microtime( true );
 			$data = $this->requestor->search( $date_since, $count, $pointer );
 
-			if ( $data->ReplyCode != 0 ) {
+			if ( (int)$data->ReplyCode !== 0 ) {
 				throw new \Exception( 'Error: ' . $data->ReplyText );
 			}
 
@@ -77,7 +77,7 @@ class Feed {
 
 		do {
 			/** @var ResponseMasterList $list */
-			$list = $this->requestor->getMasterList( $count, $pointer );
+			$list = $this->requestor->getMasterList();
 			$this->log->write( sprintf( 'Fetched %s master records', $list->getTotal() ) );
 			$pointer += $count;
 
@@ -116,27 +116,28 @@ class Feed {
 	}
 
 	/**
-	 * @param $id
-	 * @param array $data
+	 * @param int $id Property ID
+	 * @param ResponsePhoto[] $data
 	 * @param string $size
+	 * @return array
 	 * @throws Exception
 	 */
 	public function getImage( $id, array $data, $size = 'LargePhoto' ) {
 		$dirName = Feed::IMAGE_DIR  . $id . '/';
-		$fetchNew = true;
-		$list = [];;
+		$list = [];
+		$ret = [];
 
 		if ( !is_dir( $dirName ) ) {
 			$this->log->write( 'Property ' . $id . ' does not have files. Fetch them' );
 			$list[] = '*';
 
 		} else {
-			$files = scandir( $dirName );
+			$files = scandir( $dirName, SCANDIR_SORT_ASCENDING );
 
 			foreach( $data as $photoInfo ) {
 				$fileName = $dirName  . $photoInfo->SequenceId . '.jpeg';
 
-				if ( !in_array( $photoInfo->SequenceId . '.jpeg', $files ) ) {
+				if ( !in_array( $photoInfo->SequenceId . '.jpeg', $files, false ) ) {
 					$list[] = $photoInfo->SequenceId;
 					$this->log->write( 'File ' . $fileName . ' does not exist' );
 
@@ -146,12 +147,11 @@ class Feed {
 
 					if ( $date->getTimestamp() > filemtime( $fileName ) ) {
 						$this->log->write( sprintf( 'File %s is stale - fetch anew', $fileName ) );
+						$list[] = $photoInfo->SequenceId;
 
 					} else {
 						$this->log->write( sprintf( 'File %s is fresh. Serve cached copy', $fileName ) );
-						$fetchNew = false;
 					}
-					
 				}
 			} 
 		}
@@ -160,11 +160,17 @@ class Feed {
 			$this->requestor->getImage( $id, $list, $size );
 		}
 
-		return sprintf(
-			'<img src="%s" alt="%s" />',
-			plugin_dir_url( realpath( $fileName ) ) . basename( $fileName ),
-			isset( $data[ 0 ]->Description ) ? $data[ 0 ]->Description : ''
-		);
+		foreach( $data as $photoInfo ) {
+			$fileName = $dirName . $photoInfo->SequenceId . '.jpeg';
+
+			$ret[] = sprintf(
+				'<img src="%s" alt="%s" />',
+				plugin_dir_url( realpath( $fileName ) ) . basename( $fileName ),
+				$photoInfo->Description
+			);
+		}
+
+		return $ret;
 	}
 
 	// public function search() {
@@ -179,6 +185,7 @@ class Feed {
 	protected function fillMasterTable() {
 		global $wpdb;
 
+		$q = '';
 		$mList = $this->getMasterList();
 		$i = 0;
 
@@ -296,7 +303,8 @@ class Feed {
 			        year_built,
 			        is_open,
 			        photo,
-			        last_update
+			        last_update,
+  				 	notes
                 ) 
                   VALUES
                   (
@@ -317,7 +325,8 @@ class Feed {
                     %d, -- year_built
                     %d, -- is_open
                     %s, -- photo
-                    NOW() -- last_update
+                    NOW(),-- last_update
+                    %s  -- notes
                   ) ON DUPLICATE KEY UPDATE
 			        listing_id       = %s,
 			        bedrooms         = %d,
@@ -335,7 +344,8 @@ class Feed {
 			        year_built       = %d,
 			        is_open          = %d,
 			        photo            = %s,
-			        last_update      = NOW()
+			        last_update      = NOW(),
+                    notes            = %s
 					",
 				[
 					$p->ID,
@@ -355,6 +365,7 @@ class Feed {
 					$p->Building->ConstructedDate,
 					$p->OpenHouse && $p->OpenHouse->Event && $p->OpenHouse->Event->StartDateTime,
 					$this->getPhotoInfo( $p->Photo ),
+					$p->PublicRemarks,
 
 					$p->ListingID,
 					$p->Building->BedroomsTotal,
@@ -372,6 +383,7 @@ class Feed {
 					$p->Building->ConstructedDate,
 					$p->OpenHouse && $p->OpenHouse->Event && $p->OpenHouse->Event->StartDateTime,
 					$this->getPhotoInfo( $p->Photo ),
+					$p->PublicRemarks,
 				]
 			);
 

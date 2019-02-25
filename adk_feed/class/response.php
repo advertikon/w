@@ -1,5 +1,5 @@
 <?php
-require_once( __DIR__ . '/log.php' );
+require_once __DIR__ . '/log.php';
 
 /**
  * Class Response
@@ -17,6 +17,8 @@ class Response {
 	protected $data = [];
 	protected $log;
 
+	protected $dumpXML = false;
+
 	/**
 	 * Response constructor.
 	 * @param $data
@@ -28,7 +30,6 @@ class Response {
 
 		} else {
 			$xml = new \SimpleXmlElement( $data );
-			
 		}
 
 		$this->log = new Log( get_class( $this ) );
@@ -36,6 +37,11 @@ class Response {
 
 		if ( !is_a( $this, 'ResponseMasterList' ) ) {
 			$this->xml = null;
+		}
+
+		if ( $this->dumpXML ) {
+			var_dump( $xml );
+			die;
 		}
 	}
 
