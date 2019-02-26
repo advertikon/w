@@ -158,7 +158,7 @@ class Requestor {
 	}
 
 	public function request( $name, $args = [] ) {
-		$result;
+		$result = null;
 		$count = 0;
 
 		while( !$result ) {
