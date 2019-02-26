@@ -101,7 +101,7 @@ class DDFImage {
 		$fileName = Feed::IMAGE_DIR . $this->id . '/' . $id  . '.jpeg';
 		$dirName = dirname( $fileName );
 
-		if ( !is_dir( $dirName ) && !mkdir( $dirName, 2775, true ) && !is_dir( $dirName ) ) {
+		if ( !is_dir( $dirName ) && !mkdir( $dirName, 0775, true ) && !is_dir( $dirName ) ) {
 			throw new \ErrorException( 'Failed to create folder ' . $dirName );
 		}
 

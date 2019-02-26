@@ -6,9 +6,12 @@ class Feed {
 
 	protected $log;
 	protected $requestor;
+	protected $debug = false;
+	protected $user;
+	protected $pwd;
 
 	const IMAGE_DIR = __DIR__ . '/../images/';
-	const MUTEX     = __DIR__ . '/../mutex';
+	const PAGE_SIZE = 10;
 
 	/**
 	 * Feed constructor.
@@ -19,7 +22,9 @@ class Feed {
 	 */
 	public function __construct( $user, $pwd, $debug = false ) {
 		$this->log = new Log( 'Feed' );
-		$this->requestor = new Requestor( $user, $pwd, $debug );
+		$this->debug = $debug;
+		$this->user = $user;
+		$this->pwd = $pwd;
 	}
 
 	/**
@@ -32,15 +37,12 @@ class Feed {
 		$count = 100;
 
 		$this->log->write( sprintf( 'Fetching all the updated listings since %s...', $date_since ) );
+		$this->loadRequstor();
 
 		do {
-			if ( !file_exists( self::MUTEX ) ) {
-				throw new \ErrorException( 'MUTEX file is missing - abort operation' );
-			}
-
 			$memory = memory_get_usage( true );
 			$time = microtime( true );
-			$data = $this->requestor->search( $date_since, $count, $pointer );
+			$data = $this->requestor->request( 'search', array( $date_since, $count, $pointer ) );
 
 			if ( (int)$data->ReplyCode !== 0 ) {
 				throw new \Exception( 'Error: ' . $data->ReplyText );
@@ -74,10 +76,18 @@ class Feed {
 		$mem1 = memory_get_usage( true );
 
 		$this->log->write( 'Fetching master list...' );
+		$this->loadRequstor();
 
 		do {
 			/** @var ResponseMasterList $list */
-			$list = $this->requestor->getMasterList();
+			try {
+				$list = $this->requestor->request( 'getMasterList' );
+
+			} catch( \Exception $e ) {
+				$this->log->write( $e->getMessage() );
+				throw $e;
+			}
+
 			$this->log->write( sprintf( 'Fetched %s master records', $list->getTotal() ) );
 			$pointer += $count;
 
@@ -99,7 +109,7 @@ class Feed {
 	 */
 	public function process() {
 		$time1 = microtime( true );
-		touch( self::MUTEX );
+		$this->loadRequstor();
 
 		try {
 			set_time_limit( 300 );
@@ -157,7 +167,8 @@ class Feed {
 		}
 
 		if ( $list ) {
-			$this->requestor->getImage( $id, $list, $size );
+			$this->loadRequstor();
+			$this->requestor->request( 'getImage', array( $id, $list, $size ) );
 		}
 
 		foreach( $data as $photoInfo ) {
@@ -173,11 +184,70 @@ class Feed {
 		return $ret;
 	}
 
-	// public function search() {
+	public function query() {
+		$where = [];
 
-	// }
+		$_POST['min_price'] = '100000';
+
+		foreach( [
+			'property_type'    => [ '%s', '=' .'property_type' ],
+			'building_type'    => [ '%s', '=', 'building_type', ],
+			'transaction_type' => [ '%s', '=', 'transaction_type', ],
+			'beds'             => [ '%d', '>=', 'bedrooms' ],
+			'bathrooms'        => [ '%d', '>=', 'bathrooms' ],
+			'is_open'          => [ '%d', '=', 'is_open' ],
+			'min_price'        => [ '%f', '>=', 'price' ],
+			'max_price'        => [ '%f', '<=', 'price' ],
+			'land_size'        => [ '%f', '>=', 'lot_size' ],
+		] as $k => $type ) {
+			if ( isset( $_POST[ $k ] ) ) {
+				$where["{$type[ 2 ]} {$type[ 1 ]} {$type[ 0 ]}"] = $_POST[ $k ];
+			}
+		}
+
+		$limit = Feed::PAGE_SIZE;
+
+		if ( isset( $_POST['page'] ) ) {
+			$offset = ( (int)$$_POST['page'] - 1 ) * Feed::PAGE_SIZE;
+
+		} else {
+			$offset = 0;
+		}
+
+		return $this->doQuery( $where, $offset, $limit );
+	}
+
+	public function doQuery( array $where = [], $offset, $limit ) {
+		global $wpdb;
+
+		$q = $wpdb->prepare(
+			"SELECT * FROM {$wpdb->prefix}adk_feed_data " .
+			( $where ? ' WHERE ' . implode( ' AND ', array_keys( $where ) ) : '' ) .
+			" LIMIT $limit OFFSET $offset",
+			array_values( $where )
+		);
+
+		$results = $wpdb->get_results( $q );
+
+		foreach( $results as &$listing ) {
+			if ( $listing->photo ) {
+				$listing->photos = $this->getImage( $listing->id, json_decode( $listing->photo ) );
+
+			} else {
+				$listing->photos = [];
+			}
+		}
+
+		return $results;
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
+
+	protected function loadRequstor() {
+		if ( !$this->requestor ) {
+			$this->requestor = new Requestor( $this->user, $this->pwd, $this->debug );
+		}
+	}
 
 	/**
 	 * @throws Exception

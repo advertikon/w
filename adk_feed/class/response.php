@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/log.php';
+require_once __DIR__ . '/unlogged.php';
 
 /**
  * Class Response
@@ -103,7 +104,12 @@ class Response {
 		}
 
 		if ( $this->ReplyCode ) {
-			throw new \Exception( 'Error: ' . $this->ReplyText );
+			switch( $this->ReplyCode ) {
+				case '20701':
+					throw new Unlogged( 'Error: ' . $this->ReplyText );
+				default:
+					throw new \Exception( 'Error: ' . $this->ReplyText );
+			}
 		}
 
 		if ( $this->xml->COUNT ) {

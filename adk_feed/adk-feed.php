@@ -27,7 +27,7 @@ function adk_feed_activate() {
 	$out = '';
 
 	try {
-		wp_schedule_event( time(), 'hourly', 'adk_feed_sync' );
+		// wp_schedule_event( time(), 'hourly', 'adk_feed_sync' );
 		create_table();
 
 	} catch ( \Throwable $e ) {
@@ -51,7 +51,7 @@ function adk_feed_activate() {
 }
 
 function adk_feed_deactivate() {
-	wp_clear_scheduled_hook('adk_feed_sync' );
+	// wp_clear_scheduled_hook('adk_feed_sync' );
 	delete_option( 'adk_feed_last_update' );
 }
 
@@ -64,9 +64,9 @@ function adk_feed_menu_init(){
 	adk_render_admin_page();
 }
 
-function adk_feed_sync() {
-	echo 'hello';
-}
+// function adk_feed_sync() {
+// 	echo 'hello';
+// }
 
 function create_table() {
 	global $wpdb;
@@ -74,7 +74,7 @@ function create_table() {
 	$wpdb->show_errors();
 
 	$wpdb->query( "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}adk_feed_data (
-        id               int(11) NOT NULL,
+        id               int(11) NOT NULL UNIQUE,
         listing_id       varchar(20) NOT NULL,
         bedrooms         tinyint(2) NOT NULL,
         bathrooms        tinyint(2) NOT NULL,
@@ -92,8 +92,7 @@ function create_table() {
         is_open          tinyint(1) NOT NULL,
         photo            blob(1000) NOT NULL,
         last_update      datetime NOT NULL,
-  		notes            text(2000) NOT NULL,
-        UNIQUE KEY id (id),
-  		INDEX primary (price,bedrooms,bathrooms)
+  		notes            varchar(2000) NOT NULL,
+  		INDEX i1 (price,bedrooms,bathrooms)
     )" );
 }

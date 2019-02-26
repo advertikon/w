@@ -1,5 +1,7 @@
 <?php
 require_once( __DIR__ . '/log.php' );
+require_once __DIR__ . '/unlogged.php';
+require_once __DIR__ . '/unauthorized.php';
 
 class Requestor {
 	protected $name = '';
@@ -28,7 +30,7 @@ class Requestor {
 	protected $auth_realm = '';
 	protected $auth_nonce = '';
 	protected $auth_qop = '';
-	protected $auth_url = '';
+	protected $auth_url = 'Login.svc/Login';
 	protected $auth_cnonce = '';
 	protected $auth_request_count = 0;
 	protected $auth_response = '';
@@ -39,7 +41,12 @@ class Requestor {
 	protected $request_id = '';
 	protected $auth_uri = '';
 
+	protected $loginAttempts = 0;
+
+	const MUTEX = __DIR__ . '/../mutex';
+	const NONCE = __DIR__ . '/../nonce';
 	const LOGIN_ATTEMPTS = 2;
+	const MUTEX_LIFETIME = 120;
 
 	/**
 	 * Requestor constructor.
@@ -51,9 +58,33 @@ class Requestor {
 	public function __construct($name, $pwd, $debug ) {
 		$this->name  = $name;
 		$this->pwd   = $pwd;
-		$this->log   = new Log( 'Requester' );
+		$this->log   = new Log( 'Requester#' . uniqid() );
 		$this->debug = $debug;
-		$this->login();
+		$this->initAuthData();
+
+		if ( file_exists( Requestor::MUTEX ) ) {
+			if ( filemtime( Requestor::MUTEX ) + Requestor::MUTEX_LIFETIME < time() ) {
+				file_put_contents( Requestor::MUTEX, '1' );
+				$this->log->write( 'Mutex is stale - reset it' );
+
+			} else {
+				file_put_contents( Requestor::MUTEX, (int)file_get_contents( Requestor::MUTEX ) + 1 );
+				$this->log->write( 'Incrementing open sessions count' );
+			}
+
+		} else {
+			file_put_contents( Requestor::MUTEX, '1' );
+			$this->log->write( 'Mutex is missing, initialize it' );
+		}
+
+		if ( !$this->auth_nonce ) {
+			$this->log->write( 'No saved session' );
+			$this->login();
+
+		} else {
+			$this->log->write( 'Using saved session data' );
+			$this->calculateDigestResponseCode();
+		}
 	}
 
 	/**
@@ -62,20 +93,34 @@ class Requestor {
 	 */
 	protected function login() {
 		try {
+			$this->loginAttempts++;
+
+			if ( file_exists( Requestor::NONCE ) ) {
+				unlink( Requestor::NONCE );
+			}
+
+			if ( $this->loginAttempts > Requestor::LOGIN_ATTEMPTS ) {
+				$this->log->write( 'Login attempts exceeded' );
+				throw new \ErrorException( 'Login attempts exceeded' );
+			}
+
 			$this->log->write( 'Trying to open new session...' );
 
 			$this->url = $this->loginUrl;
-			$this->curl();
-
-			$this->auth_uri = $this->loginUrl;
 			$this->data = [];
+
+			try {
+				$this->curl();
+				
+			} catch ( Unauthorized $e ) {}
+
 			$this->setAuthData();
 			$this->calculateDigestResponseCode();
 			$this->setAuthHeaders();
 			$this->curl();
 
-			if ( 200 !== (int)$this->responseCode ) {
-				throw new \Exception( 'Failed to login' );
+			if ( 200 != $this->responseCode ) {
+				throw new \ErrorException( 'Failed to login' );
 			}
 
 		} catch ( \Exception $e ) {
@@ -112,6 +157,39 @@ class Requestor {
 		return new ResponsePropertyDetails( $this->response );
 	}
 
+	public function request( $name, $args = [] ) {
+		$result;
+		$count = 0;
+
+		while( !$result ) {
+			try {
+				if ( $count > 10 ) {
+					throw new \ErrorException( 'Count limit' );
+				}
+
+				$result = call_user_func_array( [ $this, $name ], $args );
+
+			} catch ( Unlogged $e ) {
+				$this->log->write( 'Session is stale' );
+				$this->login();
+				call_user_func_array( [ $this, $name ], $args );
+
+			} catch ( Unauthorized $e ) {
+				$this->log->write( 'Session is invalid' );
+				$this->login();
+				call_user_func_array( [ $this, $name ], $args );
+
+			} catch ( \Exception $e ) {
+				$this->logout();
+				throw $e;
+			}
+
+			$count++;
+		}
+
+		return $result;
+	}
+
 	/**
 	 * @param int $limit
 	 * @param int $offset
@@ -119,29 +197,23 @@ class Requestor {
 	 * @throws Exception
 	 */
 	public function getMasterList() {
-		try {
-			$this->url = $this->searchUrl;
-			$this->data = [
-				'SearchType' => 'Property',
-				'Class'      => 'Property',
-				'QueryType'  => 'DMQL2',
-				'Query'      =>  '(ID=*)',
-				'Format'     => 'COMPACT',
-			];
+		$this->url = $this->searchUrl;
+		$this->data = [
+			'SearchType' => 'Property',
+			'Class'      => 'Property',
+			'QueryType'  => 'DMQL2',
+			'Query'      =>  '(ID=*)',
+			'Format'     => 'COMPACT',
+		];
 
-			$this->setAuthHeaders();
-			$this->curl();
+		$this->setAuthHeaders();
+		$this->curl();
 
-			if ( 200 != $this->responseCode ) {
-				throw new \Exception( 'Failed to fetch data' );
-			}
-
-			require_once( __DIR__ . '/response_master_list.php' );
-
-		} catch ( \Exception $e ) {
-			$this->logout();
-			throw $e;
+		if ( 200 != $this->responseCode ) {
+			throw new \Exception( 'Failed to fetch data' );
 		}
+
+		require_once( __DIR__ . '/response_master_list.php' );
 
 		return new ResponseMasterList( $this->response );
 	}
@@ -217,11 +289,39 @@ class Requestor {
 	}
 
 	public function logout() {
-		$this->log->write( 'Logging out...' );
-		$this->url = $this->logoutUrl;
-		$this->data = [];
-		$this->setAuthHeaders();
-		$this->curl();
+		if ( file_exists( Requestor::MUTEX ) ) {
+			$count = (int)file_get_contents( Requestor::MUTEX );
+			$this->log->write( 'Open sessions count: ' . $count );
+			$count--;
+			$count = max( 0, $count );
+
+			if ( $count && filemtime( Requestor::MUTEX ) + Requestor::MUTEX_LIFETIME < time() ) {
+				$this->log->write( 'Mutex is stale. Force close the session' );
+				$count = 0;
+			}
+
+		} else {
+			$count = 0;	
+		}
+		
+		file_put_contents( Requestor::MUTEX,  $count );
+
+		if ( !$count ) {
+			$this->log->write( 'Logging out...' );
+
+			if ( file_exists( Requestor::NONCE ) ) {
+				unlink( Requestor::NONCE );
+			}
+
+			$this->url = $this->logoutUrl;
+			$this->data = [];
+			$this->setAuthHeaders();
+
+			try {
+				$this->curl();
+				
+			} catch ( Unauthorized $e ) {}
+		}
 	}
 
 	public function saveHeaders( $ch, $line ) {
@@ -239,7 +339,6 @@ class Requestor {
 	protected function init() {
 		$this->headersOut = [];
 		$this->responce = '';
-//		$this->rawResponce = '';
 	}
 
 	protected function getUrl() {
@@ -249,6 +348,11 @@ class Requestor {
 	}
 
 	protected function curl() {
+		if ( !file_exists( Requestor::MUTEX ) ) {
+			throw new \ErrorException( 'Mutex is missing' );
+		}
+
+		touch( Requestor::MUTEX );
 		$error = '';
 		$ch = curl_init();
 		$this->init();
@@ -295,7 +399,11 @@ class Requestor {
 		if ( $this->debug ) {
 			$this->log->write( $this->headersIn );
 			$this->log->write( implode( "\n", array_map( function( $l ){ return '< ' . trim( $l ); }, $this->headersOut ) ) );
-			$this->log->write( $this->response );
+			// $this->log->write( $this->response );
+		}
+
+		if ( 401 == $this->responseCode ) {
+			throw new Unauthorized( 'Unauthorized' );
 		}
 	}
 
@@ -344,6 +452,8 @@ class Requestor {
 		$this->auth_url    = $url['path'];
 		$this->auth_cnonce = md5( time() );
 		$this->auth_request_count++;
+
+		file_put_contents( Requestor::NONCE, implode( "\n", [ $this->auth_realm, $this->auth_nonce, $this->auth_qop, ] ) );
 	}
 
 	protected function setAuthHeaders() {
@@ -389,6 +499,30 @@ class Requestor {
 		}
 
 		return $ret;
+	}
+
+	protected function initAuthData() {
+		$this->auth_cnonce = md5( time() );
+
+		if ( !file_exists( Requestor::NONCE ) ) {
+			return;
+		}
+		
+		$content = file_get_contents( Requestor::NONCE );
+
+		if ( !$content ) {
+			return;
+		}
+
+		$data = explode( "\n", $content );
+
+		if ( count( $data ) !== 3 ) {
+			return;
+		}
+
+		$this->auth_realm  = $data[ 0 ];
+		$this->auth_nonce  = $data[ 1 ];
+		$this->auth_qop    = $data[ 2 ];
 	}
 
 //	protected function setUAAuth() {
