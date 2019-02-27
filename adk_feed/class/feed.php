@@ -173,12 +173,7 @@ class Feed {
 
 		foreach( $data as $photoInfo ) {
 			$fileName = $dirName . $photoInfo->SequenceId . '.jpeg';
-
-			$ret[] = sprintf(
-				'<img src="%s" alt="%s" />',
-				plugin_dir_url( realpath( $fileName ) ) . basename( $fileName ),
-				$photoInfo->Description
-			);
+			$ret[] = [ plugin_dir_url( realpath( $fileName ) ) . basename( $fileName ),	$photoInfo->Description ];
 		}
 
 		return $ret;
@@ -234,7 +229,7 @@ class Feed {
 				$listing->photos = $this->getImage( $listing->id, json_decode( $listing->photo ) );
 
 			} else {
-				$listing->photos = [];
+				$listing->photos = [ [ plugin_dir_url( realpath( __DIR__  ) ) . 'images/no-image.jpg', '' ] ];
 			}
 		}
 
@@ -366,6 +361,7 @@ class Feed {
 			        price,
 			        address,
 			        city,
+			        // TODO: get state
 			        zip_code,
 			        property_type,
 			        building_type,
