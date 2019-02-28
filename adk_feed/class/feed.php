@@ -5,6 +5,8 @@ require_once( __DIR__ . '/requestor.php' );
 class Feed {
 
 	protected $log;
+
+	/** @var Requestor */
 	protected $requestor;
 	protected $debug = false;
 	protected $user;
@@ -179,6 +181,10 @@ class Feed {
 		return $ret;
 	}
 
+	/**
+	 * @return array|object|null
+	 * @throws Exception
+	 */
 	public function query() {
 		$where = [];
 
@@ -212,7 +218,14 @@ class Feed {
 		return $this->doQuery( $where, $offset, $limit );
 	}
 
-	public function doQuery( array $where = [], $offset, $limit ) {
+	/**
+	 * @param array $where
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|object|null
+	 * @throws Exception
+	 */
+	public function doQuery( array $where = [], $offset = 1, $limit = 1 ) {
 		global $wpdb;
 
 		$q = $wpdb->prepare(
@@ -236,8 +249,28 @@ class Feed {
 		return $results;
 	}
 
+	public function propertyTypes() {
+		require_once __DIR__ . '/cache.php';
+		global $wpdb;
+
+		$ret = ADKCache::get( 'property_types' );
+
+		if ( $ret ) {
+			return $ret;
+		}
+
+		$ret = $wpdb->get_col( "SELECT UNIQUE property_type FROM {$wpdb->prefix}adk_feed_data" );
+
+		ADKCache::add( 'property_types', $ret );
+
+		return $ret;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
+	/**
+	 * @throws Exception
+	 */
 	protected function loadRequstor() {
 		if ( !$this->requestor ) {
 			$this->requestor = new Requestor( $this->user, $this->pwd, $this->debug );
