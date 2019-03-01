@@ -8,11 +8,17 @@ class Requestor {
 	protected $pwd = '';
 	protected $log;
 
-	protected $loginUrl     = 'http://sample.data.crea.ca/Login.svc/Login';
-	protected $metadataUrl  = 'http://sample.data.crea.ca/Metadata.svc/GetMetadata';
-	protected $searchUrl    = 'http://sample.data.crea.ca/Search.svc/Search';
-	protected $getObjectUrl = 'http://sample.data.crea.ca/GetObject.svc/GetObject';
-	protected $logoutUrl    = 'http://sample.data.crea.ca/Logout.svc/Logout';
+	// protected $loginUrl     = 'http://sample.data.crea.ca/Login.svc/Login';
+	// protected $metadataUrl  = 'http://sample.data.crea.ca/Metadata.svc/GetMetadata';
+	// protected $searchUrl    = 'http://sample.data.crea.ca/Search.svc/Search';
+	// protected $getObjectUrl = 'http://sample.data.crea.ca/GetObject.svc/GetObject';
+	// protected $logoutUrl    = 'http://sample.data.crea.ca/Logout.svc/Logout';
+
+	protected $loginUrl     = 'http://data.crea.ca/Login.svc/Login';
+	protected $metadataUrl  = 'http://data.crea.ca/Metadata.svc/GetMetadata';
+	protected $searchUrl    = 'http://data.crea.ca/Search.svc/Search';
+	protected $getObjectUrl = 'http://data.crea.ca/GetObject.svc/GetObject';
+	protected $logoutUrl    = 'http://data.crea.ca/Logout.svc/Logout';
 
 	protected $isPost = false;
 	protected $data = [];

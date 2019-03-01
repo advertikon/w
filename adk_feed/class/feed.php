@@ -5,13 +5,16 @@ require_once( __DIR__ . '/requestor.php' );
 class Feed {
 
 	protected $log;
+
+	/** @var Requestor */
 	protected $requestor;
 	protected $debug = false;
 	protected $user;
 	protected $pwd;
+	protected $totalRows = 0;
 
 	const IMAGE_DIR = __DIR__ . '/../images/';
-	const PAGE_SIZE = 10;
+	const PAGE_SIZE = 18;
 
 	/**
 	 * Feed constructor.
@@ -179,31 +182,45 @@ class Feed {
 		return $ret;
 	}
 
+	/**
+	 * @return array|object|null
+	 * @throws Exception
+	 */
 	public function query() {
 		$where = [];
 
-		$_POST['min_price'] = '100000';
-
 		foreach( [
-			'property_type'    => [ '%s', '=' .'property_type' ],
-			'building_type'    => [ '%s', '=', 'building_type', ],
-			'transaction_type' => [ '%s', '=', 'transaction_type', ],
-			'beds'             => [ '%d', '>=', 'bedrooms' ],
+			'property_type'    => [ '%s', '=',  'property_type' ],
+			'building_type'    => [ '%s', '=',  'building_type', ],
+			'transaction_type' => [ '%s', '=',  'transaction_type', ],
+			'bedrooms'         => [ '%d', '>=', 'bedrooms' ],
 			'bathrooms'        => [ '%d', '>=', 'bathrooms' ],
-			'is_open'          => [ '%d', '=', 'is_open' ],
+			'is_open'          => [ '%d', '=',  'is_open' ],
+			'price'            => [ '%f', '=',  'price' ],
 			'min_price'        => [ '%f', '>=', 'price' ],
 			'max_price'        => [ '%f', '<=', 'price' ],
 			'land_size'        => [ '%f', '>=', 'lot_size' ],
 		] as $k => $type ) {
-			if ( isset( $_POST[ $k ] ) ) {
-				$where["{$type[ 2 ]} {$type[ 1 ]} {$type[ 0 ]}"] = $_POST[ $k ];
+			if ( !empty( $_POST[ $k ] ) ) {
+				$val = $_POST[ $k ];
+
+				if ( false !== strpos( $val, '-' ) ) {
+					$vals = explode( '-' , $val );
+					$min = str_replace( [ ' ', ',' ], '', $vals[ 0 ] );
+					$max = str_replace( [ ' ', ',' ], '', $vals[ 1 ] );
+					$where["{$type[ 2 ]} >= {$type[ 0 ]}"] = $min;
+					$where["{$type[ 2 ]} <= {$type[ 0 ]}"] = $max;
+
+				} else {
+					$where["{$type[ 2 ]} {$type[ 1 ]} {$type[ 0 ]}"] = $_POST[ $k ];
+				}
 			}
 		}
 
 		$limit = Feed::PAGE_SIZE;
 
 		if ( isset( $_POST['page'] ) ) {
-			$offset = ( (int)$$_POST['page'] - 1 ) * Feed::PAGE_SIZE;
+			$offset = ( (int)$_POST['page'] - 1 ) * Feed::PAGE_SIZE;
 
 		} else {
 			$offset = 0;
@@ -212,17 +229,27 @@ class Feed {
 		return $this->doQuery( $where, $offset, $limit );
 	}
 
-	public function doQuery( array $where = [], $offset, $limit ) {
+	/**
+	 * @param array $where
+	 * @param int $offset
+	 * @param int $limit
+	 * @return array|object|null
+	 * @throws Exception
+	 */
+	public function doQuery( array $where = [], $offset = 1, $limit = 1 ) {
 		global $wpdb;
 
 		$q = $wpdb->prepare(
-			"SELECT * FROM {$wpdb->prefix}adk_feed_data " .
+			"SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}adk_feed_data " .
 			( $where ? ' WHERE ' . implode( ' AND ', array_keys( $where ) ) : '' ) .
 			" LIMIT $limit OFFSET $offset",
 			array_values( $where )
 		);
 
+		//echo $q . "<br>";
+
 		$results = $wpdb->get_results( $q );
+		$this->totalRows = $wpdb->get_var( " SELECT FOUND_ROWS()" );
 
 		foreach( $results as &$listing ) {
 			if ( $listing->photo ) {
@@ -236,8 +263,221 @@ class Feed {
 		return $results;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
+	public function propertyTypesAsSelect() {
+		$name = 'property_type';
 
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Property Type', 'adk_feed' ) );
+	}
+
+	public function transactionTypesAsSelect() {
+		$name = 'transaction_type';
+
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Transaction Type', 'adk_feed' ) );
+	}
+
+	public function buildingTypesAsSelect() {
+		$name = 'building_type';
+
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Building Type', 'adk_feed' ) );
+	}
+
+	public function bedroomsAsSelect() {
+		$name = 'bedrooms';
+		$rooms = $this->getSearchRange( $name );
+
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bedrooms', 'adk_feed' ) );
+	}
+
+	public function bathroomsAsSelect() {
+		$name = 'bathrooms';
+		$rooms = $this->getSearchRange( $name );
+
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bathrooms', 'adk_feed' ) );
+	}
+
+	public function squareFeetAsSelect() {
+		$name = 'lot_size';
+		$rooms = $this->getSearchRange( $name );
+
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Lot Size', 'adk_feed' ) );
+	}
+
+	public function priceAsSelect() {
+		$name = 'price';
+		$rooms = $this->getSearchRange( $name );
+
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Price', 'adk_feed' ) );
+	}
+
+	public function pagination( $buttons = 10 ) {
+		$page = isset( $_POST['page'] ) ? min( Feed::PAGE_SIZE, max( 1, (int)$_POST['page'] ) ) : 1;
+		$total = ceil( $this->totalRows / Feed::PAGE_SIZE );
+		$start = [];
+		$end = [];
+		$middle = [];;
+
+		if ( 1 === $page) {
+			$end[] = $this->renderPageItem( '>', $total - 1 );
+			$end[] = $this->renderPageItem( '>>', $total );
+
+		} else if ( 2 === $page ) {
+			$end[] = $this->renderPageItem( '>', $total - 1 );
+			$end[] = $this->renderPageItem( '>>', $total );
+			$start[] = $this->renderPageItem( '<', 1 );
+
+		} else if ( $page === $total - 1 ) {
+			$start[] = $this->renderPageItem( '<<', 1 );
+			$start[] = $this->renderPageItem( '<', $page - 1 );
+			$end[] = $this->renderPageItem( '>', $total );
+
+		} else if ( $page === $total ) {
+			$start[] = $this->renderPageItem( '<<', 1 );
+			$start[] = $this->renderPageItem( '<', $page - 1 );
+
+		} else {
+			$start[] = $this->renderPageItem( '<<', 1 );
+			$start[] = $this->renderPageItem( '<', $page - 1 );
+			$end[] = $this->renderPageItem( '>', $page + 1 );
+			$end[] = $this->renderPageItem( '>>', $total );
+		}
+
+		$buttonsCount = $buttons - count( $start ) - count( $end );
+		$isLeft = false;
+		$isRight = false;
+
+		if ( $buttonsCount < $total ) {
+			$buttonsCount--;
+
+			// Stick to the left
+			if ( $page <= $buttonsCount ) {
+				array_unshift( $end, $this->renderPageItem( '...' ) );
+				$isLeft = true;
+
+			// Stick to the right
+			} else if ( $total - $buttonsCount <= $page ) {
+				$start[] = $this->renderPageItem( '...' );
+				$isRight = true;
+
+			} else {
+				$buttonsCount--;
+				array_unshift( $end, $this->renderPageItem( '...' ) );
+				$start[] = $this->renderPageItem( '...' );
+			}
+		}
+
+		if ( $isLeft ) {
+			$from = 1;
+			$to   = $buttonsCount;
+
+		} else if ( $isRight ) {
+			$from = $total - $buttonsCount;
+			$to   = $total;
+
+		} else {
+			$from = $page - round( $buttonsCount / 2 );
+			$to   = $page + round( $buttonsCount / 2 );
+		}
+
+		for( $i = $from; $i <= $to; $i++ ) {
+			$middle[] = $this->renderPageItem( $i, $i, $i === $page );
+		}
+
+		$ret = [];
+		$ret[] = '<div class="pagination">';
+		$ret[] = '	<div class="pagination-wrapper">';
+		$ret = array_merge( $ret, $start, $middle, $end );
+		$ret[] = '	</div>';
+		$ret[] = '</div>';
+
+		return implode( "\n", $ret );
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+	protected function renderPageItem( $page, $pageNumber = null, $isActive = false ) {
+		$status = [];
+
+		if ( $isActive ) {
+			$status[] = 'active';
+		}
+
+		if ( is_null( $pageNumber ) ) {
+			$status[] = 'disabled';
+		}
+
+		return '<div class="page-item ' . implode( ' ', $status ) . '" data-page="' . $pageNumber . '">' . $page . '</div>';
+	}
+
+	protected function getSearchDataSet( $name ) {
+		require_once __DIR__ . '/cache.php';
+		global $wpdb;
+
+		$ret = ADKCache::get( $name );
+
+		if ( $ret ) {
+			return $ret;
+		}
+
+		$ret = $wpdb->get_col( "SELECT DISTINCT $name FROM {$wpdb->prefix}adk_feed_data where $name <> ''" );
+
+		ADKCache::add( $name, $ret );
+
+		return $ret;
+	}
+
+	protected function getSearchRange( $name ) {
+		require_once __DIR__ . '/cache.php';
+		global $wpdb;
+
+		$ret = ADKCache::get( $name );
+
+		if ( $ret ) {
+			return $ret;
+		}
+
+		$wpdb->show_errors( true );
+		$ret = $wpdb->get_row( "SELECT MIN( $name ) min, MAX( $name ) max FROM {$wpdb->prefix}adk_feed_data where $name <> ''" );
+
+		ADKCache::add( $name, $ret );
+
+		return $ret;
+	}
+
+	protected function rangeToDataSet( \stdClass $range, $tiers = 6 ) {
+		$ret = [];
+		$min = (int)$range->min;
+		$max = (int)$range->max;
+		$range = $max - $min;
+		$step = ceil( $range / $tiers );
+
+		for( $i = $min; $i < $max; $i += $step ) {
+			$ret[] = sprintf( '%s - %s', number_format( $i ), number_format( min( $max, $i + $step ) ) );
+		}
+
+		return $ret;
+	}
+
+	protected function getSearchSelect( array $list, $name, $text ) {
+		$ret = [];
+		$value = isset( $_POST[ $name ] ) ? $_POST[ $name ] : '';
+
+		$ret[] = '<label>' . $text;
+		$ret[] = '<select class="search-item-responsive" name="' . $name . '">';
+		$ret[] = '<option value="0">' . __( 'Any', 'adk_feed' ) . '</option>';
+
+		foreach( $list as $i ) {
+			$selected = ( $value === $i ) ? ' selected="selected" ' : '';
+			$ret[] = '<option value="' . $i . '"' . $selected . '>' . $i . '</option>';
+		}
+
+		$ret[] = '</select>';
+		$ret[] = '</label>';
+
+		return implode( "\n", $ret );
+	}
+
+	/**
+	 * @throws Exception
+	 */
 	protected function loadRequstor() {
 		if ( !$this->requestor ) {
 			$this->requestor = new Requestor( $this->user, $this->pwd, $this->debug );
@@ -361,7 +601,6 @@ class Feed {
 			        price,
 			        address,
 			        city,
-			        // TODO: get state
 			        zip_code,
 			        property_type,
 			        building_type,
