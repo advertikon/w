@@ -17,6 +17,10 @@ if ( !defined( 'ADK_FEED_CODE' ) ) {
 add_action( 'admin_menu', 'adk_feed_menu' );
 register_activation_hook( __FILE__, 'adk_feed_activate' );
 register_deactivation_hook( __FILE__, 'adk_feed_deactivate' );
+add_action ( 'wp_enqueue_scripts', 'adk_add_scripts' );
+add_action ( 'wp_enqueue_scripts', 'adk_add_styles' );
+add_action( 'init', 'adk_create_posttype' );
+add_action( 'init', 'adk_rewrite_rule', 10, 0 );
 
 function adk_feed_activate() {
 	if ( function_exists( 'ob_start' ) ) {
@@ -95,4 +99,83 @@ function create_table() {
   		notes            varchar(2000) NOT NULL,
   		INDEX i1 (price,bedrooms,bathrooms)
     )" );
+}
+
+function adk_add_scripts() {
+	wp_register_script(
+		'adk_feed', plugins_url( 'assets/javascripts/jquery.selectBoxIt.min.js', __FILE__ ),
+		[ 'jquery', 'jquery-ui-widget' ],
+		'1.1',
+		false
+	);
+
+	wp_enqueue_script('adk_feed' );
+
+	wp_register_script(
+		'adk_feed_1', plugins_url( 'assets/javascripts/jquery.validate.min.js', __FILE__ ),
+		[ 'jquery' ],
+		'1.1',
+		true
+	);
+
+	wp_enqueue_script('adk_feed_1' );
+
+	wp_register_script(
+		'adk_feed_2', plugins_url( 'assets/javascripts/single-listing.min.js', __FILE__ ),
+		[],
+		'1.1',
+		true
+	);
+
+	wp_enqueue_script('adk_feed_2' );
+
+	wp_register_script( 'fitvids', '//cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.min.js', array('jquery'), null, true );
+	wp_enqueue_script( 'jquery-ui-tabs', array('jquery') );
+	wp_enqueue_script('fitvids' );
+}
+
+function adk_add_styles() {
+	wp_register_style('adk_feed', plugins_url('assets/stylesheets/jquery.selectBoxIt.css', __FILE__ ) );
+	wp_enqueue_style('adk_feed');
+
+	wp_register_style('adk_feed_1', plugins_url('assets/stylesheets/wp-listings.css', __FILE__ ) );
+	wp_enqueue_style('adk_feed_1');
+
+	wp_register_style('adk_feed_2', plugins_url('assets/stylesheets/wp-listings-widget.css', __FILE__ ) );
+	wp_enqueue_style('adk_feed_2');
+
+	wp_register_style('adk_feed_3', plugins_url('assets/stylesheets/wp-listings-single.css', __FILE__ ) );
+	wp_enqueue_style('adk_feed_3');
+}
+
+function adk_create_posttype() {
+	register_post_type( 'ddf_search',
+		array(
+			'labels' => array(
+				'name' => __( 'Search result', 'adk_feed' ),
+				'singular_name' => __( 'Search results', 'adk_feed' )
+			),
+			'public'      => true,
+			'has_archive' => true,
+			'rewrite'     => array( 'slug' => 'ddf_search' ),
+		)
+	);
+
+	register_post_type( 'ddf_listing',
+		array(
+			'labels' => array(
+				'name' => __( 'DDF Listing', 'adk_feed' ),
+				'singular_name' => __( 'DDF Listings', 'adk_feed' )
+			),
+			'public'      => true,
+			'has_archive' => true,
+			'rewrite'     => array( 'slug' => 'ddf_listing' ),
+		)
+	);
+}
+
+function adk_rewrite_rule() {
+	add_rewrite_rule('^ddf-search/?$', 'index.php?post_type=ddf_search','top' );
+	add_rewrite_rule('^ddf-listing/.+?-(\d+)/?','index.php?post_type=ddf_listing&listing_id=$matches[1]','top' );
+	add_rewrite_tag('%listing_id%', '' );
 }

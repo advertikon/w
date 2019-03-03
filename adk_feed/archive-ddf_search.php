@@ -1,8 +1,8 @@
-<?php /* Template Name: Serach */ ?>
-
 <?php get_header(); ?>
-<?php error_reporting(E_ALL);
-ini_set('display_errors', 1); ?>
+<?php
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+?>
 
 <style>
 .page-item {
@@ -77,8 +77,6 @@ ini_set('display_errors', 1); ?>
 		width: 100%;
 	}
 }
-
-
 </style>
 
 <div style="width:90%;max-width:1200px; margin:90px auto 0 auto">
@@ -142,7 +140,7 @@ ini_set('display_errors', 1); ?>
 		<div class="listing one-third $is_first">
 			<div class="listing-wrap">
 				<div class="listing-widget-thumb">
-					<a href="http://kulnijjar.ca/listings/for-sale-8957-jacobs-subdivision-rd/" class="listing-image-link">
+					<a href="/ddf-listing/foo-{$l->id}" class="listing-image-link">
 						<img src="{$photo[ 0 ]}" class="attachment-listings size-listings wp-post-image" alt="{$photo[ 1 ]}" />
 					</a>
 					<span class="listing-status for-sale">{$l->transaction_type}</span>
@@ -153,7 +151,7 @@ ini_set('display_errors', 1); ?>
 				</div><!-- .listing-widget-thumb -->
 				<div class="listing-widget-details">
 					<h3 class="listing-title">
-						<a href="http://kulnijjar.ca/listings/for-sale-8957-jacobs-subdivision-rd/">{$l->transaction_type}: {$l->address}</a>
+						<a href="/ddf-listing/foo-{$l->id}">{$l->transaction_type}: {$l->address}</a>
 					</h3>
 					<p class="listing-address">
 						<span class="listing-address">{$l->address}</span><br />
@@ -165,7 +163,7 @@ ini_set('display_errors', 1); ?>
 						<li class="sqft">{$l->square_feet}<span>Sq ft</span></li>
 					</ul>
 				</div><!-- .listing-widget-details -->
-				<a href="http://kulnijjar.ca/listings/for-sale-8957-jacobs-subdivision-rd/" class="button btn-primary more-link">View Listing</a>
+				<a href="/ddf-listing/foo-{$l->id}" class="button btn-primary more-link">View Listing</a>
 			</div>
 		</div>
 HTML;

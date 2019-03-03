@@ -1,0 +1,435 @@
+object(SimpleXMLElement)#4701 (30) {
+  ["@attributes"]=>
+  array(2) {
+    ["ID"]=>
+    string(8) "20381186"
+    ["LastUpdated"]=>
+    string(29) "Fri, 01 Mar 2019 15:06:34 GMT"
+  }
+  ["ListingID"]=>
+  string(8) "10176850"
+  ["AgentDetails"]=>
+  object(SimpleXMLElement)#4681 (6) {
+    ["@attributes"]=>
+    array(1) {
+      ["ID"]=>
+      string(7) "1664893"
+    }
+    ["Name"]=>
+    string(15) "Louisa Cochrane"
+    ["Phones"]=>
+    object(SimpleXMLElement)#4630 (1) {
+      ["Phone"]=>
+      string(14) "(778) 475-1089"
+    }
+    ["Websites"]=>
+    object(SimpleXMLElement)#4629 (1) {
+      ["Website"]=>
+      array(4) {
+        [0]=>
+        string(29) "http://www.louisacochrane.com"
+        [1]=>
+        string(48) "http://www.facebook.com/LouisaCochrane.BC.Canada"
+        [2]=>
+        string(41) "http://www.linkedin.com/in/louisacochrane"
+        [3]=>
+        string(34) "http://twitter.com/louisa_cochrane"
+      }
+    }
+    ["Office"]=>
+    object(SimpleXMLElement)#4628 (7) {
+      ["@attributes"]=>
+      array(2) {
+        ["ID"]=>
+        string(5) "47795"
+        ["LastUpdated"]=>
+        string(29) "Fri, 01 Mar 2019 15:06:34 GMT"
+      }
+      ["Name"]=>
+      string(28) "Royal LePage Downtown Realty"
+      ["LogoLastUpdated"]=>
+      string(22) "2019-03-01 10:06:34 AM"
+      ["Address"]=>
+      object(SimpleXMLElement)#4627 (5) {
+        ["StreetAddress"]=>
+        string(18) "4007 - 32nd Street"
+        ["AddressLine1"]=>
+        string(18) "4007 - 32nd Street"
+        ["City"]=>
+        string(6) "Vernon"
+        ["Province"]=>
+        string(16) "British Columbia"
+        ["PostalCode"]=>
+        string(6) "V1T5P2"
+      }
+      ["Phones"]=>
+      object(SimpleXMLElement)#4626 (1) {
+        ["Phone"]=>
+        array(2) {
+          [0]=>
+          string(14) "(250) 545-5371"
+          [1]=>
+          string(14) "(250) 542-3381"
+        }
+      }
+      ["OrganizationType"]=>
+      string(4) "Firm"
+      ["Franchisor"]=>
+      string(12) "Royal LePage"
+    }
+    ["Position"]=>
+    string(32) "Personal Real Estate Corporation"
+  }
+  ["Board"]=>
+  string(2) "19"
+  ["Business"]=>
+  object(SimpleXMLElement)#4694 (1) {
+    ["Franchise"]=>
+    object(SimpleXMLElement)#4628 (0) {
+    }
+  }
+  ["Building"]=>
+  object(SimpleXMLElement)#4636 (25) {
+    ["BathroomTotal"]=>
+    string(1) "2"
+    ["BedroomsTotal"]=>
+    string(1) "2"
+    ["Amenities"]=>
+    string(15) "Secured Parking"
+    ["Appliances"]=>
+    string(68) "Dryer - Electric, Refrigerator, Washer, Range - Electric, Dishwasher"
+    ["ArchitecturalStyle"]=>
+    string(5) "Ranch"
+    ["BasementDevelopment"]=>
+    string(7) "Unknown"
+    ["BasementType"]=>
+    string(21) "Crawl space (Unknown)"
+    ["ConstructedDate"]=>
+    string(4) "1991"
+    ["CoolingType"]=>
+    string(24) "Central air conditioning"
+    ["ExteriorFinish"]=>
+    string(6) "Stucco"
+    ["FireplaceFuel"]=>
+    string(3) "Gas"
+    ["FireplacePresent"]=>
+    string(4) "True"
+    ["FireplaceType"]=>
+    string(12) "Conventional"
+    ["FireProtection"]=>
+    string(32) "Security system, Smoke Detectors"
+    ["FlooringType"]=>
+    string(18) "Carpeted, Linoleum"
+    ["FoundationType"]=>
+    string(8) "Concrete"
+    ["HalfBathTotal"]=>
+    string(1) "0"
+    ["HeatingFuel"]=>
+    string(11) "Natural gas"
+    ["HeatingType"]=>
+    string(10) "Forced air"
+    ["RoofMaterial"]=>
+    string(15) "Asphalt shingle"
+    ["RoofStyle"]=>
+    string(12) "Conventional"
+    ["SizeInterior"]=>
+    string(9) "1500 sqft"
+    ["StoriesTotal"]=>
+    string(1) "1"
+    ["Type"]=>
+    string(15) "Row / Townhouse"
+    ["UtilityWater"]=>
+    string(15) "Municipal water"
+  }
+  ["Land"]=>
+  object(SimpleXMLElement)#4677 (6) {
+    ["SizeTotalText"]=>
+    string(12) "under 1 acre"
+    ["AccessType"]=>
+    string(11) "Easy access"
+    ["Acreage"]=>
+    string(5) "false"
+    ["Amenities"]=>
+    string(55) "Golf Course, Recreation, Shopping, Park, Public Transit"
+    ["LandscapeFeatures"]=>
+    string(39) "Underground sprinkler, Fully landscaped"
+    ["Sewer"]=>
+    string(23) "Municipal sewage system"
+  }
+  ["Address"]=>
+  object(SimpleXMLElement)#4676 (11) {
+    ["StreetAddress"]=>
+    string(19) "#76 1001 30 Avenue,"
+    ["AddressLine1"]=>
+    string(19) "#76 1001 30 Avenue,"
+    ["StreetNumber"]=>
+    string(4) "1001"
+    ["StreetName"]=>
+    string(2) "30"
+    ["StreetSuffix"]=>
+    string(6) "Avenue"
+    ["City"]=>
+    string(6) "Vernon"
+    ["Province"]=>
+    string(16) "British Columbia"
+    ["PostalCode"]=>
+    string(6) "V1T9H8"
+    ["Country"]=>
+    string(6) "Canada"
+    ["CommunityName"]=>
+    string(9) "Inglewood"
+    ["Neighbourhood"]=>
+    string(9) "East Hill"
+  }
+  ["AlternateURL"]=>
+  object(SimpleXMLElement)#4634 (1) {
+    ["BrochureLink"]=>
+    string(29) "HTTP://www.louisacochrane.com"
+  }
+  ["AmmenitiesNearBy"]=>
+  string(55) "Golf Course, Recreation, Shopping, Park, Public Transit"
+  ["CommunityFeatures"]=>
+  string(26) "Adult Oriented, Quiet Area"
+  ["Features"]=>
+  string(15) "Private setting"
+  ["ListingContractDate"]=>
+  string(10) "2019-02-27"
+  ["MaintenanceFee"]=>
+  string(6) "335.00"
+  ["MaintenanceFeePaymentUnit"]=>
+  string(7) "Monthly"
+  ["MunicipalId"]=>
+  string(11) "017-428-319"
+  ["OwnershipType"]=>
+  string(18) "Condominium/Strata"
+  ["ParkingSpaces"]=>
+  object(SimpleXMLElement)#4633 (1) {
+    ["Parking"]=>
+    object(SimpleXMLElement)#4628 (1) {
+      ["Name"]=>
+      string(15) "Attached garage"
+    }
+  }
+  ["ParkingSpaceTotal"]=>
+  string(1) "4"
+  ["Photo"]=>
+  object(SimpleXMLElement)#4632 (1) {
+    ["PropertyPhoto"]=>
+    array(20) {
+      [0]=>
+      object(SimpleXMLElement)#4628 (3) {
+        ["SequenceId"]=>
+        string(1) "1"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [1]=>
+      object(SimpleXMLElement)#4629 (3) {
+        ["SequenceId"]=>
+        string(1) "2"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [2]=>
+      object(SimpleXMLElement)#4630 (3) {
+        ["SequenceId"]=>
+        string(1) "3"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [3]=>
+      object(SimpleXMLElement)#4626 (3) {
+        ["SequenceId"]=>
+        string(1) "4"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [4]=>
+      object(SimpleXMLElement)#4627 (3) {
+        ["SequenceId"]=>
+        string(1) "5"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [5]=>
+      object(SimpleXMLElement)#4625 (3) {
+        ["SequenceId"]=>
+        string(1) "6"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [6]=>
+      object(SimpleXMLElement)#4624 (3) {
+        ["SequenceId"]=>
+        string(1) "7"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [7]=>
+      object(SimpleXMLElement)#4623 (3) {
+        ["SequenceId"]=>
+        string(1) "8"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [8]=>
+      object(SimpleXMLElement)#4622 (3) {
+        ["SequenceId"]=>
+        string(1) "9"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [9]=>
+      object(SimpleXMLElement)#4621 (3) {
+        ["SequenceId"]=>
+        string(2) "10"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [10]=>
+      object(SimpleXMLElement)#4620 (3) {
+        ["SequenceId"]=>
+        string(2) "11"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [11]=>
+      object(SimpleXMLElement)#4619 (3) {
+        ["SequenceId"]=>
+        string(2) "12"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [12]=>
+      object(SimpleXMLElement)#4618 (3) {
+        ["SequenceId"]=>
+        string(2) "13"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [13]=>
+      object(SimpleXMLElement)#4617 (3) {
+        ["SequenceId"]=>
+        string(2) "14"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [14]=>
+      object(SimpleXMLElement)#4616 (3) {
+        ["SequenceId"]=>
+        string(2) "15"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [15]=>
+      object(SimpleXMLElement)#4615 (3) {
+        ["SequenceId"]=>
+        string(2) "16"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [16]=>
+      object(SimpleXMLElement)#4614 (3) {
+        ["SequenceId"]=>
+        string(2) "17"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [17]=>
+      object(SimpleXMLElement)#4613 (3) {
+        ["SequenceId"]=>
+        string(2) "18"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [18]=>
+      object(SimpleXMLElement)#4612 (3) {
+        ["SequenceId"]=>
+        string(2) "19"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+      [19]=>
+      object(SimpleXMLElement)#4611 (3) {
+        ["SequenceId"]=>
+        string(2) "20"
+        ["LastUpdated"]=>
+        string(22) "28/02/2019 06:19:19 PM"
+        ["PhotoLastUpdated"]=>
+        string(29) "Thu, 28 Feb 2019 23:19:19 GMT"
+      }
+    }
+  }
+  ["PoolType"]=>
+  string(12) "Outdoor pool"
+  ["Price"]=>
+  string(9) "399500.00"
+  ["PropertyType"]=>
+  string(13) "Single Family"
+  ["PublicRemarks"]=>
+  string(715) "BELOW ASSESSED VALUE!!  Quiet, easy living in this  2 bedroom rancher situated in one of Vernon's most popular 55+ adult community's - Inglewood.  This end unit home features one of the most spacious open floor plans (1500sqft) in the complex.    Spacious master suite features generous closet space and fantastic ensuite to pamper yourself in.. 15' vaulted ceilings, skylights and so much more!  Maintenance free living, along with a Clubhouse that features recreation center and in-ground swimming pool!  This Home is Waiting for YOU!   For further information, to arrange a private viewing or to present an offer call Louisa at 250.550.6561 (cell) / 778.475.1089 (office) or email louisa@realvernon.ca (id:31689)"
+  ["Structure"]=>
+  string(19) "Patio(s), Clubhouse"
+  ["TransactionType"]=>
+  string(8) "For sale"
+  ["UtilitiesAvailable"]=>
+  object(SimpleXMLElement)#4631 (0) {
+  }
+  ["AnalyticsClick"]=>
+  string(349) "<![CDATA[<script type='text/javascript'>
+ function redirect() { 
+var event = new RlEvent('crealocation');
+event.viewedProperty(20381186,31689,[1664893],[47795],[1390738],[86516]);
+event.set('event', 'type', 'click');
+event.record();
+setTimeout("window.location = 'https://www.realtor.ca/PropertyDetails.aspx?PropertyId=20381186'",500);}
+</script>]]>"
+  ["AnalyticsView"]=>
+  string(303) "<![CDATA[<script src='https://analytics.crea.ca/crearl.js' type='text/javascript'></script>
+<script type='text/javascript'>
+var event = new RlEvent('crealocation');
+event.viewedProperty(20381186,31689,[1664893],[47795],[1390738],[86516]);
+event.set('event', 'type', 'view');
+event.record();
+</script>]]>"
+  ["MoreInformationLink"]=>
+  string(63) "https://www.realtor.ca/PropertyDetails.aspx?PropertyId=20381186"
+}

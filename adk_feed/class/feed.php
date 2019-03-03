@@ -314,7 +314,11 @@ class Feed {
 		$total = ceil( $this->totalRows / Feed::PAGE_SIZE );
 		$start = [];
 		$end = [];
-		$middle = [];;
+		$middle = [];
+
+		if ( $total <= 1 ) {
+			return '';
+		}
 
 		if ( 1 === $page) {
 			$end[] = $this->renderPageItem( '>', $total - 1 );
@@ -392,6 +396,33 @@ class Feed {
 		return implode( "\n", $ret );
 	}
 
+	/**
+	 * @param $id
+	 * @return stdClass
+	 * @throws Exception
+	 */
+	public function fetch( $id ) {
+		global $wpdb;
+
+		$q = $wpdb->prepare(
+			"SELECT * FROM {$wpdb->prefix}adk_feed_data WHERE id = %d",
+			$id
+		);
+
+		//echo $q . "<br>";
+
+		$listing = $wpdb->get_row( $q );
+
+		if ( $listing->photo ) {
+			$listing->photos = $this->getImage( $listing->id, json_decode( $listing->photo ) );
+
+		} else {
+			$listing->photos = [ [ plugin_dir_url( realpath( __DIR__  ) ) . 'images/no-image.jpg', '' ] ];
+		}
+
+		return $listing;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	protected function renderPageItem( $page, $pageNumber = null, $isActive = false ) {
 		$status = [];
@@ -434,7 +465,6 @@ class Feed {
 			return $ret;
 		}
 
-		$wpdb->show_errors( true );
 		$ret = $wpdb->get_row( "SELECT MIN( $name ) min, MAX( $name ) max FROM {$wpdb->prefix}adk_feed_data where $name <> ''" );
 
 		ADKCache::add( $name, $ret );
@@ -659,11 +689,11 @@ class Feed {
 					$p->Building->BathroomTotal,
 					$p->Building->StoriesTotal,
 					$p->Building->SizeExterior,
-					$p->Land->SizeTotal,
-					$p->Price,
+					$p->Land->SizeTotal, // TODO: include sizeTotalText
+					$p->Price, // TODO: PricePerUnit, PricePerTime
 					trim($p->Address->AddressLine1 . ' ' . $p->Address->AddressLine2 ),
 					$p->Address->City,
-					$p->Address->PostalCode,
+					$p->Address->PostalCode, // TODO: Province, County
 					$p->PropertyType,
 					$p->Building->ArchitecturalStyle,
 					$p->TransactionType,
@@ -689,6 +719,10 @@ class Feed {
 					$p->OpenHouse && $p->OpenHouse->Event && $p->OpenHouse->Event->StartDateTime,
 					$this->getPhotoInfo( $p->Photo ),
 					$p->PublicRemarks,
+					// TODO: ParkingSpaces->Parking->Name
+					// TODO: ViewType (scenery)
+					// TODO: Building->Appliances, Land->Appliances
+					// TODO Address->Neighbourhood in order to search by neighborhood
 				]
 			);
 
