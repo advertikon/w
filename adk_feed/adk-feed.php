@@ -78,25 +78,48 @@ function create_table() {
 	$wpdb->show_errors();
 
 	$wpdb->query( "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}adk_feed_data (
-        id               int(11) NOT NULL UNIQUE,
-        listing_id       varchar(20) NOT NULL,
-        bedrooms         tinyint(2) NOT NULL,
-        bathrooms        tinyint(2) NOT NULL,
-        floors           tinyint(2) NOT NULL,
-        square_feet      decimal(8,2) NOT NULL,
-        lot_size         decimal(8,2) NOT NULL,
-        price            decimal(12,2) NOT NULL,
-        address          varchar(255) NOT NULL,
-        city             varchar(60) NOT NULL,
-        zip_code         varchar(10) NOT NULL,
-        property_type    varchar(60) NOT NULL,
-        building_type    varchar(60) NOT NULL,
-        transaction_type varchar(60) NOT NULL,
-        year_built       smallint(4) NOT NULL,
-        is_open          tinyint(1) NOT NULL,
-        photo            blob(1000) NOT NULL,
-        last_update      datetime NOT NULL,
-  		notes            varchar(2000) NOT NULL,
+        id                  int(11) NOT NULL UNIQUE,
+        listing_id          varchar(20) NOT NULL,
+        bedrooms            tinyint(2) NOT NULL,
+        bathrooms           tinyint(2) NOT NULL,
+        floors              tinyint(2) NOT NULL,
+        square_feet         varchar(60) NOT NULL,
+        lot_size            varchar(60) NOT NULL,
+        price               decimal(12,2) NULL,
+        address             varchar(255) NOT NULL,
+        city                varchar(60) NOT NULL,
+        zip_code            varchar(10) NOT NULL,
+        property_type       varchar(60) NOT NULL,
+        building_type       varchar(60) NOT NULL,
+        transaction_type    varchar(60) NOT NULL,
+        year_built          smallint(4) NULL,
+        is_open             tinyint(1) NOT NULL,
+        photo               blob(1000) NOT NULL,
+        last_update         timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  		notes               varchar(2000) NOT NULL,
+  		lot_size_text       varchar(20) NOT NULL,
+		square_feet_inner   varchar(20) NOT NULL,
+		price_per_time      decimal(12,2) NULL,
+		price_per_unit      decimal(12,2) NULL,
+		address2            varchar(255) NOT NULL,
+		county              varchar(50) NOT NULL,
+		province            varchar(50) NOT NULL,
+	  	street_number       varchar(20) NOT NULL,
+		street_address      varchar(600) NOT NULL,
+		neighbor            varchar(200) NOT NULL,
+		parking             varchar(40) NOT NULL,
+		scenery             varchar(200) NOT NULL,
+		building_appliances varchar(400) NOT NULL, 
+		land_appliances     varchar(400) NOT NULL,
+		farm_type           varchar(60) NOT NULL,
+		zoning_type         varchar(60) NOT NULL,
+		rent                decimal(12,2) NULL,
+		rent_per_time       decimal(12,2) NULL,
+		rent_per_unit       decimal(12,2) NULL,
+  		agent_name          varchar(60) NOT NULL,
+  		agent_phone         varchar(400) NOT NULL,
+  		agent_office_name   varchar(100) NOT NULL,
+  		agent_office_phone  varchar(400) NOT NULL,
   		INDEX i1 (price,bedrooms,bathrooms)
     )" );
 }
@@ -135,17 +158,17 @@ function adk_add_scripts() {
 }
 
 function adk_add_styles() {
-	wp_register_style('adk_feed', plugins_url('assets/stylesheets/jquery.selectBoxIt.css', __FILE__ ) );
-	wp_enqueue_style('adk_feed');
+	// wp_register_style('adk_feed', plugins_url('assets/stylesheets/jquery.selectBoxIt.css', __FILE__ ) );
+	// wp_enqueue_style('adk_feed');
 
-	wp_register_style('adk_feed_1', plugins_url('assets/stylesheets/wp-listings.css', __FILE__ ) );
-	wp_enqueue_style('adk_feed_1');
+	// wp_register_style('adk_feed_1', plugins_url('assets/stylesheets/wp-listings.css', __FILE__ ) );
+	// wp_enqueue_style('adk_feed_1');
 
-	wp_register_style('adk_feed_2', plugins_url('assets/stylesheets/wp-listings-widget.css', __FILE__ ) );
-	wp_enqueue_style('adk_feed_2');
+	// wp_register_style('adk_feed_2', plugins_url('assets/stylesheets/wp-listings-widget.css', __FILE__ ) );
+	// wp_enqueue_style('adk_feed_2');
 
-	wp_register_style('adk_feed_3', plugins_url('assets/stylesheets/wp-listings-single.css', __FILE__ ) );
-	wp_enqueue_style('adk_feed_3');
+	// wp_register_style('adk_feed_3', plugins_url('assets/stylesheets/wp-listings-single.css', __FILE__ ) );
+	// wp_enqueue_style('adk_feed_3');
 }
 
 function adk_create_posttype() {

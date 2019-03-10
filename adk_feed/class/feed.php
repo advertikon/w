@@ -263,50 +263,50 @@ class Feed {
 		return $results;
 	}
 
-	public function propertyTypesAsSelect() {
+	public function propertyTypesAsSelect( $id ) {
 		$name = 'property_type';
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Property Type', 'adk_feed' ) );
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Property Type', 'adk_feed' ), $id  );
 	}
 
-	public function transactionTypesAsSelect() {
+	public function transactionTypesAsSelect( $id ) {
 		$name = 'transaction_type';
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Transaction Type', 'adk_feed' ) );
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Transaction Type', 'adk_feed' ), $id );
 	}
 
-	public function buildingTypesAsSelect() {
+	public function buildingTypesAsSelect( $id ) {
 		$name = 'building_type';
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Building Type', 'adk_feed' ) );
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Building Type', 'adk_feed' ), $id );
 	}
 
-	public function bedroomsAsSelect() {
+	public function bedroomsAsSelect( $id ) {
 		$name = 'bedrooms';
 		$rooms = $this->getSearchRange( $name );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bedrooms', 'adk_feed' ) );
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bedrooms', 'adk_feed' ), $id );
 	}
 
-	public function bathroomsAsSelect() {
+	public function bathroomsAsSelect( $id ) {
 		$name = 'bathrooms';
 		$rooms = $this->getSearchRange( $name );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bathrooms', 'adk_feed' ) );
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bathrooms', 'adk_feed' ), $id );
 	}
 
-	public function squareFeetAsSelect() {
+	public function squareFeetAsSelect( $id ) {
 		$name = 'lot_size';
 		$rooms = $this->getSearchRange( $name );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Lot Size', 'adk_feed' ) );
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Lot Size', 'adk_feed' ), $id );
 	}
 
-	public function priceAsSelect() {
+	public function priceAsSelect( $id ) {
 		$name = 'price';
 		$rooms = $this->getSearchRange( $name );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Price', 'adk_feed' ) );
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Price', 'adk_feed' ), id );
 	}
 
 	public function pagination( $buttons = 10 ) {
@@ -486,13 +486,33 @@ class Feed {
 		return $ret;
 	}
 
-	protected function getSearchSelect( array $list, $name, $text ) {
+	protected function rangeToSet( \stdClass $range ) {
+		$ret = [];
+		$min = (int)$range->min;
+		$max = (int)$range->max;
+
+		$current = $min;
+		$ret[] = $current;
+
+		while( $current <= $max ) {
+			$current += $this->getStep( $current );
+			$ret[] = min( $max, $current );
+		}
+
+		return $ret;
+	}
+
+	protected function getStep( $val ) {
+		foreach( [ 100, 200, ] )
+	}
+
+	protected function getSearchSelect( array $list, $name, $text, $id ) {
 		$ret = [];
 		$value = isset( $_POST[ $name ] ) ? $_POST[ $name ] : '';
 
-		$ret[] = '<label>' . $text;
-		$ret[] = '<select class="search-item-responsive" name="' . $name . '">';
-		$ret[] = '<option value="0">' . __( 'Any', 'adk_feed' ) . '</option>';
+		$ret[] = "<label for='$id' class='dropdownLabel'>$text</label>";
+		$ret[] = "<select data-default='' data-hashkey='$name' name='ctl00\$MainContent\$ctl00\$ctl00\${$id}\$ctl00' data-placeholder='$text' id='$id'>";
+//		$ret[] = '<option value="0">' . __( 'Any', 'adk_feed' ) . '</option>';
 
 		foreach( $list as $i ) {
 			$selected = ( $value === $i ) ? ' selected="selected" ' : '';
@@ -607,6 +627,55 @@ class Feed {
 		update_option( 'adk_feed_last_update', date( 'Y-m-d H:i:s' ) );
 	}
 
+
+	protected function getFields( ResponsePropertyDetail $p ) {
+		// Pattern, value, in insert, in update
+		return [
+			'id'                  => [ '%d', $p->ID, true, false ],
+			'listing_id'          => [ '%s', $p->ListingID, true, true ],
+			'bedrooms'            => [ '%d', $p->Building->BedroomsTotal, true, true ],
+			'bathrooms'           => [ '%d', $p->Building->BathroomTotal, true, true ],
+			'floors'              => [ '%d', $p->Building->StoriesTotal, true, true ],
+			'square_feet'         => [ '%s', $p->Building->SizeExterior, true, true ],
+			'lot_size'            => [ '%s', $p->Land->SizeTotal, true, true ],
+			'price'               => [ '%f', $p->Price, true, true ],
+			'address'             => [ '%s', $p->Address->AddressLine1, true, true ],
+			'city'                => [ '%s', $p->Address->City, true, true ],
+			'zip_code'            => [ '%s', $p->Address->PostalCode, true, true ],
+			'property_type'       => [ '%s', $p->PropertyType, true, true ],
+			'building_type'       => [ '%s', $p->Building->Type, true, true ],
+			'transaction_type'    => [ '%s', $p->TransactionType, true, true ],
+			'year_built'          => [ '%d', $p->Building->ConstructedDate, true, true ],
+			'is_open'             => [ '%d', $p->OpenHouse && $p->OpenHouse->Event && $p->OpenHouse->Event->StartDateTime, true, true ],
+			'photo'               => [ '%s', $this->getPhotoInfo( $p->Photo ), true, true ],
+			'notes'               => [ '%s', $p->PublicRemarks, true, true ],
+
+			'lot_size_text'       => [ '%s', $p->Land->SizeTotalText, true, true ],
+			'square_feet_inner'   => [ '%s', $p->Building->SizeInterior, true, true ],
+			'price_per_time'      => [ '%f', $p->PricePerTime, true, true ],
+			'price_per_unit'      => [ '%f', $p->PricePerUnit, true, true ],
+			'address2'            => [ '%s', $p->Address->AddressLine2, true, true ],
+			'county'              => [ '%s', $p->Address->CommunityName, true, true ],
+			'province'            => [ '%s', $p->Address->Province, true, true ],
+			'street_number'       => [ '%s', $p->Address->StreetNumber, true, true ],
+			'street_address'      => [ '%s', $p->Address->StreetAddress, true, true ],
+			'neighbor'            => [ '%s', $p->Address->Neighbourhood, true, true ],
+			'parking'             => [ '%s', $p->ParkingSpaces->Parking->Name, true, true ],
+			'scenery'             => [ '%s', $p->ViewType, true, true ],
+			'building_appliances' => [ '%s', $p->Building->Appliances ],
+			'land_appliances'     => [ '%s', $p->Land->Amenities ],
+			'farm_type'           => [ '%s', $p->FarmType ],
+			'zoning_type'         => [ '%s', $p->ZoningType ],
+			'rent'                => [ '%f', $p->Lease, true, true ],
+			'rent_per_time'       => [ '%f', $p->LeasePerTime, true, true ],
+			'rent_per_unit'       => [ '%f', $p->LeasePerUnit, true, true ],
+			'agent_name'          => [ '%s', $p->AgentDetails->Name, true, true ],
+			'agent_phone'         => [ '%s', implode( ',', (array)$p->AgentDetails->Phones->Phone ), true, true ],
+			'agent_office_name'   => [ '%s', $p->AgentDetails->Office->Name, true, true ],
+			'agent_office_phone'  => [ '%s', implode( ',', (array)$p->AgentDetails->Office->Phones->Phone ), true, true ],
+		];
+	}
+
 	/**
 	 * @param ResponsePropertyDetails $properties
 	 * @throws Exception
@@ -617,115 +686,30 @@ class Feed {
 
 		$time1 = microtime( true );
 		$mem1 = memory_get_usage( true );
+		$placeholders = [];
+		$values = [];
 
 		foreach( $properties->getData() as $p ) {
-			$q = $wpdb->prepare( "INSERT INTO {$wpdb->prefix}adk_feed_data 
-  				(
-  					id,
-			        listing_id,
-			        bedrooms,
-			        bathrooms,
-			        floors,
-			        square_feet,
-			        lot_size,
-			        price,
-			        address,
-			        city,
-			        zip_code,
-			        property_type,
-			        building_type,
-			        transaction_type,
-			        year_built,
-			        is_open,
-			        photo,
-			        last_update,
-  				 	notes
-                ) 
-                  VALUES
-                  (
-                  	%d, -- id
-                    %s, -- listing_id
-                    %d, -- bedrooms
-                    %d, -- bathrooms
-                    %d, -- floors
-                    %f, -- square_feet
-                    %f, -- lot_size
-                    %f, -- price
-                    %s, -- address
-                    %s, -- city
-                    %s, -- zip_code
-                    %s, -- property_type
-                    %s, -- building_type
-                    %s, -- transaction_type,
-                    %d, -- year_built
-                    %d, -- is_open
-                    %s, -- photo
-                    NOW(),-- last_update
-                    %s  -- notes
-                  ) ON DUPLICATE KEY UPDATE
-			        listing_id       = %s,
-			        bedrooms         = %d,
-			        bathrooms        = %d,
-			        floors           = %d,
-			        square_feet      = %f,
-			        lot_size         = %f,
-			        price            = %f,
-			        address          = %s,
-			        city             = %s,
-			        zip_code         = %s,
-			        property_type    = %s,
-			        building_type    = %s,
-			        transaction_type = %s,
-			        year_built       = %d,
-			        is_open          = %d,
-			        photo            = %s,
-			        last_update      = NOW(),
-                    notes            = %s
-					",
-				[
-					$p->ID,
-					$p->ListingID,
-					$p->Building->BedroomsTotal,
-					$p->Building->BathroomTotal,
-					$p->Building->StoriesTotal,
-					$p->Building->SizeExterior,
-					$p->Land->SizeTotal, // TODO: include sizeTotalText
-					$p->Price, // TODO: PricePerUnit, PricePerTime
-					trim($p->Address->AddressLine1 . ' ' . $p->Address->AddressLine2 ),
-					$p->Address->City,
-					$p->Address->PostalCode, // TODO: Province, County
-					$p->PropertyType,
-					$p->Building->ArchitecturalStyle,
-					$p->TransactionType,
-					$p->Building->ConstructedDate,
-					$p->OpenHouse && $p->OpenHouse->Event && $p->OpenHouse->Event->StartDateTime,
-					$this->getPhotoInfo( $p->Photo ),
-					$p->PublicRemarks,
+			$fields = $this->getFields( $p );
 
-					$p->ListingID,
-					$p->Building->BedroomsTotal,
-					$p->Building->BathroomTotal,
-					$p->Building->StoriesTotal,
-					$p->Building->SizeExterior,
-					$p->Land->SizeTotal,
-					$p->Price,
-					trim( $p->Address->AddressLine1 . ' ' . $p->Address->AddressLine2 ),
-					$p->Address->City,
-					$p->Address->PostalCode,
-					$p->PropertyType,
-					$p->Building->ArchitecturalStyle,
-					$p->TransactionType,
-					$p->Building->ConstructedDate,
-					$p->OpenHouse && $p->OpenHouse->Event && $p->OpenHouse->Event->StartDateTime,
-					$this->getPhotoInfo( $p->Photo ),
-					$p->PublicRemarks,
-					// TODO: ParkingSpaces->Parking->Name
-					// TODO: ViewType (scenery)
-					// TODO: Building->Appliances, Land->Appliances
-					// TODO Address->Neighbourhood in order to search by neighborhood
-				]
+//			var_dump( $p->AgentDetails );
+//			throw new \Exception('gpp' );
+
+			foreach( $fields as $k => $v ) {
+				$placeholders[ $k ] = $v[ 0 ];
+			}
+
+			foreach( $fields as $k => $v ) {
+				$values[ $k ] = $v[ 1 ];
+			}
+
+			$q = $wpdb->prepare( "INSERT INTO {$wpdb->prefix}adk_feed_data 
+  				(" . implode( ',', array_keys( $placeholders ) ) . ") 
+                VALUES(" . implode( ',', $placeholders ) . ")",
+				$values
 			);
 
+			$wpdb->query( "DELETE FROM {$wpdb->prefix}adk_feed_data WHERE id = " . (int)$fields['id'][ 1 ] );
 			$wpdb->query( $q );
 
 			if ( !$wpdb->rows_affected ) {
