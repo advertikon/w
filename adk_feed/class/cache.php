@@ -23,7 +23,7 @@ class ADKCache {
 
 	static public function flush() {
 		foreach( scandir( self::$dir ) as $i ) {
-			if ( is_file( $i ) ) {
+			if ( is_file( self::$dir . $i ) ) {
 				unlink( self::$dir  . $i );
 			}
 		}

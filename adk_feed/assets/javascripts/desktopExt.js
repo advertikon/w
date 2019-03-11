@@ -620,11 +620,79 @@ var activeLightBoxCount, YT, YTConfig;
                         t.className = n ? i.trim(r) : "" } return this }, toggleClass: function(n, t) { var r = typeof n; return "boolean" == typeof t && "string" === r ? t ? this.addClass(n) : this.removeClass(n) : i.isFunction(n) ? this.each(function(r) { i(this).toggleClass(n.call(this, r, this.className, t), t) }) : this.each(function() { if ("string" === r)
                     for (var t, f = 0, u = i(this), e = n.match(s) || []; t = e[f++];) u.hasClass(t) ? u.removeClass(t) : u.addClass(t);
                 else(r === o || "boolean" === r) && (this.className && i._data(this, "__className__", this.className), this.className = this.className || n === !1 ? "" : i._data(this, "__className__") || "") }) }, hasClass: function(n) { for (var i = " " + n + " ", t = 0, r = this.length; r > t; t++)
-                if (1 === this[t].nodeType && (" " + this[t].className + " ").replace(ii, " ").indexOf(i) >= 0) return !0; return !1 }, val: function(n) { var u, r, e, f = this[0]; return arguments.length ? (e = i.isFunction(n), this.each(function(u) { var f;
-                1 === this.nodeType && (f = e ? n.call(this, u, i(this).val()) : n, null == f ? f = "" : "number" == typeof f ? f += "" : i.isArray(f) && (f = i.map(f, function(n) { return null == n ? "" : n + "" })), r = i.valHooks[this.type] || i.valHooks[this.nodeName.toLowerCase()], r && "set" in r && r.set(this, f, "value") !== t || (this.value = f)) })) : f ? (r = i.valHooks[f.type] || i.valHooks[f.nodeName.toLowerCase()], r && "get" in r && (u = r.get(f, "value")) !== t ? u : (u = f.value, "string" == typeof u ? u.replace(ie, "") : null == u ? "" : u)) : void 0 } });
-    i.extend({ valHooks: { option: { get: function(n) { var t = i.find.attr(n, "value"); return null != t ? t : n.text } }, select: { get: function(n) { for (var e, t, o = n.options, r = n.selectedIndex, u = "select-one" === n.type || 0 > r, s = u ? null : [], h = u ? r + 1 : o.length, f = 0 > r ? h : u ? r : 0; h > f; f++)
-                        if (t = o[f], !(!t.selected && f !== r || (i.support.optDisabled ? t.disabled : null !== t.getAttribute("disabled")) || t.parentNode.disabled && i.nodeName(t.parentNode, "optgroup"))) { if (e = i(t).val(), u) return e;
-                            s.push(e) } return s }, set: function(n, t) { for (var u, r, f = n.options, e = i.makeArray(t), o = f.length; o--;) r = f[o], (r.selected = i.inArray(i(r).val(), e) >= 0) && (u = !0); return u || (n.selectedIndex = -1), e } } }, attr: function(n, r, u) { var f, e, s = n.nodeType; if (n && 3 !== s && 8 !== s && 2 !== s) return typeof n.getAttribute === o ? i.prop(n, r, u) : (1 === s && i.isXMLDoc(n) || (r = r.toLowerCase(), f = i.attrHooks[r] || (i.expr.match.bool.test(r) ? or : d)), u === t ? f && "get" in f && null !== (e = f.get(n, r)) ? e : (e = i.find.attr(n, r), null == e ? t : e) : null !== u ? f && "set" in f && (e = f.set(n, u, r)) !== t ? e : (n.setAttribute(r, u + ""), u) : (i.removeAttr(n, r), t)) }, removeAttr: function(n, t) { var r, u, e = 0,
+                if (1 === this[t].nodeType && (" " + this[t].className + " ").replace(ii, " ").indexOf(i) >= 0) return !0; return !1 },
+    val: function( options ) {
+        var value;
+  var hooks;
+  var patternlab;
+  var elem = this[0];
+  return arguments.length ? (patternlab = i.isFunction(options), this.each(function(rendered) {
+    var value;
+    if (1 === this.nodeType) {
+      value = patternlab ? options.call(this, rendered, i(this).val()) : options;
+      if (null == value) {
+        /** @type {string} */
+        value = "";
+      } else {
+        if ("number" == typeof value) {
+          /** @type {string} */
+          value = value + "";
+        } else {
+          if (i.isArray(value)) {
+            value = i.map(value, function(value) {
+              return null == value ? "" : value + "";
+            });
+          }
+        }
+      }
+      hooks = i.valHooks[this.type] || i.valHooks[this.nodeName.toLowerCase()];
+      if (!(hooks && "set" in hooks && hooks.set(this, value, "value") !== t)) {
+        this.value = value;
+      }
+    }
+  })) :
+  elem ? (
+    hooks = i.valHooks[elem.type] || i.valHooks[elem.nodeName.toLowerCase()],
+    hooks && "get" in hooks && (value = hooks.get(elem, "value")) !== t ?
+        value :
+        (value = elem.value, "string" == typeof value ?
+            value.replace(ie, "") :
+            null == value ? "" : value ) ):
+void 0;}
+        }
+        );
+    i.extend({
+        valHooks: {
+            option: {
+                get: function(n) {
+                    var t = i.find.attr(n, "value");
+                    return null != t ? t : n.text
+                }
+            },
+            select: {
+                get: function(n) {
+                    var
+                        e, t, o = n.options,
+                        r = n.selectedIndex,
+                        u = "select-one" === n.type || 0 > r,
+                        s = u ? null : [],
+                        h = u ? r + 1 : o.length,
+                        f = 0 > r ? h : u ? r : 0;
+
+                    for (; h > f; f++) 
+                        if (
+                            t = o[f],
+                            !(!t.selected && f !== r ||
+                                (i.support.optDisabled ? t.disabled : null !== t.getAttribute("disabled")) ||
+                                t.parentNode.disabled &&
+                                i.nodeName(t.parentNode, "optgroup"))) {
+                            if (e = i(t).val(), u) return e;
+                            s.push(e)
+                        }
+
+                        return s
+                },
+                set: function(n, t) { for (var u, r, f = n.options, e = i.makeArray(t), o = f.length; o--;) r = f[o], (r.selected = i.inArray(i(r).val(), e) >= 0) && (u = !0); return u || (n.selectedIndex = -1), e } } }, attr: function(n, r, u) { var f, e, s = n.nodeType; if (n && 3 !== s && 8 !== s && 2 !== s) return typeof n.getAttribute === o ? i.prop(n, r, u) : (1 === s && i.isXMLDoc(n) || (r = r.toLowerCase(), f = i.attrHooks[r] || (i.expr.match.bool.test(r) ? or : d)), u === t ? f && "get" in f && null !== (e = f.get(n, r)) ? e : (e = i.find.attr(n, r), null == e ? t : e) : null !== u ? f && "set" in f && (e = f.set(n, u, r)) !== t ? e : (n.setAttribute(r, u + ""), u) : (i.removeAttr(n, r), t)) }, removeAttr: function(n, t) { var r, u, e = 0,
                 f = t && t.match(s); if (f && 1 === n.nodeType)
                 while (r = f[e++]) u = i.propFix[r] || r, i.expr.match.bool.test(r) ? ht && a || !ri.test(r) ? n[u] = !1 : n[i.camelCase("default-" + r)] = n[u] = !1 : i.attr(n, r, ""), n.removeAttribute(a ? r : u) }, attrHooks: { type: { set: function(n, t) { if (!i.support.radioValue && "radio" === t && i.nodeName(n, "input")) { var r = n.value; return n.setAttribute("type", t), r && (n.value = r), t } } } }, propFix: { "for": "htmlFor", "class": "className" }, prop: function(n, r, u) { var e, f, s, o = n.nodeType; if (n && 3 !== o && 8 !== o && 2 !== o) return s = 1 !== o || !i.isXMLDoc(n), s && (r = i.propFix[r] || r, f = i.propHooks[r]), u !== t ? f && "set" in f && (e = f.set(n, u, r)) !== t ? e : n[r] = u : f && "get" in f && null !== (e = f.get(n, r)) ? e : n[r] }, propHooks: { tabIndex: { get: function(n) { var t = i.find.attr(n, "tabindex"); return t ? parseInt(t, 10) : re.test(n.nodeName) || ue.test(n.nodeName) && n.href ? 0 : -1 } } } });
     or = { set: function(n, t, r) { return t === !1 ? i.removeAttr(n, r) : ht && a || !ri.test(r) ? n.setAttribute(!a && i.propFix[r] || r, r) : n[i.camelCase("default-" + r)] = n[r] = !0, r } };

@@ -1313,7 +1313,8 @@ var Compare = function() {
 		n[n.Pie = 2] = "Pie" }(DemographicsChartTypes || (DemographicsChartTypes = {})),
 	function(n) { n[n.Added = 1] = "Added";
 		n[n.Removed = 2] = "Removed" }(FavouriteState || (FavouriteState = {})),
-	function(n) { n[n.Agricultural = 302] = "Agricultural";
+	function(n) {
+		n[n.Agricultural = 302] = "Agricultural";
 		n[n.Business = 306] = "Business";
 		n[n.Industrial = 307] = "Industrial";
 		n[n.Institutional = 309] = "Institutional";
@@ -1325,7 +1326,9 @@ var Compare = function() {
 		n[n.Recreational = 301] = "Recreational";
 		n[n.Retail = 305] = "Retail";
 		n[n.SingleFamily = 300] = "SingleFamily";
-		n[n.Hospitality = 312] = "Hospitality" }(PropertyTypes || (PropertyTypes = {})),
+		n[n.Hospitality = 312] = "Hospitality";
+		n[n.VacantLand = "Vacant Land"] = "VacantLand";
+	}(PropertyTypes || (PropertyTypes = {})),
 	function(n) { n[n.Residential = 1] = "Residential";
 		n[n.Commercial = 2] = "Commercial" }(ApplicationModes || (ApplicationModes = {})),
 	function(n) { n[n.RealtorSearchResults = 0] = "RealtorSearchResults";
@@ -1343,7 +1346,8 @@ var Compare = function() {
 		n[n.Sale = "For sale"] = "Sale";
 		n[n.Lease = "For lease"] = "Lease";
 		n[n.Rent = "For rent"] = "Rent" }(TransactionType || (TransactionType = {})),
-	function(n) { n[n.All = 0] = "All";
+	function(n) {
+		n[n.All = 0] = "All";
 		n[n.Residential = 1] = "Residential";
 		n[n.Recreational = 2] = "Recreational";
 		n[n.Condo = 3] = "Condo";
@@ -1356,7 +1360,9 @@ var Compare = function() {
 		n[n.Industrial = 10] = "Industrial";
 		n[n.Office = 11] = "Office";
 		n[n.Hospitality = 12] = "Hospitality";
-		n[n.Institutional = 13] = "Institutional" }(SearchType || (SearchType = {})),
+		n[n.Institutional = 13] = "Institutional";
+		n[n.VacantLand = "Vacant Land"] = "VacantLand";
+	}(SearchType || (SearchType = {})),
 	function(n) { n[n.Website = 1] = "Website";
 		n[n.Facebook = 2] = "Facebook";
 		n[n.LinkedIn = 3] = "LinkedIn";
@@ -4257,41 +4263,49 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 						/** @type {boolean} */
 						extraAttr = true;
 					}
+
 					channel = this;
+
 					if (ApplicationState.UserIsSignedIn && extraAttr) {
 						Gigya.loadConsumerSearchPref(channel.CurrentSearchMode(), channel.Consumer);
 						channel.refreshNumberOfNonDefaultSecondaryFilters();
 					}
+
 					transactionType = type == ApplicationModes.Residential ? $("#ddlTransactionTypeRes").val() : $("#ddlTransactionTypeCom").val();
 					propertyType = type == ApplicationModes.Residential ? $("#ddlPropertyTypeRes").val() : $("#ddlPropertyTypeCom").val();
+					
 					$("#ddlPropertyTypeRes").next(".select2-container").toggle(type == ApplicationModes.Residential);
 					$("#ddlPropertyTypeCom").next(".select2-container").toggle(type == ApplicationModes.Commercial);
 					$(".homeMoreFilterCon").each(function() {
 						$(this).hide();
 						$(this).toggleClass("active", false);
 					});
+
 					$(".homeFilterCon").hide();
 					moreFiltersWrapper = $("#homeSearchMoreFiltersInnerCon");
 					this.updateFilter($("#groupId"), moreFiltersWrapper);
+
 					if (type == ApplicationModes.Residential) {
 						this.updateFilter($("#propertyTypeRes"), moreFiltersWrapper);
+
 					} else {
 						this.updateFilter($("#propertyTypeCom"), moreFiltersWrapper);
 					}
+
 					if (propertyType == SearchType.Residential) {
 						this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
+
 						if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent ) {
 							$("#MinPriceTop, #MaxPriceTop").show();
 							this.updateFilter($("#priceMin"), moreFiltersWrapper);
 							this.updateFilter($("#priceMax"), moreFiltersWrapper);
+
 						} else {
-
-									$("#MinRentTop, #MaxRentTop").show();
-									this.updateFilter($("#rentMin"), moreFiltersWrapper);
-									this.updateFilter($("#rentMax"), moreFiltersWrapper);
-
-
+							$("#MinRentTop, #MaxRentTop").show();
+							this.updateFilter($("#rentMin"), moreFiltersWrapper);
+							this.updateFilter($("#rentMax"), moreFiltersWrapper);
 						}
+
 						$("#BedsTop, #BathsTop").show();
 						this.updateFilter($("#beds"), moreFiltersWrapper);
 						this.updateFilter($("#baths"), moreFiltersWrapper);
@@ -4304,12 +4318,12 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 					} else {
 						if (propertyType == SearchType.Recreational) {
 							this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
-							if (transactionType == TransactionType.Sale) {
+							if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 								$("#MinPriceTop, #MaxPriceTop").show();
 								this.updateFilter($("#priceMin"), moreFiltersWrapper);
 								this.updateFilter($("#priceMax"), moreFiltersWrapper);
 							} else {
-								if (transactionType == TransactionType.Rent) {
+								if (transactionType == TransactionType.Rent || transactionType == TransactionType.Lease) {
 									$("#MinRentTop, #MaxRentTop").show();
 									this.updateFilter($("#rentMin"), moreFiltersWrapper);
 									this.updateFilter($("#rentMax"), moreFiltersWrapper);
@@ -4327,12 +4341,12 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 						} else {
 							if (propertyType == SearchType.Condo) {
 								this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
-								if (transactionType == TransactionType.Sale) {
+								if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 									$("#MinPriceTop, #MaxPriceTop").show();
 									this.updateFilter($("#priceMin"), moreFiltersWrapper);
 									this.updateFilter($("#priceMax"), moreFiltersWrapper);
 								} else {
-									if (transactionType == TransactionType.Rent) {
+									if (transactionType == TransactionType.Rent || transactionType == TransactionType.Lease) {
 										$("#MinRentTop, #MaxRentTop").show();
 										this.updateFilter($("#rentMin"), moreFiltersWrapper);
 										this.updateFilter($("#rentMax"), moreFiltersWrapper);
@@ -4349,12 +4363,12 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 							} else {
 								if (propertyType == SearchType.Multifamily && type == ApplicationModes.Residential) {
 									this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
-									if (transactionType == TransactionType.Sale) {
+									if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 										$("#MinPriceTop, #MaxPriceTop, #BuildingSpaceTop").show();
 										this.updateFilter($("#priceMin"), moreFiltersWrapper);
 										this.updateFilter($("#priceMax"), moreFiltersWrapper);
 									} else {
-										if (transactionType == TransactionType.Rent) {
+										if (transactionType == TransactionType.Rent || transactionType == TransactionType.Lease) {
 											$("#MinRentTop, #MaxRentTop").show();
 											this.updateFilter($("#rentMin"), moreFiltersWrapper);
 											this.updateFilter($("#rentMax"), moreFiltersWrapper);
@@ -4362,7 +4376,7 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 									}
 									$("#NumberOfUnitsTop").show();
 									this.updateFilter($("#numberOfUnits"), moreFiltersWrapper);
-									if (transactionType == TransactionType.Sale) {
+									if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 										this.updateFilter($("#buildingSpace"), moreFiltersWrapper);
 									}
 									this.updateFilter($("#listedSince"), moreFiltersWrapper);
@@ -4371,12 +4385,12 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 								} else {
 									if (propertyType == SearchType.Agricultural && type == ApplicationModes.Residential) {
 										this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
-										if (transactionType == TransactionType.Sale) {
+										if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 											$("#MinPriceTop, #MaxPriceTop").show();
 											this.updateFilter($("#priceMin"), moreFiltersWrapper);
 											this.updateFilter($("#priceMax"), moreFiltersWrapper);
 										} else {
-											if (transactionType == TransactionType.Rent) {
+											if (transactionType == TransactionType.Rent || transactionType == TransactionType.Lease) {
 												$("#MinRentTop, #MaxRentTop").show();
 												this.updateFilter($("#rentMin"), moreFiltersWrapper);
 												this.updateFilter($("#rentMax"), moreFiltersWrapper);
@@ -4395,12 +4409,12 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 									} else {
 										if (propertyType == SearchType.Parking) {
 											this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
-											if (transactionType == TransactionType.Sale) {
+											if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 												$("#MinPriceTop, #MaxPriceTop").show();
 												this.updateFilter($("#priceMin"), moreFiltersWrapper);
 												this.updateFilter($("#priceMax"), moreFiltersWrapper);
 											} else {
-												if (transactionType == TransactionType.Rent) {
+												if (transactionType == TransactionType.Rent || transactionType == TransactionType.Lease) {
 													$("#MinRentTop, #MaxRentTop").show();
 													this.updateFilter($("#rentMin"), moreFiltersWrapper);
 													this.updateFilter($("#rentMax"), moreFiltersWrapper);
@@ -4413,12 +4427,12 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 										} else {
 											if (propertyType == SearchType.All && type == ApplicationModes.Residential) {
 												this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
-												if (transactionType == TransactionType.Sale) {
+												if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 													$("#MinPriceTop, #MaxPriceTop").show();
 													this.updateFilter($("#priceMin"), moreFiltersWrapper);
 													this.updateFilter($("#priceMax"), moreFiltersWrapper);
 												} else {
-													if (transactionType == TransactionType.Rent) {
+													if (transactionType == TransactionType.Rent || transactionType == TransactionType.Lease) {
 														$("#MinRentTop, #MaxRentTop").show();
 														this.updateFilter($("#rentMin"), moreFiltersWrapper);
 														this.updateFilter($("#rentMax"), moreFiltersWrapper);
@@ -4432,12 +4446,12 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 												if (propertyType == SearchType.Land && type == ApplicationModes.Residential) {
 													this.updateFilter($("#transactionTypeRes"), moreFiltersWrapper);
 													$("#LandSizeTop").show();
-													if (transactionType == TransactionType.Sale) {
+													if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 														$("#MinPriceTop, #MaxPriceTop").show();
 														this.updateFilter($("#priceMin"), moreFiltersWrapper);
 														this.updateFilter($("#priceMax"), moreFiltersWrapper);
 													} else {
-														if (transactionType == TransactionType.Rent) {
+														if (transactionType == TransactionType.Rent || transactionType == TransactionType.Lease) {
 															$("#MinRentTop, #MaxRentTop").show();
 															this.updateFilter($("#rentMin"), moreFiltersWrapper);
 															this.updateFilter($("#rentMax"), moreFiltersWrapper);
@@ -4452,7 +4466,7 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 												} else {
 													if (propertyType == SearchType.Multifamily && type == ApplicationModes.Commercial) {
 														this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
-														if (transactionType == TransactionType.Sale) {
+														if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 															$("#MinPriceTop, #MaxPriceTop,#BuildingSpaceTop").show();
 															this.updateFilter($("#priceMin"), moreFiltersWrapper);
 															this.updateFilter($("#priceMax"), moreFiltersWrapper);
@@ -4469,14 +4483,14 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 														if (propertyType == SearchType.All && type == ApplicationModes.Commercial) {
 															this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
 															$("#LandSizeTop").show();
-															if (transactionType == TransactionType.Sale) {
+															if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																$("#MinPriceTop, #MaxPriceTop,#BuildingSpaceTop").show();
 																this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																this.updateFilter($("#priceMax"), moreFiltersWrapper);
 															} else {
 																transactionType == TransactionType.Rent;
 															}
-															if (transactionType == TransactionType.Sale) {
+															if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																this.updateFilter($("#buildingSpace"), moreFiltersWrapper);
 															}
 															this.updateFilter($("#landSize"), moreFiltersWrapper);
@@ -4485,14 +4499,14 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 														} else {
 															if (propertyType == SearchType.Business) {
 																this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
-																if (transactionType == TransactionType.Sale) {
+																if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																	$("#MinPriceTop, #MaxPriceTop,#BuildingSpaceTop").show();
 																	this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																	this.updateFilter($("#priceMax"), moreFiltersWrapper);
 																} else {
 																	transactionType == TransactionType.Rent;
 																}
-																if (transactionType == TransactionType.Sale) {
+																if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																	this.updateFilter($("#buildingSpace"), moreFiltersWrapper);
 																}
 																this.updateFilter($("#listedSince"), moreFiltersWrapper);
@@ -4500,14 +4514,14 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 															} else {
 																if (propertyType == SearchType.Office) {
 																	this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
-																	if (transactionType == TransactionType.Sale) {
+																	if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																		$("#MinPriceTop, #MaxPriceTop, #BuildingSpaceTop").show();
 																		this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																		this.updateFilter($("#priceMax"), moreFiltersWrapper);
 																	} else {
 																		transactionType == TransactionType.Rent;
 																	}
-																	if (transactionType == TransactionType.Sale) {
+																	if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																		this.updateFilter($("#buildingSpace"), moreFiltersWrapper);
 																	}
 																	this.updateFilter($("#listedSince"), moreFiltersWrapper);
@@ -4515,14 +4529,14 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 																} else {
 																	if (propertyType == SearchType.Retail) {
 																		this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
-																		if (transactionType == TransactionType.Sale) {
+																		if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																			$("#MinPriceTop, #MaxPriceTop,#BuildingSpaceTop").show();
 																			this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																			this.updateFilter($("#priceMax"), moreFiltersWrapper);
 																		} else {
 																			transactionType == TransactionType.Rent;
 																		}
-																		if (transactionType == TransactionType.Sale) {
+																		if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																			this.updateFilter($("#buildingSpace"), moreFiltersWrapper);
 																		}
 																		this.updateFilter($("#listedSince"), moreFiltersWrapper);
@@ -4531,7 +4545,7 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 																		if (propertyType == SearchType.Land && type == ApplicationModes.Commercial) {
 																			this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
 																			$("#LandSizeTop").show();
-																			if (transactionType == TransactionType.Sale) {
+																			if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																				$("#MinPriceTop, #MaxPriceTop").show();
 																				this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																				this.updateFilter($("#priceMax"), moreFiltersWrapper);
@@ -4546,14 +4560,14 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 																		} else {
 																			if (propertyType == SearchType.Institutional) {
 																				this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
-																				if (transactionType == TransactionType.Sale) {
+																				if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																					$("#MinPriceTop, #MaxPriceTop,#BuildingSpaceTop").show();
 																					this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																					this.updateFilter($("#priceMax"), moreFiltersWrapper);
 																				} else {
 																					transactionType == TransactionType.Rent;
 																				}
-																				if (transactionType == TransactionType.Sale) {
+																				if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																					this.updateFilter($("#buildingSpace"), moreFiltersWrapper);
 																				}
 																				this.updateFilter($("#listedSince"), moreFiltersWrapper);
@@ -4562,14 +4576,14 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 																				if (propertyType == SearchType.Industrial) {
 																					this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
 																					$("#LandSizeTop").show();
-																					if (transactionType == TransactionType.Sale) {
+																					if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																						$("#MinPriceTop, #MaxPriceTop, #BuildingSpaceTop").show();
 																						this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																						this.updateFilter($("#priceMax"), moreFiltersWrapper);
 																					} else {
 																						transactionType == TransactionType.Rent;
 																					}
-																					if (transactionType == TransactionType.Sale) {
+																					if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																						this.updateFilter($("#buildingSpace"), moreFiltersWrapper);
 																					}
 																					this.updateFilter($("#landSize"), moreFiltersWrapper);
@@ -4579,7 +4593,7 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 																					if (propertyType == SearchType.Agricultural && type == ApplicationModes.Commercial) {
 																						this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
 																						$("#LandSizeTop").show();
-																						if (transactionType == TransactionType.Sale) {
+																						if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																							$("#MinPriceTop, #MaxPriceTop").show();
 																							this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																							this.updateFilter($("#priceMax"), moreFiltersWrapper);
@@ -4599,7 +4613,7 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 																					} else {
 																						if (propertyType == SearchType.Hospitality) {
 																							this.updateFilter($("#transactionTypeCom"), moreFiltersWrapper);
-																							if (transactionType == TransactionType.Sale) {
+																							if (transactionType == TransactionType.Sale || transactionType == TransactionType.SaleOrRent) {
 																								$("#MinPriceTop, #MaxPriceTop, #BuildingSpaceTop").show();
 																								this.updateFilter($("#priceMin"), moreFiltersWrapper);
 																								this.updateFilter($("#priceMax"), moreFiltersWrapper);
@@ -7486,14 +7500,78 @@ var DropDown = function() {
 			n.attr("data-reset") == "true" && (n.removeAttr("data-reset"), i.html(i.data("initial")), n.val("")) }, n.ReplaceDefaultValWithPlaceholder = function(n) { var r = (n.attr("data-default") || "").trim(),
 		t = n.val(),
 		i = "";
-			t != null && (i = t.constructor === Array ? t.join(",") : (n.val() || "").trim(), r == i && n.val() != null && n.val("").trigger("change", { SkipNext: !0 })) }, n.loadSelect2 = function(t, i) { if (t.select2({ allowClear: i.allowClear, closeOnSelect: i.closeOnSelect, containerCssClass: i.containerCssClass, dropdownCssClass: i.dropdownCssClass, maximumInputLength: i.maximumInputLength, minimumResultsForSearch: i.allowSearch || i.tags ? 0 : -1, createTag: i.createTag, language: i.language, tokenSeparators: i.tokenSeparators, tags: i.tags, placeholder: i.placeholderText || "", maximumSelectionLength: i.maximumSelectionLength, width: i.width || "100%", selectionAdapter: i.customSelectionAdapter, dropdownAdapter: i.customDropDownAdapter, templateSelection: i.customTemplateSelection }), i.maximumInputLength) t.on("select2:open", function() { $(".select2-search__field").attr("maxlength", i.maximumInputLength) }); if (i.clearOnDefaultValue) { t.on("change", function(t, i) {
-			(i == null || (i.SkipNext || !1) == !1) && n.ReplaceDefaultValWithPlaceholder($(this)) });
-			t.each(function() { n.ReplaceDefaultValWithPlaceholder($(this)) }) } if (i.stopOpenOnClear) t.on("select2:unselecting", function() { $(this).data("unselecting", !0) }).on("select2:opening", function(n) { $(this).data("unselecting") && ($(this).removeData("unselecting"), n.preventDefault()) }); if (i.multiSelectWithoutTags && t.each(function() { var t = $(this).siblings("span.select2").find("ul");
-			t.data("initial") == null && t.data("initial", t.html());
-			$(this).on("change", function() { n.updateMultiSelectNumSelection($(this)) });
-			($(this).val() || "") != "" && n.updateMultiSelectNumSelection($(this)) }), i.multiSelectWithoutTags != !0 && i.tags) { t.on("select2:unselect", function(n) { n.params.originalEvent && n.params.originalEvent.stopPropagation() });
-			t.on("change", function() { var n = $(this).siblings("span.select2").find("ul");
-				$(this).attr("data-reset") == "true" && ($(this).removeAttr("data-reset"), n.html("")) }) } return t }, n.linkedDropdownUpdated = new RealtorEvent("linkedDropdownUpdated"), n.multiSelectInitialHTML = {}, n }(),
+			t != null && (i = t.constructor === Array ? t.join(",") : (n.val() || "").trim(), r == i && n.val() != null && n.val("").trigger("change", { SkipNext: !0 })) },
+n.loadSelect2 = function( el, options ) {
+	if ( el.select2( {
+			allowClear : options.allowClear,
+			closeOnSelect : options.closeOnSelect,
+			containerCssClass : options.containerCssClass,
+			dropdownCssClass : options.dropdownCssClass,
+			maximumInputLength : options.maximumInputLength,
+			minimumResultsForSearch : options.allowSearch || options.tags ? 0 : -1,
+			createTag : options.createTag,
+			language : options.language,
+			tokenSeparators : options.tokenSeparators,
+			tags : options.tags,
+			placeholder : options.placeholderText || "",
+			maximumSelectionLength : options.maximumSelectionLength,
+			width : options.width || "100%",
+			selectionAdapter : options.customSelectionAdapter,
+			dropdownAdapter : options.customDropDownAdapter,
+			templateSelection : options.customTemplateSelection
+		  }), options.maximumInputLength ) {
+			el.on("select2:open", function() {
+			  $(".select2-search__field").attr("maxlength", options.maximumInputLength);
+			});
+		  }
+  if (options.clearOnDefaultValue) {
+	el.on("change", function(canCreateDiscussions, i) {
+	  if (i == null || (i.SkipNext || false) == false) {
+		n.ReplaceDefaultValWithPlaceholder($(this));
+	  }
+	});
+	el.each(function() {
+	  n.ReplaceDefaultValWithPlaceholder($(this));
+	});
+  }
+  if (options.stopOpenOnClear) {
+	el.on("select2:unselecting", function() {
+	  $(this).data("unselecting", true);
+	}).on("select2:opening", function(event) {
+	  if ($(this).data("unselecting")) {
+		$(this).removeData("unselecting");
+		event.preventDefault();
+	  }
+	});
+  }
+  if (options.multiSelectWithoutTags && el.each(function() {
+	var t = $(this).siblings("span.select2").find("ul");
+	if (t.data("initial") == null) {
+	  t.data("initial", t.html());
+	}
+	$(this).on("change", function() {
+	  n.updateMultiSelectNumSelection($(this));
+	});
+	if (($(this).val() || "") != "") {
+	  n.updateMultiSelectNumSelection($(this));
+	}
+  }), options.multiSelectWithoutTags != true && options.tags) {
+	el.on("select2:unselect", function(event) {
+	  if (event.params.originalEvent) {
+		event.params.originalEvent.stopPropagation();
+	  }
+	});
+	el.on("change", function() {
+	  var n = $(this).siblings("span.select2").find("ul");
+	  if ($(this).attr("data-reset") == "true") {
+		$(this).removeAttr("data-reset");
+		n.html("");
+	  }
+	});
+  }
+  return el;
+}
+		, n.linkedDropdownUpdated = new RealtorEvent("linkedDropdownUpdated"), n.multiSelectInitialHTML = {}, n }(),
 	Select2TranslationArg = function() {
 		function n() {} return n }(),
 	Select2Translation = function() {

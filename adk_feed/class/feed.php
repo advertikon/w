@@ -266,7 +266,7 @@ class Feed {
 	public function propertyTypesAsSelect( $id ) {
 		$name = 'property_type';
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Property Type', 'adk_feed' ), $id  );
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Property Type', 'adk_feed' ), $id );
 	}
 
 	public function transactionTypesAsSelect( $id ) {
@@ -277,22 +277,43 @@ class Feed {
 
 	public function buildingTypesAsSelect( $id ) {
 		$name = 'building_type';
+		$list = $this->getSearchDataSet( $name );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Building Type', 'adk_feed' ), $id );
+		return $this->getSearchSelect( $list, $name, __( 'Building Type', 'adk_feed' ), $id );
+	}
+
+	public function parkingTypeAsSelect( $id ) {
+		$name = 'parking';
+
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Parking Type', 'adk_feed' ), $id );
 	}
 
 	public function bedroomsAsSelect( $id ) {
 		$name = 'bedrooms';
 		$rooms = $this->getSearchRange( $name );
+		$list = $this->rangeToStep( $rooms );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bedrooms', 'adk_feed' ), $id );
+		return $this->getSearchSelect( $list, $name, __( 'Beds', 'adk_feed' ), $id );
 	}
 
 	public function bathroomsAsSelect( $id ) {
 		$name = 'bathrooms';
 		$rooms = $this->getSearchRange( $name );
+		$list = $this->rangeToStep( $rooms );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Bathrooms', 'adk_feed' ), $id );
+		return $this->getSearchSelect( $list, $name, __( 'Baths', 'adk_feed' ), $id );
+	}
+
+	public function buildingSizeAsSelect( $id ) {
+		$name = 'square_feet_inner';
+		$rooms = $this->getSearchRange( $name );
+		$list = $this->rangeToDataSet( $rooms );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
+
+		return $this->getSearchSelect( $list, $name, __( 'Building Size', 'adk_feed' ), $id );
 	}
 
 	public function squareFeetAsSelect( $id ) {
@@ -306,7 +327,42 @@ class Feed {
 		$name = 'price';
 		$rooms = $this->getSearchRange( $name );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Price', 'adk_feed' ), id );
+		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Price', 'adk_feed' ), $id );
+	}
+
+	public function minRentAsSelect( $id ) {
+		$name = 'rent';
+		$range = $this->getSearchRange( $name );
+
+		return $this->getSearchSelect( $this->rangeToSet( $range ), $name, __( 'Min Rent', 'adk_feed' ), $id );
+	}
+
+	public function maxRentAsSelect( $id ) {
+		$name = 'rent';
+		$range = $this->getSearchRange( $name );
+		$list = $this->rangeToSet( $range );
+		$list[0] = __( 'No limit', 'adk_feed' );
+		ksort( $list );
+
+		return $this->getSearchSelect( $list, $name, __( 'Max Rent', 'adk_feed' ), $id );
+	}
+
+
+	public function minPriceAsSelect( $id ) {
+		$name = 'price';
+		$range = $this->getSearchRange( $name );
+
+		return $this->getSearchSelect( $this->rangeToSet( $range ), $name, __( 'Min Price', 'adk_feed' ), $id );
+	}
+
+	public function maxPriceAsSelect( $id ) {
+		$name = 'price';
+		$range = $this->getSearchRange( $name );
+		$list = $this->rangeToSet( $range );
+		$list[0] = __( 'No limit', 'adk_feed' );
+		ksort( $list );
+
+		return $this->getSearchSelect( $list, $name, __( 'Max Price', 'adk_feed' ), $id );
 	}
 
 	public function pagination( $buttons = 10 ) {
@@ -449,10 +505,15 @@ class Feed {
 		}
 
 		$ret = $wpdb->get_col( "SELECT DISTINCT $name FROM {$wpdb->prefix}adk_feed_data where $name <> ''" );
+		$r = [];
 
-		ADKCache::add( $name, $ret );
+		foreach( $ret as $i ) {
+			$r[ $i ] = $i;
+		}
 
-		return $ret;
+		ADKCache::add( $name, $r );
+
+		return $r;
 	}
 
 	protected function getSearchRange( $name ) {
@@ -479,8 +540,11 @@ class Feed {
 		$range = $max - $min;
 		$step = ceil( $range / $tiers );
 
-		for( $i = $min; $i < $max; $i += $step ) {
-			$ret[] = sprintf( '%s - %s', number_format( $i ), number_format( min( $max, $i + $step ) ) );
+		for( $i = $min; $i < $max; ) {
+			$m = min( $max, $this->round( $i + $step ) );
+			$v = sprintf( '%s - %s', number_format( $i ), number_format( $m ) );
+			$ret[ $v ] = $v;
+			$i = $m;
 		}
 
 		return $ret;
@@ -492,35 +556,100 @@ class Feed {
 		$max = (int)$range->max;
 
 		$current = $min;
-		$ret[] = $current;
+		$ret[ $current ] = number_format( $current );
+		$i = 0;
 
 		while( $current <= $max ) {
+			if ( $i > 100 ) die;
+
 			$current += $this->getStep( $current );
-			$ret[] = min( $max, $current );
+			$current = $this->round( $current );
+			$ret[ $current ] = number_format( $current );
+			$i++;
 		}
 
 		return $ret;
 	}
 
-	protected function getStep( $val ) {
-		foreach( [ 100, 200, ] )
+	protected function rangeToStep( \stdClass $range, $step = 1 ) {
+		$ret = [];
+		$min = (int)$range->min;
+		$max = (int)$range->max;
+
+		for( $i = $min; $i <= $max; $i += $step ) {
+			$ret[ $i ] = number_format( $i );
+
+			if ( $i < $max ) {
+				$ret[ $i . '-0' ] = number_format( $i ) . '+';
+			}
+		}
+
+		return $ret;
 	}
 
-	protected function getSearchSelect( array $list, $name, $text, $id ) {
+	protected function round( $v ) {
+		$log = (int)log10( $v );
+
+		switch( $log ) {
+			case 1:
+			case 2;
+				$newLog = $log;
+				break;
+			case 3:
+			case 4:
+				$newLog = 2;
+				break;
+			default:
+				$newLog = 3;
+		}
+
+		$pow = pow( 10, $newLog );
+
+		return (int)( $v / $pow ) * $pow;
+	}
+
+	protected function getStep( $val ) {
+		foreach( [
+			1000        => 100,
+			2000        => 200,
+			5000        => 500,
+			10000       => 1000,
+			20000       => 2000,
+			50000       => 5000,
+			100000      => 10000,
+			500000      => 25000,
+			1000000     => 50000,
+			2000000     => 100000,
+			10000000    => 500000,
+			PHP_INT_MAX => 5000000
+		] as $k => $v ) {
+			if ( $val < $k ) {
+				return $v;
+			}
+		}
+	}
+
+	protected function getSearchSelect( array $list, $name, $text, $id, $default = '' ) {
 		$ret = [];
 		$value = isset( $_POST[ $name ] ) ? $_POST[ $name ] : '';
 
 		$ret[] = "<label for='$id' class='dropdownLabel'>$text</label>";
-		$ret[] = "<select data-default='' data-hashkey='$name' name='ctl00\$MainContent\$ctl00\$ctl00\${$id}\$ctl00' data-placeholder='$text' id='$id'>";
-//		$ret[] = '<option value="0">' . __( 'Any', 'adk_feed' ) . '</option>';
+		$ret[] = "<select data-default='$default' data-hashkey='$name' name='ctl00\$MainContent\$ctl00\$ctl00\${$id}\$ctl00' data-placeholder='$text' id='$id'>";
 
-		foreach( $list as $i ) {
-			$selected = ( $value === $i ) ? ' selected="selected" ' : '';
-			$ret[] = '<option value="' . $i . '"' . $selected . '>' . $i . '</option>';
+		$y = 0;
+
+		foreach( $list as $k => $i ) {
+			$selected = '';
+
+			if ( $value === $k || !$value && $y === 0 ) {
+				$selected = ' selected="selected" ';
+			}
+
+			$ret[] = '<option value="' . $k . '"' . $selected . '>' . $i . '</option>';
+			$y++;
 		}
 
 		$ret[] = '</select>';
-		$ret[] = '</label>';
 
 		return implode( "\n", $ret );
 	}
@@ -636,8 +765,9 @@ class Feed {
 			'bedrooms'            => [ '%d', $p->Building->BedroomsTotal, true, true ],
 			'bathrooms'           => [ '%d', $p->Building->BathroomTotal, true, true ],
 			'floors'              => [ '%d', $p->Building->StoriesTotal, true, true ],
-			'square_feet'         => [ '%s', $p->Building->SizeExterior, true, true ],
-			'lot_size'            => [ '%s', $p->Land->SizeTotal, true, true ],
+			'square_feet'         => [ '%d', (int)$p->Building->SizeExterior, true, true ], // sqft
+			'square_feet_inner'   => [ '%d', (int)$p->Building->SizeInterior, true, true ], // sqft
+			'lot_size'            => [ '%f', (float)$p->Land->SizeTotal, true, true ], // acre
 			'price'               => [ '%f', $p->Price, true, true ],
 			'address'             => [ '%s', $p->Address->AddressLine1, true, true ],
 			'city'                => [ '%s', $p->Address->City, true, true ],
@@ -651,7 +781,6 @@ class Feed {
 			'notes'               => [ '%s', $p->PublicRemarks, true, true ],
 
 			'lot_size_text'       => [ '%s', $p->Land->SizeTotalText, true, true ],
-			'square_feet_inner'   => [ '%s', $p->Building->SizeInterior, true, true ],
 			'price_per_time'      => [ '%f', $p->PricePerTime, true, true ],
 			'price_per_unit'      => [ '%f', $p->PricePerUnit, true, true ],
 			'address2'            => [ '%s', $p->Address->AddressLine2, true, true ],
