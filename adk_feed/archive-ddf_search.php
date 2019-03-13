@@ -7,15 +7,15 @@ ini_set('display_errors', 1);
 <style>
 .page-item {
 	display: inline-block;
-    padding: 10px 0;
-    width: 35px;
-    text-align: center;
-    cursor: pointer;
-    background-color: #ecb53e;
-    color: white;
-    border: solid 2px #bf973f;
-    font-size: 16px;
-    font-weight: bold;
+	padding: 10px 0;
+	width: 35px;
+	text-align: center;
+	cursor: pointer;
+	background-color: #ecb53e;
+	color: white;
+	border: solid 2px #bf973f;
+	font-size: 16px;
+	font-weight: bold;
 }
 
 .page-item.active {
@@ -26,13 +26,13 @@ ini_set('display_errors', 1);
 .page-item.disabled {
 	cursor: default;
 	background-color: #bbbbbb;
-    border: solid 2px #777777;
+	border: solid 2px #777777;
 }
 
 .pagination-wrapper{
-    width: 440px;
-    margin: 0 auto;
-    max-width: 100%;
+	width: 440px;
+	margin: 0 auto;
+	max-width: 100%;
 }
 
 /*#search-form label {
@@ -88,9 +88,9 @@ ini_set('display_errors', 1);
 	<?php
 	require_once __DIR__ . '/../../plugins/adk_feed/class/feed.php';
 	require_once __DIR__ . '/../../plugins/adk_feed/class/cache.php';
-	$file = __DIR__ . '/../../plugins/adk_feed/adk_feed.php';
+	//$file = __DIR__ . '/../../plugins/adk_feed/adk_feed.php';
 
-	//ADKCache::flush();
+	ADKCache::flush();
 
 	$user = get_option( 'adk_feeduser' );
 	$pwd = get_option( 'adk_feedpwd' );
@@ -125,159 +125,160 @@ ini_set('display_errors', 1);
 
 	<style>
 
-    #realtorValueCarousel {
-        margin: 25px 0 25px 0;
-    }
+	#realtorValueCarousel {
+		margin: 25px 0 25px 0;
+	}
 
-    .select2-container--default .select2-search--inline .select2-search__field {
-        min-width: 100% !important;
-    }
+	.select2-container--default .select2-search--inline .select2-search__field {
+		min-width: 100% !important;
+	}
 
-    .homeFilterCon .select2-container .select2-search--inline .select2-search__field {
-        margin-top: 0px !important;
-        width: auto !important;
-    }
+	.homeFilterCon .select2-container .select2-search--inline .select2-search__field {
+		margin-top: 0px !important;
+		width: auto !important;
+	}
 
-    .homeFilterCon .itemsSelectedLbl {
-        color: #444 !important;
-    }
+	.homeFilterCon .itemsSelectedLbl {
+		color: #444 !important;
+	}
 
-    .homeFilterCon ::placeholder {
-        color: #999 !important;
-    }
+	.homeFilterCon ::placeholder {
+		color: #999 !important;
+	}
 
-    .homeFilterCon :-ms-input-placeholder {
-        color: #999 !important;
-    }
+	.homeFilterCon :-ms-input-placeholder {
+		color: #999 !important;
+	}
 
-    .homeFilterCon ::-ms-input-placeholder {
-        color: #999 !important;
-    }
+	.homeFilterCon ::-ms-input-placeholder {
+		color: #999 !important;
+	}
 
-    .select2-container--default .select2-selection--multiple .select2-selection__rendered {
-        vertical-align: middle;
-    }
+	.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+		vertical-align: middle;
+	}
 
-    .homeFilterCon .select2-selection__arrow {
-        width: 15px !important;
-    }
+	.homeFilterCon .select2-selection__arrow {
+		width: 15px !important;
+	}
 
-    .homeFilterCon .select2-container {
-        box-sizing: content-box;
-        padding: 10px 5px 10px 5px;
-    }
+	.homeFilterCon .select2-container {
+		box-sizing: content-box;
+		padding: 10px 5px 10px 5px;
+	}
 
-        .homeFilterCon .select2-container .select2-selection--multiple {
-            min-height: initial !important;
-        }
+		.homeFilterCon .select2-container .select2-selection--multiple {
+			min-height: initial !important;
+		}
 
-    .homeFilterCon .select2-selection--multiple .select2-selection__rendered li {
-        line-height: 28px !important;
-    }
+	.homeFilterCon .select2-selection--multiple .select2-selection__rendered li {
+		line-height: 28px !important;
+	}
 
-    #MinRentTop .select2-container,
-    #MaxRentTop .select2-container,
-    #MinPriceTop .select2-container,
-    #MaxPriceTop .select2-container {
-        width: 135px !important;
-    }
+	#MinRentTop .select2-container,
+	#MaxRentTop .select2-container,
+	#MinPriceTop .select2-container,
+	#MaxPriceTop .select2-container {
+		width: 135px !important;
+	}
 
-    #BathsTop .select2-container {
-        width: 105px !important;
-    }
+	#BathsTop .select2-container {
+		width: 105px !important;
+	}
 
-    #BedsTop .select2-container {
-        width: 120px !important;
-    }
+	#BedsTop .select2-container {
+		width: 120px !important;
+	}
 
-    #ZoningTypeTop .select2-container {
-        width: 150px !important;
-    }
-
-
-    #NumberOfUnitsTop .select2-container {
-        width: 160px !important;
-    }
-
-    #LandSizeTop .select2-container {
-        width: 185px !important;
-    }
+	#ZoningTypeTop .select2-container {
+		width: 150px !important;
+	}
 
 
-    #BuildingSpaceTop .select2-container {
-        width: 180px !important;
-    }
+	#NumberOfUnitsTop .select2-container {
+		width: 160px !important;
+	}
 
-    #FarmTypeTop .select2-container {
-        width: 180px !important;
-    }
+	#LandSizeTop .select2-container {
+		width: 185px !important;
+	}
 
-    #TransactionTypeTopCom .select2-container,
-    #TransactionTypeTopRes .select2-container,
-    #ParkingTypeTop .select2-container {
-        width: 195px !important;
-    }
 
-    #homeMoreFiltersNum {
-        font-size: 12px;
-        position: absolute;
-        top: -6px;
-        right: -4px;
-        background: #7b7b7b;
-        border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        text-align: center;
-        padding: 2px;
-        box-sizing: border-box;
-        color: #fff;
-        z-index: 1;
-    }
+	#BuildingSpaceTop .select2-container {
+		width: 180px !important;
+	}
+
+	#FarmTypeTop .select2-container {
+		width: 180px !important;
+	}
+
+	#TransactionTypeTopCom .select2-container,
+	#TransactionTypeTopRes .select2-container,
+	#ParkingTypeTop .select2-container {
+		width: 195px !important;
+	}
+
+	#homeMoreFiltersNum {
+		font-size: 12px;
+		position: absolute;
+		top: -6px;
+		right: -4px;
+		background: #7b7b7b;
+		border-radius: 50%;
+		width: 20px;
+		height: 20px;
+		text-align: center;
+		padding: 2px;
+		box-sizing: border-box;
+		color: #fff;
+		z-index: 1;
+	}
 </style>
 <form id="search-form" action="" method="POST">
 <div id="homeHeaderCon" class="fullWidth" style="background-image: url( '<?php echo plugins_url( 'adk_feed/assets/images/residential-banner-1.jpg'); ?>' );">
-    <div id="homeHeaderInnerCon">
-        <h1 id="homeHeaderTitle" class="headerImageText" style="color: white;"> Search <span style="font-size:larger;">283,726</span> listings from trusted REALTORS<sup>®</sup></h1>
-        <div id="homeHeaderSearchCon">
+	<div id="homeHeaderInnerCon">
+		<h1 id="homeHeaderTitle" class="headerImageText" style="color: white;"> Search <span style="font-size:larger;">283,726</span> listings from trusted REALTORS<sup>®</sup></h1>
+		<div id="homeHeaderSearchCon">
 
-            <div id="homeSearchCon">
+			<div id="homeSearchCon">
 
-                <div id="homeSearchInnerCon">
-                    <div id="homeSearchTabCon" data-hashkey="PropertyTypeGroupId" data-valueclass="active">
-                        <div id="homeResidentialTab" class="homeSearchTab active">
-                            <img id="homeResidentialTabIcon" src='<?php echo plugins_url( 'adk_feed/assets/images/house-white.svg' ); ?>' data-value="1" style="height: 16px; width: 16px; margin-right: 5px;" / alt="" /><?php _e( 'Residential', 'adk_feed' ); ?>
-                        </div>
-                        <div id="homeCommercialTab" class="homeSearchTab ">
-                            <img id="homeCommercialTabIcon" src='<?php echo plugins_url( 'adk_feed/assets/images/commercial-white.svg' ); ?>' data-value="2" style="height: 16px; width: 16px; margin-right: 5px;" / alt="" /><?php _e( 'Commercial' ,'adk_feed' ); ?>
-                        </div>
-                    </div>
+				<div id="homeSearchInnerCon">
+					<!-- <div id="homeSearchTabCon" data-hashkey="PropertyTypeGroupId" data-valueclass="active">
+						<div id="homeResidentialTab" class="homeSearchTab active">
+							<img id="homeResidentialTabIcon" src='<?php echo plugins_url( 'adk_feed/assets/images/house-white.svg' ); ?>' data-value="1" style="height: 16px; width: 16px; margin-right: 5px;" / alt="" /><?php _e( 'Residential', 'adk_feed' ); ?>
+						</div>
+						<div id="homeCommercialTab" class="homeSearchTab ">
+							<img id="homeCommercialTabIcon" src='<?php echo plugins_url( 'adk_feed/assets/images/commercial-white.svg' ); ?>' data-value="2" style="height: 16px; width: 16px; margin-right: 5px;" / alt="" /><?php _e( 'Commercial' ,'adk_feed' ); ?>
+						</div>
+					</div> -->
 
-                    <div style="display: table; width: 100%; table-layout: fixed;">
-                        <div id="homeSearchInputCon">
-                            <div id="homeSearchInputInnerCon">
-                                <div id="homeSearchTxtCon" style="width: 100%;">
-                                    <input type="text" autocomplete="city" placeholder="city" style="display: none">
-                                    <input id="homeSearchTxt" type="text" autocomplete="new-password" spellcheck="false" placeholder="<?php _e( 'City, Neighbourhood or MLS® number', 'adk_ffed' ); ?>" />
-                                </div>
-                                <div id="homePrimaryFilterOuterCon">
-                                    <div id="homePrimaryFilterCon">
-                                        <div class="homeFilterCon" id="TransactionTypeTopRes" style="display: none;">
-                                           <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeTopRes' ); ?>
-                                        </div>
-                                        <div class="homeFilterCon" id="TransactionTypeTopCom" style="display: none;">
-                                           <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeTopCom' ); ?>
-                                        </div>
-                                       <!--  <div class="homeFilterCon" id="TransactionTypeCom" style="display: none;">
-                                            <label for="ddlTransactionTypeTop">Transaction Type</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeTopCom$ctl00" data-default="2" data-hashkey="TransactionTypeId" data-placeholder="Transaction Type" id="ddlTransactionTypeTopCom">
+					<div style="display: table; width: 100%; table-layout: fixed;">
+						<div id="homeSearchInputCon">
+							<div id="homeSearchInputInnerCon">
+								<div id="homeSearchTxtCon" style="width: 100%;">
+									<input type="text" autocomplete="city" placeholder="city" style="display: none">
+									<input id="homeSearchTxt" type="text" autocomplete="new-password" spellcheck="false" placeholder="<?php _e( 'City, Neighbourhood or MLS® number', 'adk_ffed' ); ?>" />
+								</div>
+								<div id="homePrimaryFilterOuterCon">
+									<div id="homePrimaryFilterCon">
+										<div class="homeFilterCon" id="TransactionTypeTopRes" style="display: none;">
+										   <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeTopRes' ); ?>
+										</div>
+										<!-- <div class="homeFilterCon" id="TransactionTypeTopCom" style="display: none;">
+										   <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeTopCom' ); ?>
+										</div> -->
+									   <!--  <div class="homeFilterCon" id="TransactionTypeCom" style="display: none;">
+											<label for="ddlTransactionTypeTop">Transaction Type</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeTopCom$ctl00" data-default="2" data-hashkey="TransactionTypeId" data-placeholder="Transaction Type" id="ddlTransactionTypeTopCom">
 	<option value="2">For sale</option>
 	<option value="3">For rent</option>
 
 </select>
-                                        </div> -->
-                                        <div class="homeFilterCon" id="MinRentTop" style="display: none;">
-                                            <label for="ddlMinRentTop">Min Rent</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlMinRentTop$ctl00" data-hashkey="RentMin" data-placeholder="Min Rent" id="ddlMinRentTop">
+										</div> -->
+										<div class="homeFilterCon" id="MinRentTop" style="display: none;">
+											<?php echo $feed->minRentAsSelect( 'ddlMinRentTop' ); ?>
+										  <!--   <label for="ddlMinRentTop">Min Rent</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlMinRentTop$ctl00" data-hashkey="RentMin" data-placeholder="Min Rent" id="ddlMinRentTop">
 	<option value="0">0</option>
 	<option value="100">100</option>
 	<option value="200">200</option>
@@ -306,11 +307,12 @@ ini_set('display_errors', 1);
 	<option value="9000">9,000</option>
 	<option value="10000">10,000</option>
 
-</select>
-                                        </div>
-                                        <div class="homeFilterCon" id="MaxRentTop" style="display: none;">
-                                            <label for="ddlMaxRentTop">Max Rent</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlMaxRentTop$ctl00" data-hashkey="RentMax" data-placeholder="Max Rent" id="ddlMaxRentTop">
+</select> -->
+										</div>
+										<div class="homeFilterCon" id="MaxRentTop" style="display: none;">
+											<?php echo $feed->maxRentAsSelect( 'ddlMaxRentTop' ); ?>
+										   <!--  <label for="ddlMaxRentTop">Max Rent</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxRentTop$ctl00" data-hashkey="RentMax" data-placeholder="Max Rent" id="ddlMaxRentTop">
 	<option value="0">Unlimited</option>
 	<option value="100">100</option>
 	<option value="200">200</option>
@@ -339,11 +341,12 @@ ini_set('display_errors', 1);
 	<option value="9000">9,000</option>
 	<option value="10000">10,000</option>
 
-</select>
-                                        </div>
-                                        <div class="homeFilterCon" id="MinPriceTop">
-                                            <label for="ddlMinPriceTop">Min Price</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlMinPriceTop$ctl00" data-hashkey="PriceMin" data-default="0" data-placeholder="Min Price" id="ddlMinPriceTop">
+</select> -->
+										</div>
+										<div class="homeFilterCon" id="MinPriceTop">
+											<?php echo $feed->minPriceAsSelect( 'ddlMinPriceTop' ); ?>
+										   <!--  <label for="ddlMinPriceTop">Min Price</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlMinPriceTop$ctl00" data-hashkey="PriceMin" data-default="0" data-placeholder="Min Price" id="ddlMinPriceTop">
 	<option value="0">0</option>
 	<option value="25000">25,000</option>
 	<option value="50000">50,000</option>
@@ -400,11 +403,12 @@ ini_set('display_errors', 1);
 	<option value="15000000">15,000,000</option>
 	<option value="20000000">20,000,000</option>
 
-</select>
-                                        </div>
-                                        <div class="homeFilterCon" id="MaxPriceTop">
-                                            <label for="ddlMaxPriceTop">Max Price</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlMaxPriceTop$ctl00" data-hashkey="PriceMax" data-default="0" data-placeholder="Max Price" id="ddlMaxPriceTop">
+</select> -->
+										</div>
+										<div class="homeFilterCon" id="MaxPriceTop">
+											<?php echo $feed->maxPriceAsSelect( 'ddlMaxPriceTop' ); ?>
+											<!-- <label for="ddlMaxPriceTop">Max Price</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxPriceTop$ctl00" data-hashkey="PriceMax" data-default="0" data-placeholder="Max Price" id="ddlMaxPriceTop">
 	<option value="0">Unlimited</option>
 	<option value="25000">25,000</option>
 	<option value="50000">50,000</option>
@@ -461,11 +465,12 @@ ini_set('display_errors', 1);
 	<option value="15000000">15,000,000</option>
 	<option value="20000000">20,000,000</option>
 
-</select>
-                                        </div>
-                                        <div class="homeFilterCon" id="BedsTop">
-                                            <label for="ddlBedsTop">Beds</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlBedsTop$ctl00" data-hashkey="BedRange" data-default="0-0" data-placeholder="Beds" id="ddlBedsTop">
+</select> -->
+										</div>
+										<div class="homeFilterCon" id="BedsTop">
+											<?php echo $feed->bedroomsAsSelect( 'ddlBedsTop' ); ?>
+										   <!--  <label for="ddlBedsTop">Beds</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlBedsTop$ctl00" data-hashkey="BedRange" data-default="0-0" data-placeholder="Beds" id="ddlBedsTop">
 	<option value="0-0">Any</option>
 	<option value="1-1">1</option>
 	<option value="1-0">1+</option>
@@ -478,11 +483,12 @@ ini_set('display_errors', 1);
 	<option value="5-5">5</option>
 	<option value="5-0">5+</option>
 
-</select>
-                                        </div>
-                                        <div class="homeFilterCon" id="BathsTop">
-                                            <label for="ddlMinPriceTop">Baths</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlBathsTop$ctl00" data-hashkey="BathRange" data-placeholder="Baths" id="ddlBathsTop">
+</select> -->
+										</div>
+										<div class="homeFilterCon" id="BathsTop">
+											<?php echo $feed->bathroomsAsSelect( 'ddlBathsTop' ); ?>
+										   <!--  <label for="ddlMinPriceTop">Baths</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlBathsTop$ctl00" data-hashkey="BathRange" data-placeholder="Baths" id="ddlBathsTop">
 	<option value="0-0">Any</option>
 	<option value="1-1">1</option>
 	<option value="1-0">1+</option>
@@ -495,11 +501,11 @@ ini_set('display_errors', 1);
 	<option value="5-5">5</option>
 	<option value="5-0">5+</option>
 
-</select>
-                                        </div>
-                                        <div class="homeFilterCon" id="NumberOfUnitsTop" style="display: none;">
-                                            <label for="ddlNumberOfUnitsTop">Number of Units</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlNumberOfUnitsTop$ctl00" data-hashkey="UnitRange" data-placeholder="Number of Units" id="ddlNumberOfUnitsTop">
+</select> -->
+										</div>
+										<div class="homeFilterCon" id="NumberOfUnitsTop" style="display: none;">
+											<label for="ddlNumberOfUnitsTop">Number of Units</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlNumberOfUnitsTop$ctl00" data-hashkey="UnitRange" data-placeholder="Number of Units" id="ddlNumberOfUnitsTop">
 	<option value="0-0">Any </option>
 	<option value="1-1">One</option>
 	<option value="1-0">One or more</option>
@@ -522,10 +528,11 @@ ini_set('display_errors', 1);
 	<option value="9-0">Nine or more</option>
 
 </select>
-                                        </div>
-                                        <div class="homeFilterCon" id="BuildingSpaceTop" style="display: none;">
-                                            <label for="ddlBuildingSpaceTop">Building Size</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingSpaceTop$ctl00" data-hashkey="BuildingSizeRange" data-default="" data-placeholder="Building Size" id="ddlBuildingSpaceTop">
+										</div>
+										<div class="homeFilterCon" id="BuildingSpaceTop" style="display: none;">
+											<?php echo $feed->buildingSizeAsSelect( 'ddlBuildingSpaceTop' ); ?>
+										   <!--  <label for="ddlBuildingSpaceTop">Building Size</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingSpaceTop$ctl00" data-hashkey="BuildingSizeRange" data-default="" data-placeholder="Building Size" id="ddlBuildingSpaceTop">
 	<option value=" ">Any</option>
 	<option value="0-5000">0-5,000 sqft</option>
 	<option value="5001-10000">5,001 - 10,000 sqft</option>
@@ -544,11 +551,11 @@ ini_set('display_errors', 1);
 	<option value="200001-250000">200,001 - 250,000 sqft</option>
 	<option value="250001-0">Over 250,000 sqft</option>
 
-</select>
-                                        </div>
-                                        <div class="homeFilterCon" id="FarmTypeTop" style="display: none;">
-                                            <label for="ddlFarmTypeTop">Farm Type</label>
-                                            <select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlFarmTypeTop$ctl00" multiple="multiple" data-hashkey="FarmTypeId" data-placeholder="Farm Type" id="ddlFarmTypeTop">
+</select> -->
+										</div>
+										<div class="homeFilterCon" id="FarmTypeTop" style="display: none;">
+											<label for="ddlFarmTypeTop">Farm Type</label>
+											<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlFarmTypeTop$ctl00" multiple="multiple" data-hashkey="FarmTypeId" data-placeholder="Farm Type" id="ddlFarmTypeTop">
 	<option value="1">Animal</option>
 	<option value="3">Cash Crop</option>
 	<option value="7">Hobby Farm</option>
@@ -562,10 +569,10 @@ ini_set('display_errors', 1);
 	<option value="12">Mixed</option>
 
 </select>
-                                        </div>
-                                        <div class="homeFilterCon" id="ParkingTypeTop" style="display: none;">
-                                            <label for="ddlParkingTypeTop">Parking Type</label>
-                                            <select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlParkingTypeTop$ctl00" multiple="multiple" data-hashkey="ParkingTypeId" data-placeholder="Parking Type" id="ddlParkingTypeTop">
+										</div>
+										<div class="homeFilterCon" id="ParkingTypeTop" style="display: none;">
+											<label for="ddlParkingTypeTop">Parking Type</label>
+											<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlParkingTypeTop$ctl00" multiple="multiple" data-hashkey="ParkingTypeId" data-placeholder="Parking Type" id="ddlParkingTypeTop">
 	<option value="35">Boat House</option>
 	<option value="36">Concrete</option>
 	<option value="37">Heated Garage</option>
@@ -582,10 +589,10 @@ ini_set('display_errors', 1);
 	<option value="11">Paved Yard</option>
 
 </select>
-                                        </div>
-                                        <div class="homeFilterCon" id="LandSizeTop" style="display: none;">
-                                            <label for="ddlLandSizeTop">Land Size</label>
-                                            <select name="ctl00$MainContent$ctl00$ctl00$ddlLandSizeTop$ctl00" data-hashkey="LandSizeRange" data-placeholder="Land Size" id="ddlLandSizeTop">
+										</div>
+										<div class="homeFilterCon" id="LandSizeTop" style="display: none;">
+											<label for="ddlLandSizeTop">Land Size</label>
+											<select name="ctl00$MainContent$ctl00$ctl00$ddlLandSizeTop$ctl00" data-hashkey="LandSizeRange" data-placeholder="Land Size" id="ddlLandSizeTop">
 	<option value=" ">Any</option>
 	<option value="1-0">1+ acres</option>
 	<option value="2-0">2+ acres</option>
@@ -600,10 +607,10 @@ ini_set('display_errors', 1);
 	<option value="1000-0">1000+ acres</option>
 
 </select>
-                                        </div>
-                                        <div class="homeFilterCon" id="ZoningTypeTop" style="display: none;">
-                                            <label for="ddlZoningTypeTop">Zoning Type</label>
-                                            <select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlZoningTypeTop$ctl00" multiple="multiple" data-hashkey="ZoningTypeGroupId" data-placeholder="Zoning Type" id="ddlZoningTypeTop">
+										</div>
+										<div class="homeFilterCon" id="ZoningTypeTop" style="display: none;">
+											<label for="ddlZoningTypeTop">Zoning Type</label>
+											<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlZoningTypeTop$ctl00" multiple="multiple" data-hashkey="ZoningTypeGroupId" data-placeholder="Zoning Type" id="ddlZoningTypeTop">
 	<option value="4">Commercial Retail</option>
 	<option value="3">Commercial Office</option>
 	<option value="2">Commercial Mixed</option>
@@ -620,43 +627,44 @@ ini_set('display_errors', 1);
 	<option value="10">Other</option>
 
 </select>
-                                        </div>
+										</div>
 
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="homeSearchBtn" class="greenCircleBtn feed-btn circleBtn">
-                                <i id="homeSearchIcon" class="material-icons" style="color: white;">search</i>
-                            </div>
-                        </div>
-                        <div style="display: table-cell; vertical-align: middle; width: 145px;">
-                            <div id="homeSearchMoreBtn" class="btnWithIcon feed-btn" style="color: #23A1C0;">
-                                <div id="homeMoreFltersBtnText" class="btnWithIconText">
-                                    Filters
-                                </div>
-                                <div class="materialIconCon" style="display: table-cell; background-color: #23A1C0;">
-                                    
-                                    <img id="homeFiltersIcon" src="<?php echo plugins_url( 'adk_feed/assets/images/filter.svg' ); ?>" style="height: 14px;" / alt="" />
-                                </div>
-                                <div id="homeMoreFiltersNum" style="display: none">0</div>
-                            </div>
-                        </div>
-                    </div>
+									</div>
+								</div>
+							</div>
+							<div id="homeSearchBtn" class="greenCircleBtn feed-btn circleBtn">
+								<i id="homeSearchIcon" class="material-icons" style="color: white;">search</i>
+							</div>
+						</div>
+						<div style="display: table-cell; vertical-align: middle; width: 145px;">
+							<div id="homeSearchMoreBtn" class="btnWithIcon feed-btn" style="color: #23A1C0;">
+								<div id="homeMoreFltersBtnText" class="btnWithIconText">
+									Filters
+								</div>
+								<div class="materialIconCon" style="display: table-cell; background-color: #23A1C0;">
+									
+									<img id="homeFiltersIcon" src="<?php echo plugins_url( 'adk_feed/assets/images/filter.svg' ); ?>" style="height: 14px;" / alt="" />
+								</div>
+								<div id="homeMoreFiltersNum" style="display: none">0</div>
+							</div>
+						</div>
+					</div>
 
 
 
-                    <div id="homeSearchMoreBtnCon" style="display: none;">
-                        <div style="display: table-cell; text-align: left; vertical-align: middle;">
-                            <div id="homeSearchMoreFiltersTitle">Search Filters</div>
-                        </div>
-                    </div>
+					<div id="homeSearchMoreBtnCon" style="display: none;">
+						<div style="display: table-cell; text-align: left; vertical-align: middle;">
+							<div id="homeSearchMoreFiltersTitle">Search Filters</div>
+						</div>
+					</div>
 
-                    <div id="homeSearchMoreCon" class="hide">
-                        <div id="homeSearchMoreFiltersInnerCon">
+					<div id="homeSearchMoreCon" class="hide">
+						<div id="homeSearchMoreFiltersInnerCon">
 
-                            <div class="homeMoreFilterCon" id="propertyTypeRes">
-                                <label for="ddlPropertyTypeRes" class="dropdownLabel">Property Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlPropertyTypeRes$ctl00" class="moreFilterDropdown" data-hashkey="PropertySearchTypeId" data-default="1" id="ddlPropertyTypeRes">
+							<div class="homeMoreFilterCon" id="propertyTypeRes">
+								<?php echo $feed->propertyTypesAsSelect( 'ddlPropertyTypeRes' ); ?>
+<!--                                 <label for="ddlPropertyTypeRes" class="dropdownLabel">Property Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlPropertyTypeRes$ctl00" class="moreFilterDropdown" data-hashkey="PropertySearchTypeId" data-default="1" id="ddlPropertyTypeRes">
 	<option value="0">No Preference</option>
 	<option value="1">Residential</option>
 	<option value="2">Recreational</option>
@@ -666,11 +674,12 @@ ini_set('display_errors', 1);
 	<option value="5">Parking</option>
 	<option value="6">Vacant Land</option>
 
-</select>
-                            </div>
-                            <div class="homeMoreFilterCon" id="propertyTypeCom">
-                                <label for="ddlPropertyTypeCom" class="dropdownLabel">Property Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlPropertyTypeCom$ctl00" class="moreFilterDropdown" data-hashkey="PropertySearchTypeId" data-default="0" id="ddlPropertyTypeCom">
+</select> -->
+							</div>
+							<div class="homeMoreFilterCon" id="propertyTypeCom">
+								<?php echo $feed->propertyTypesAsSelect( 'ddlPropertyTypeCom' ); ?>
+							   <!--  <label for="ddlPropertyTypeCom" class="dropdownLabel">Property Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlPropertyTypeCom$ctl00" class="moreFilterDropdown" data-hashkey="PropertySearchTypeId" data-default="0" id="ddlPropertyTypeCom">
 	<option value="0">All Commercial</option>
 	<option value="7">Business</option>
 	<option value="8">Multi Family</option>
@@ -682,32 +691,33 @@ ini_set('display_errors', 1);
 	<option value="12">Hospitality</option>
 	<option value="13">Institutional</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="transactionTypeRes">
-                            	 <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeRes' ); ?>
-                               <!--  <label for="ddlTransactionTypeRes" class="dropdownLabel">Transaction Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeRes$ctl00" data-default="2" data-hashkey="TransactionTypeId" id="ddlTransactionTypeRes">
+							<div class="homeMoreFilterCon" id="transactionTypeRes">
+								 <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeRes' ); ?>
+							   <!--  <label for="ddlTransactionTypeRes" class="dropdownLabel">Transaction Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeRes$ctl00" data-default="2" data-hashkey="TransactionTypeId" id="ddlTransactionTypeRes">
 	<option value="2">For sale</option>
 	<option value="3">For rent</option>
 
 </select> -->
-                            </div>
+							</div>
 
-                            <div class="homeMoreFilterCon" id="transactionTypeCom">
-                            	 <?php //echo $transactionTypes; ?>
-                                <label for="ddlTransactionTypeCom" class="dropdownLabel">Transaction Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeCom$ctl00" data-default="2" data-hashkey="TransactionTypeId" id="ddlTransactionTypeCom">
+							<div class="homeMoreFilterCon" id="transactionTypeCom">
+								<?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeCom' ); ?>
+							   <!--  <label for="ddlTransactionTypeCom" class="dropdownLabel">Transaction Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeCom$ctl00" data-default="2" data-hashkey="TransactionTypeId" id="ddlTransactionTypeCom">
 	<option value="2">For sale</option>
 	<option value="3">For lease</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="rentMin">
-                                <label for="ddlMinRent" class="dropdownLabel">Min Rent</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlMinRent$ctl00" data-hashkey="RentMin" data-default="0" id="ddlMinRent">
+							<div class="homeMoreFilterCon" id="rentMin">
+								<?php echo $feed->minRentAsSelect( 'ddlMinRent' ); ?>
+								<!-- <label for="ddlMinRent" class="dropdownLabel">Min Rent</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlMinRent$ctl00" data-hashkey="RentMin" data-default="0" id="ddlMinRent">
 	<option value="0">0</option>
 	<option value="100">100</option>
 	<option value="200">200</option>
@@ -736,12 +746,13 @@ ini_set('display_errors', 1);
 	<option value="9000">9,000</option>
 	<option value="10000">10,000</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="rentMax">
-                                <label for="ddlMaxRent" class="dropdownLabel">Max Rent</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlMaxRent$ctl00" data-hashkey="RentMax" data-default="0" id="ddlMaxRent">
+							<div class="homeMoreFilterCon" id="rentMax">
+								<?php echo $feed->maxRentAsSelect( 'ddlMaxRent' ); ?>
+								<!-- <label for="ddlMaxRent" class="dropdownLabel">Max Rent</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxRent$ctl00" data-hashkey="RentMax" data-default="0" id="ddlMaxRent">
 	<option value="0">Unlimited</option>
 	<option value="100">100</option>
 	<option value="200">200</option>
@@ -770,11 +781,12 @@ ini_set('display_errors', 1);
 	<option value="9000">9,000</option>
 	<option value="10000">10,000</option>
 
-</select>
-                            </div>
-                            <div class="homeMoreFilterCon" id="priceMin">
-                                <label for="ddlMinPrice" class="dropdownLabel">Min Price</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlMinPrice$ctl00" data-binding-constraint-read="visible" data-hashkey="PriceMin" data-default="0" id="ddlMinPrice">
+</select> -->
+							</div>
+							<div class="homeMoreFilterCon" id="priceMin">
+								<?php echo $feed->minPriceAsSelect( 'ddlMinPrice' ); ?>
+								<!-- <label for="ddlMinPrice" class="dropdownLabel">Min Price</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlMinPrice$ctl00" data-binding-constraint-read="visible" data-hashkey="PriceMin" data-default="0" id="ddlMinPrice">
 	<option value="0">0</option>
 	<option value="25000">25,000</option>
 	<option value="50000">50,000</option>
@@ -831,11 +843,12 @@ ini_set('display_errors', 1);
 	<option value="15000000">15,000,000</option>
 	<option value="20000000">20,000,000</option>
 
-</select>
-                            </div>
-                            <div class="homeMoreFilterCon" id="priceMax">
-                                <label for="ddlMaxPrice" class="dropdownLabel">Max Price</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlMaxPrice$ctl00" data-binding-constraint-read="visible" data-hashkey="PriceMax" data-default="0" id="ddlMaxPrice">
+</select> -->
+							</div>
+							<div class="homeMoreFilterCon" id="priceMax">
+								<?php echo $feed->maxPriceAsSelect( 'ddlMaxPrice' ); ?>
+							   <!--  <label for="ddlMaxPrice" class="dropdownLabel">Max Price</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxPrice$ctl00" data-binding-constraint-read="visible" data-hashkey="PriceMax" data-default="0" id="ddlMaxPrice">
 	<option value="0">Unlimited</option>
 	<option value="25000">25,000</option>
 	<option value="50000">50,000</option>
@@ -892,13 +905,14 @@ ini_set('display_errors', 1);
 	<option value="15000000">15,000,000</option>
 	<option value="20000000">20,000,000</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
 
-                            <div class="homeMoreFilterCon" id="beds">
-                                <label for="ddlBeds" class="dropdownLabel">Beds</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlBeds$ctl00" data-hashkey="BedRange" data-default="0-0" id="ddlBeds">
+							<div class="homeMoreFilterCon" id="beds">
+								<?php echo $feed->bedroomsAsSelect( 'ddlBeds' ); ?>
+								<!-- <label for="ddlBeds" class="dropdownLabel">Beds</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlBeds$ctl00" data-hashkey="BedRange" data-default="0-0" id="ddlBeds">
 	<option value="0-0">Any</option>
 	<option value="1-1">1</option>
 	<option value="1-0">1+</option>
@@ -911,12 +925,13 @@ ini_set('display_errors', 1);
 	<option value="5-5">5</option>
 	<option value="5-0">5+</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="baths">
-                                <label for="ddlBaths" class="dropdownLabel">Baths</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlBaths$ctl00" Value="0-0" data-hashkey="BathRange" data-default="0-0" id="ddlBaths">
+							<div class="homeMoreFilterCon" id="baths">
+								<?php echo $feed->bathroomsAsSelect( 'ddlBaths' ); ?>
+							   <!--  <label for="ddlBaths" class="dropdownLabel">Baths</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlBaths$ctl00" Value="0-0" data-hashkey="BathRange" data-default="0-0" id="ddlBaths">
 	<option value="0-0">Any</option>
 	<option value="1-1">1</option>
 	<option value="1-0">1+</option>
@@ -929,12 +944,12 @@ ini_set('display_errors', 1);
 	<option value="5-5">5</option>
 	<option value="5-0">5+</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="numberOfUnits">
-                                <label for="ddlNumberOfUnits" class="dropdownLabel">Number of Units</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlNumberOfUnits$ctl00" data-hashkey="UnitRange" data-default="0-0" id="ddlNumberOfUnits">
+							<div class="homeMoreFilterCon" id="numberOfUnits">
+								<label for="ddlNumberOfUnits" class="dropdownLabel">Number of Units</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlNumberOfUnits$ctl00" data-hashkey="UnitRange" data-default="0-0" id="ddlNumberOfUnits">
 	<option value="0-0">Any </option>
 	<option value="1-1">One</option>
 	<option value="1-0">One or more</option>
@@ -957,12 +972,13 @@ ini_set('display_errors', 1);
 	<option value="9-0">Nine or more</option>
 
 </select>
-                            </div>
+							</div>
 
 
-                            <div class="homeMoreFilterCon" id="parkingType">
-                                <label for="ddlParkingType" class="dropdownLabel">Parking Type</label>
-                                <select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlParkingType$ctl00" multiple="multiple" data-hashkey="ParkingTypeId" data-default="" id="ddlParkingType">
+							<div class="homeMoreFilterCon" id="parkingType">
+								<?php echo $feed->parkingTypeAsSelect( 'ddlParkingType' ); ?>
+							  <!--   <label for="ddlParkingType" class="dropdownLabel">Parking Type</label>
+								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlParkingType$ctl00" multiple="multiple" data-hashkey="ParkingTypeId" data-default="" id="ddlParkingType">
 	<option value="35">Boat House</option>
 	<option value="36">Concrete</option>
 	<option value="37">Heated Garage</option>
@@ -978,36 +994,37 @@ ini_set('display_errors', 1);
 	<option value="10">Parking pad</option>
 	<option value="11">Paved Yard</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <!-- <div class="homeMoreFilterCon" id="listedSince">
-                                <label for="dteListedSince" class="datePickerLabel">Listed Since</label>
-                                <div>
-                                    <div style="position: relative;">
-                                        <input readonly="readonly" placeholder="mm/dd/yyyy" type="text" id="dteListedSince" class="homeFilter" data-validation="date" data-hashkey="NumberOfDays" data-type="dayssince" min="2018-03-10" max="2019-03-08" />
-                                        <img src="/images/common/icons/svg/calendar-black.svg" width="25" class="inputDateIcon" alt="" />
-                                    </div>
+							<!-- <div class="homeMoreFilterCon" id="listedSince">
+								<label for="dteListedSince" class="datePickerLabel">Listed Since</label>
+								<div>
+									<div style="position: relative;">
+										<input readonly="readonly" placeholder="mm/dd/yyyy" type="text" id="dteListedSince" class="homeFilter" data-validation="date" data-hashkey="NumberOfDays" data-type="dayssince" min="2018-03-10" max="2019-03-08" />
+										<img src="/images/common/icons/svg/calendar-black.svg" width="25" class="inputDateIcon" alt="" />
+									</div>
 
 
-                                </div>
-                            </div> -->
-                            <div class="homeMoreFilterCon checkbox" id="openHouse">
-                                <div class="homeFilter">
-                                    <input type="checkbox" id="chkOpenHouse" value="1" data-hashkey="OpenHouse" />
-                                    <label for="chkOpenHouse" class="checkboxLabel">Open Houses Only</label>
-                                </div>
-                            </div>
-                            <div class="homeMoreFilterCon" id="keywords">
-                                <label for="txtKeywords" class="textboxLabel">Keywords</label>
-                                <i style="display: none;" class="fa fa-question-circle inputHelperIcon" aria-hidden="true" id="KeywordToolTip" data-tooltipid="KeywordsTooltip"></i>
-                                <!-- <input type="text" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords" placeholder="Waterfront, Garage, Pool…" />-->
-                                <select multiple="multiple" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords"></select>
-                            </div>
+								</div>
+							</div> -->
+							<div class="homeMoreFilterCon checkbox" id="openHouse">
+								<div class="homeFilter">
+									<input type="checkbox" id="chkOpenHouse" value="1" data-hashkey="OpenHouse" />
+									<label for="chkOpenHouse" class="checkboxLabel">Open Houses Only</label>
+								</div>
+							</div>
+							<div class="homeMoreFilterCon" id="keywords">
+								<label for="txtKeywords" class="textboxLabel">Keywords</label>
+								<i style="display: none;" class="fa fa-question-circle inputHelperIcon" aria-hidden="true" id="KeywordToolTip" data-tooltipid="KeywordsTooltip"></i>
+								<!-- <input type="text" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords" placeholder="Waterfront, Garage, Pool…" />-->
+								<select multiple="multiple" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords"></select>
+							</div>
 
-                            <div class="homeMoreFilterCon" id="hospitalityBuildingType">
-                                <label for="ddlHospitalityBuildingType" class="dropdownLabel">Building Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlHospitalityBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlHospitalityBuildingType">
+							<div class="homeMoreFilterCon" id="hospitalityBuildingType">
+								<?php //echo $feed->buildingTypesAsSelect( 'ddlHospitalityBuildingType' ); ?>
+							   <!--  <label for="ddlHospitalityBuildingType" class="dropdownLabel">Building Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlHospitalityBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlHospitalityBuildingType">
 	<option value=" ">Any</option>
 	<option value="1">House</option>
 	<option value="16">Row / Townhouse</option>
@@ -1025,12 +1042,29 @@ ini_set('display_errors', 1);
 	<option value="25">Two Apartment House</option>
 	<option value="30">Park Model Mobile Home</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="institutionalBuildingType">
-                                <label for="ddlInstitutionalBuildingType" class="dropdownLabel">Building Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlInstitutionalBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlInstitutionalBuildingType">
+							<div class="homeMoreFilterCon" id="ddlInstitutionalBuildingType">
+								<?php //echo $feed->buildingTypesAsSelect( 'ddlHospitalityBuildingType' ); ?>
+							   <!--  <label for="ddlInstitutionalBuildingType" class="dropdownLabel">Building Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlInstitutionalBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlInstitutionalBuildingType">
+	<option value=" ">Any</option>
+	<option value="12">Special Purpose</option>
+	<option value="7">Offices</option>
+	<option value="5">Residential Commercial Mix</option>
+	<option value="4">Multi-Family</option>
+	<option value="8">Retail</option>
+	<option value="9">Warehouse</option>
+	<option value="14">Other</option>
+ -->
+</select>
+							</div>
+
+							<div class="homeMoreFilterCon" id="industrialBuildingType">
+								<?php //echo $feed->buildingTypesAsSelect( 'ddlIndustrialBuildingType' ); ?>
+							   <!--  <label for="ddlIndustrialBuildingType" class="dropdownLabel">Building Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlIndustrialBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlIndustrialBuildingType">
 	<option value=" ">Any</option>
 	<option value="12">Special Purpose</option>
 	<option value="7">Offices</option>
@@ -1040,27 +1074,13 @@ ini_set('display_errors', 1);
 	<option value="9">Warehouse</option>
 	<option value="14">Other</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="industrialBuildingType">
-                                <label for="ddlIndustrialBuildingType" class="dropdownLabel">Building Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlIndustrialBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlIndustrialBuildingType">
-	<option value=" ">Any</option>
-	<option value="12">Special Purpose</option>
-	<option value="7">Offices</option>
-	<option value="5">Residential Commercial Mix</option>
-	<option value="4">Multi-Family</option>
-	<option value="8">Retail</option>
-	<option value="9">Warehouse</option>
-	<option value="14">Other</option>
-
-</select>
-                            </div>
-
-                            <div class="homeMoreFilterCon" id="retailBuildingType">
-                                <label for="ddlRetailBuildingType" class="dropdownLabel">Building Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlRetailBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlRetailBuildingType">
+							<div class="homeMoreFilterCon" id="retailBuildingType">
+								<?php //$feed->buildingTypesAsSelect( 'ddlRetailBuildingType' ); ?>
+								<!-- <label for="ddlRetailBuildingType" class="dropdownLabel">Building Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlRetailBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlRetailBuildingType">
 	<option value=" ">Any</option>
 	<option value="8">Retail</option>
 	<option value="21">Flex Facility</option>
@@ -1074,12 +1094,13 @@ ini_set('display_errors', 1);
 	<option value="12">Special Purpose</option>
 	<option value="14">Other</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="buildingType">
-                                <label for="ddlBuildingType" class="dropdownLabel">Building Type</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingType$ctl00" data-hashkey="BuildingTypeId" id="ddlBuildingType">
+							<div class="homeMoreFilterCon" id="buildingType">
+								<?php $feed->buildingTypesAsSelect( 'ddlBuildingType' ); ?>
+							   <!--  <label for="ddlBuildingType" class="dropdownLabel">Building Type</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingType$ctl00" data-hashkey="BuildingTypeId" id="ddlBuildingType">
 	<option value=" ">Any</option>
 	<option value="1">House</option>
 	<option value="16">Row / Townhouse</option>
@@ -1097,12 +1118,12 @@ ini_set('display_errors', 1);
 	<option value="25">Two Apartment House</option>
 	<option value="30">Park Model Mobile Home</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="buildingAttachmentStyle">
-                                <label for="ddlBuildingAttachmentStyle" class="dropdownLabel">Building Style</label>
-                                <select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlBuildingAttachmentStyle$ctl00" multiple="multiple" data-hashkey="ConstructionStyleId" id="ddlBuildingAttachmentStyle">
+						   <!--  <div class="homeMoreFilterCon" id="buildingAttachmentStyle">
+								<label for="ddlBuildingAttachmentStyle" class="dropdownLabel">Building Style</label>
+								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlBuildingAttachmentStyle$ctl00" multiple="multiple" data-hashkey="ConstructionStyleId" id="ddlBuildingAttachmentStyle">
 	<option value="1" parentid="16">Attached</option>
 	<option value="3" parentid="1">Detached</option>
 	<option value="3" parentid="2">Detached</option>
@@ -1120,11 +1141,12 @@ ini_set('display_errors', 1);
 	<option value="9" parentid="1">Link</option>
 
 </select>
-                            </div>
+							</div> -->
 
-                            <div class="homeMoreFilterCon" id="buildingSpace">
-                                <label for="ddlBuildingSpace" class="dropdownLabel">Building Size</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingSpace$ctl00" data-hashkey="BuildingSizeRange" id="ddlBuildingSpace">
+							<div class="homeMoreFilterCon" id="buildingSpace">
+								<?php echo $feed->buildingSizeAsSelect( 'ddlBuildingSpace' ); ?>
+							   <!--  <label for="ddlBuildingSpace" class="dropdownLabel">Building Size</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingSpace$ctl00" data-hashkey="BuildingSizeRange" id="ddlBuildingSpace">
 	<option value=" ">Any</option>
 	<option value="0-5000">0-5,000 sqft</option>
 	<option value="5001-10000">5,001 - 10,000 sqft</option>
@@ -1143,12 +1165,12 @@ ini_set('display_errors', 1);
 	<option value="200001-250000">200,001 - 250,000 sqft</option>
 	<option value="250001-0">Over 250,000 sqft</option>
 
-</select>
-                            </div>
+</select> -->
+							</div>
 
-                            <div class="homeMoreFilterCon" id="landSize">
-                                <label for="ddlLandSize" class="dropdownLabel">Land Size</label>
-                                <select name="ctl00$MainContent$ctl00$ctl00$ddlLandSize$ctl00" data-hashkey="LandSizeRange" id="ddlLandSize">
+							<div class="homeMoreFilterCon" id="landSize">
+								<label for="ddlLandSize" class="dropdownLabel">Land Size</label>
+								<select name="ctl00$MainContent$ctl00$ctl00$ddlLandSize$ctl00" data-hashkey="LandSizeRange" id="ddlLandSize">
 	<option value=" ">Any</option>
 	<option value="1-0">1+ acres</option>
 	<option value="2-0">2+ acres</option>
@@ -1163,11 +1185,11 @@ ini_set('display_errors', 1);
 	<option value="1000-0">1000+ acres</option>
 
 </select>
-                            </div>
+							</div>
 
-                            <div class="homeMoreFilterCon" id="farmType">
-                                <label for="ddlFarmType">Farm Type</label>
-                                <select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlFarmType$ctl00" multiple="multiple" data-hashkey="FarmTypeId" id="ddlFarmType">
+							<div class="homeMoreFilterCon" id="farmType">
+								<label for="ddlFarmType">Farm Type</label>
+								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlFarmType$ctl00" multiple="multiple" data-hashkey="FarmTypeId" id="ddlFarmType">
 	<option value="1">Animal</option>
 	<option value="3">Cash Crop</option>
 	<option value="7">Hobby Farm</option>
@@ -1181,11 +1203,11 @@ ini_set('display_errors', 1);
 	<option value="12">Mixed</option>
 
 </select>
-                            </div>
+							</div>
 
-                            <div class="homeMoreFilterCon" id="zoningType">
-                                <label for="ddlZoningType" class="dropdownLabel">Zoning Type</label>
-                                <select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlZoningType$ctl00" multiple="multiple" data-hashkey="ZoningTypeGroupId" id="ddlZoningType">
+							<div class="homeMoreFilterCon" id="zoningType">
+								<label for="ddlZoningType" class="dropdownLabel">Zoning Type</label>
+								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlZoningType$ctl00" multiple="multiple" data-hashkey="ZoningTypeGroupId" id="ddlZoningType">
 	<option value="4">Commercial Retail</option>
 	<option value="3">Commercial Office</option>
 	<option value="2">Commercial Mixed</option>
@@ -1202,32 +1224,32 @@ ini_set('display_errors', 1);
 	<option value="10">Other</option>
 
 </select>
-                            </div>
+							</div>
 
-                            <input type="text" id="txtPropertyTypeGroupID" value="1" class="hiddenSearchFilter" style="display: none" data-hashkey="PropertyTypeGroupID" />
-                        </div>
-                        <div id="homeSearchMoreFiltersFooterCon">
+							<input type="text" id="txtPropertyTypeGroupID" value="1" class="hiddenSearchFilter" style="display: none" data-hashkey="PropertyTypeGroupID" />
+						</div>
+						<div id="homeSearchMoreFiltersFooterCon">
 
 
 
-                            <div id="homeMoreFiltersResetBtn" class="btnWithIcon onWhite feed-btn" style="color: #23A1C0;">
-                                <div id="homeMoreFltersResetBtnText" class="btnWithIconText">
-                                    Reset
-                                </div>
-                                <div class="materialIconCon" style="background-color: #23A1C0;">
-                                    <span style="font-size: 24px; color: white;" class="m_al fa fa-undo"></span>
-                                </div>
-                            </div>
+							<div id="homeMoreFiltersResetBtn" class="btnWithIcon onWhite feed-btn" style="color: #23A1C0;">
+								<div id="homeMoreFltersResetBtnText" class="btnWithIconText">
+									Reset
+								</div>
+								<div class="materialIconCon" style="background-color: #23A1C0;">
+									<span style="font-size: 24px; color: white;" class="m_al fa fa-undo"></span>
+								</div>
+							</div>
 
-                            <div id="homeMoreFiltersSearchBtn" class="greenRoundedBtn wideButton feed-btn">Search</div>
+							<div id="homeMoreFiltersSearchBtn" class="greenRoundedBtn wideButton feed-btn">Search</div>
 
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 	
@@ -1318,10 +1340,68 @@ HTML;
 <div style="padding:40px 0 0 0"></div>
 
 <script>
-    (function ($) {
-        var model = new IndexPageModel();
-        var IndexPage = new Desktop.Pages.Index(model, 'MainContent_ctl00_ctl00');
-    }(jQuery));
+	var
+		topItems = [ "MinPriceTop", "MaxPriceTop", "BedsTop", "BathsTop" ],
+		bottomItems = [ "propertyTypeRes" , "transactionTypeRes", "priceMin", "priceMax", "baths", "beds", ];
+
+	(function ($) {
+		var
+			model = new IndexPageModel(),
+			IndexPage = new Desktop.Pages.Index(model, 'MainContent_ctl00_ctl00');
+
+		$.each( topItems, function() {
+			$( "#" + this ).show().find( "select" ).trigger( "change" );
+		} );
+
+		$.each( bottomItems, function() {
+			$( "#" + this ).show().find( "select" ).trigger( "change" );
+		} );
+
+		$( "#search-form select" ).on( "change", setValue );
+	}(jQuery));
+
+	function updateOrdering() {
+		var
+			transactionType = $( "[data-hashkey=transaction_type]" ).eq( 0 ).val().toLowerCase();
+
+		$( "#homeSearchMoreFiltersInnerCon > div " ).hide();
+		$( "#homePrimaryFilterCon > div " ).hide();
+
+
+		topItems = [ "BedsTop", "BathsTop" ];
+		bottomItems = [ "propertyTypeRes" , "transactionTypeRes" ];
+		//console.log( transactionType );
+
+		switch( transactionType ) {
+			case 'for rent':
+			case 'for lease':
+				topItems.push( "MinRentTop" );
+				topItems.push( "MaxRentTop" );
+				bottomItems.push( "rentMin" );
+				bottomItems.push( "rentMax" );
+				//console.log( "Transaction: rent" );
+			break;
+			default:
+				topItems.push( "MinPriceTop" );
+				topItems.push( "MaxPriceTop" );
+				bottomItems.push( "priceMin" );
+				bottomItems.push( "priceMax" );
+				//console.log( "Transaction: sale" );
+		}
+
+		$.each( topItems, function() {
+			$( "#" + this ).show();
+		} );
+
+		$.each( bottomItems, function() {
+			$( "#" + this ).show();
+		} );
+	}
+
+	function setValue() {
+		//console.log( "update- value" );
+		$( "[data-hashkey=" + $( this ).attr( "data-hashkey" ) + "]" ).not( this ).val( $( this ).val() );
+	}
 
 </script>
 

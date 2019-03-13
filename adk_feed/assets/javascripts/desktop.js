@@ -4254,6 +4254,8 @@ __extends = this && this.__extends || function() { var n = Object.setPrototypeOf
 				t; if (n.detachedOptions != null)
 				for (t in n.detachedOptions) n.detachedOptions.hasOwnProperty(t) && $("#" + t).append(n.detachedOptions[t]) },
 				t.prototype.updateFilterOrdering = function(type, extraAttr) {
+					setTimeout( updateOrdering, 50 );
+					return;
 					var channel;
 					var transactionType;
 					var propertyType;

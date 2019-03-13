@@ -331,14 +331,14 @@ class Feed {
 	}
 
 	public function minRentAsSelect( $id ) {
-		$name = 'rent';
+		$name = 'rent-min';
 		$range = $this->getSearchRange( $name );
 
 		return $this->getSearchSelect( $this->rangeToSet( $range ), $name, __( 'Min Rent', 'adk_feed' ), $id );
 	}
 
 	public function maxRentAsSelect( $id ) {
-		$name = 'rent';
+		$name = 'rent-max';
 		$range = $this->getSearchRange( $name );
 		$list = $this->rangeToSet( $range );
 		$list[0] = __( 'No limit', 'adk_feed' );
@@ -349,14 +349,14 @@ class Feed {
 
 
 	public function minPriceAsSelect( $id ) {
-		$name = 'price';
+		$name = 'price-min';
 		$range = $this->getSearchRange( $name );
 
 		return $this->getSearchSelect( $this->rangeToSet( $range ), $name, __( 'Min Price', 'adk_feed' ), $id );
 	}
 
 	public function maxPriceAsSelect( $id ) {
-		$name = 'price';
+		$name = 'price-max';
 		$range = $this->getSearchRange( $name );
 		$list = $this->rangeToSet( $range );
 		$list[0] = __( 'No limit', 'adk_feed' );
@@ -498,6 +498,7 @@ class Feed {
 		require_once __DIR__ . '/cache.php';
 		global $wpdb;
 
+		$name = $this->getName( $name );
 		$ret = ADKCache::get( $name );
 
 		if ( $ret ) {
@@ -520,6 +521,7 @@ class Feed {
 		require_once __DIR__ . '/cache.php';
 		global $wpdb;
 
+		$name = $this->getName( $name );
 		$ret = ADKCache::get( $name );
 
 		if ( $ret ) {
@@ -641,7 +643,7 @@ class Feed {
 		foreach( $list as $k => $i ) {
 			$selected = '';
 
-			if ( $value === $k || !$value && $y === 0 ) {
+			if ( $value === $k ) {
 				$selected = ' selected="selected" ';
 			}
 
@@ -873,5 +875,9 @@ class Feed {
 		}
 
 		return json_encode( $ret );
+	}
+
+	protected function getName( $name ) {
+		return strstr( $name, '-', true ) ?: $name;
 	}
 }
