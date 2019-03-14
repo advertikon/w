@@ -289,6 +289,18 @@ class Feed {
 		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Parking Type', 'adk_feed' ), $id );
 	}
 
+	public function farmTypeAsSelect( $id ) {
+		$name = 'farm_type';
+
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Farm Type', 'adk_feed' ), $id );
+	}
+
+	public function zoningTypeAsSelect( $id ) {
+		$name = 'zoning_type';
+
+		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Zoning Type', 'adk_feed' ), $id );
+	}
+
 	public function bedroomsAsSelect( $id ) {
 		$name = 'bedrooms';
 		$rooms = $this->getSearchRange( $name );

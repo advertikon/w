@@ -1160,7 +1160,7 @@ var Compare = function() {
 	function o(t, i, r, u, f, e, o) {
 		var s, h, c, l;
 
-		console.log( r, t.val() );
+//		console.log( r, t.val() );
 		return;
 
 		if (u === void 0 && (u = !1), s = t.val(), s == "") {
@@ -3143,7 +3143,7 @@ var __extends = this && this.__extends || function() { var n = Object.setPrototy
 
 			t.getValuesFromControlsAsObject = function(n, i, r, u) {
 				var e, f, o, s;
-				console.log( n );
+				return getFilters();
 				for (i === void 0 && (i = !0), r === void 0 && (r = null), u === void 0 && (u = !1), e = {}, f = 0, o = n; f < o.length; f++)
 					s = o[f], $("#" + s).find("[data-hashkey]").each(function(n, f) {
 						var o = t.getControlValue(f, i, r, u);
