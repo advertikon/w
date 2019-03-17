@@ -53,7 +53,7 @@ class DDFImage {
 	}
 
 	static public function getBoundary( array $headers ) {
-		$boundary;
+		$boundary = '';
 
 		foreach( $headers as $line ) {
 			if ( preg_match( '/Content-Type.+boundary=(.+?)(\s|$)/i', $line, $m ) ) {
@@ -70,8 +70,8 @@ class DDFImage {
 	}
 
 	static public function getObjectsList( array $headers ) {
-		$list;
-		$ret = [];;
+		$list = '';
+		$ret = [];
 
 		foreach( $headers as $line ) {
 			if ( preg_match( '/ObjectID:\s*(.+)$/i', $line, $m ) ) {

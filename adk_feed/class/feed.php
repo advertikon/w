@@ -141,7 +141,7 @@ class Feed {
 		$ret = [];
 
 		if ( !is_dir( $dirName ) ) {
-			$this->log->write( 'Property ' . $id . ' does not have files. Fetch them' );
+			//$this->log->write( 'Property ' . $id . ' does not have files. Fetch them' );
 			$list[] = '*';
 
 		} else {
@@ -152,10 +152,10 @@ class Feed {
 
 				if ( !in_array( $photoInfo->SequenceId . '.jpeg', $files, false ) ) {
 					$list[] = $photoInfo->SequenceId;
-					$this->log->write( 'File ' . $fileName . ' does not exist' );
+					//$this->log->write( 'File ' . $fileName . ' does not exist' );
 
 				} else {
-					$this->log->write( 'File ' . $fileName . ' exists' );
+					//$this->log->write( 'File ' . $fileName . ' exists' );
 					$date = new \DateTime( $photoInfo->PhotoLastUpdated );
 
 					if ( $date->getTimestamp() > filemtime( $fileName ) ) {
@@ -163,7 +163,7 @@ class Feed {
 						$list[] = $photoInfo->SequenceId;
 
 					} else {
-						$this->log->write( sprintf( 'File %s is fresh. Serve cached copy', $fileName ) );
+						//$this->log->write( sprintf( 'File %s is fresh. Serve cached copy', $fileName ) );
 					}
 				}
 			} 
@@ -183,36 +183,122 @@ class Feed {
 	}
 
 	/**
+	 * Loads thumb image
+	 * @param $id
+	 * @param array $data
+	 * @param string $size
+	 * @return array
+	 * @throws Exception
+	 */
+	public function getThumb( $id, array $data, $size = 'LargePhoto' ) {
+		$dirName = Feed::IMAGE_DIR  . $id . '/';
+		$fileName = $dirName . '1.jpeg';
+		$thumbName = $dirName . 'thumb.jpeg';
+		$list = [];
+		$ret = [];
+		$description = '';
+
+		if ( !is_dir( $dirName ) ) {
+			$list[] = 1;
+
+		} else {
+			$files = scandir( $dirName, SCANDIR_SORT_ASCENDING );
+
+			foreach( $data as $photoInfo ) {
+				if ( $photoInfo->SequenceId != 1 ) {
+					continue;
+				}
+
+				$description = $photoInfo->Description;
+
+				if ( !in_array( '1.jpeg', $files, false ) ) {
+					$list[] = 1;
+
+				} else {
+					$date = new \DateTime( $photoInfo->PhotoLastUpdated );
+
+					if ( $date->getTimestamp() > filemtime( $fileName ) ) {
+						$this->log->write( sprintf( 'File %s is stale - fetch anew', $fileName ) );
+						$list[] = $photoInfo->SequenceId;
+					}
+				}
+
+				break;
+			}
+		}
+
+		if ( $list ) {
+			$this->loadRequstor();
+			$this->requestor->request( 'getImage', array( $id, $list, $size ) );
+		}
+
+		if ( !file_exists( $thumbName ) ) {
+			$image = wp_get_image_editor( $fileName );
+			$image->resize( 380, 285, true );
+			$image->save( $thumbName );
+		}
+
+		$ret[] = [ plugin_dir_url( realpath( $thumbName ) ) . basename( $thumbName ),	$description ];
+
+		return $ret;
+	}
+
+	/**
 	 * @return array|object|null
 	 * @throws Exception
 	 */
-	public function query() {
+	public function query() {//var_dump( $_POST );
 		$where = [];
+		global $wpdb;
 
 		foreach( [
 			'property_type'    => [ '%s', '=',  'property_type' ],
 			'building_type'    => [ '%s', '=',  'building_type', ],
 			'transaction_type' => [ '%s', '=',  'transaction_type', ],
-			'bedrooms'         => [ '%d', '>=', 'bedrooms' ],
-			'bathrooms'        => [ '%d', '>=', 'bathrooms' ],
-			'is_open'          => [ '%d', '=',  'is_open' ],
+			'bedrooms'         => [ '%d', '=',  'bedrooms' ],
+			'bathrooms'        => [ '%d', '=',  'bathrooms' ],
+			'open_house'       => [ '%d', '=',  'is_open' ],
 			'price'            => [ '%f', '=',  'price' ],
-			'min_price'        => [ '%f', '>=', 'price' ],
-			'max_price'        => [ '%f', '<=', 'price' ],
-			'land_size'        => [ '%f', '>=', 'lot_size' ],
+			'price-min'        => [ '%f', '>=', 'price' ],
+			'price-max'        => [ '%f', '<=', 'price' ],
+			'lot_size'         => [ '%f', '=',  'lot_size' ],
+			'parking'          => [ '%s', '=',  'parking' ],
+			'zoning_type'      => [ '%s', '=',  'zoning_type' ],
+			'farm_type'         => [ '%s', '=',  'farm_type' ],
+			'square_feet_inner' => [ '%f', '=',  'square_feet_inner' ],
+			'Keywords'          => [ '%s', 'like',  'building_appliances' ],
+			'mls'               => [ '%s', 'like',  'building_appliances' ],
 		] as $k => $type ) {
 			if ( !empty( $_POST[ $k ] ) ) {
 				$val = $_POST[ $k ];
 
-				if ( false !== strpos( $val, '-' ) ) {
+				if ( false !== strpos( $val, '-' ) && in_array( $k, [ 'bedrooms', 'bathrooms', 'price', 'lot_size' ] ) ) {
 					$vals = explode( '-' , $val );
 					$min = str_replace( [ ' ', ',' ], '', $vals[ 0 ] );
 					$max = str_replace( [ ' ', ',' ], '', $vals[ 1 ] );
-					$where["{$type[ 2 ]} >= {$type[ 0 ]}"] = $min;
-					$where["{$type[ 2 ]} <= {$type[ 0 ]}"] = $max;
+
+					if ( $min ) {
+						$where["{$type[ 2 ]} >= {$type[ 0 ]}"] = $min;
+					}
+
+					if ( $max ) {
+						$where["{$type[ 2 ]} <= {$type[ 0 ]}"] = $max;
+					}
 
 				} else {
-					$where["{$type[ 2 ]} {$type[ 1 ]} {$type[ 0 ]}"] = $_POST[ $k ];
+					if ( $_POST[ $k ] ) {
+						if ( 'like' === $type[ 1 ] ) {
+							if ( 'Keywords' === $k ) {
+								$where["building_appliances like '%{$wpdb->_escape($_POST[ $k ] )}%'"] = '';
+
+							} else if ( 'mls' === $k ) {
+								$where["city like '%{$wpdb->_escape($_POST[ $k ] )}%' or neighbor like '%{$wpdb->_escape($_POST[ $k ] )}%'"] = '';
+							}
+
+						} else {
+							$where["{$type[ 2 ]} {$type[ 1 ]} {$type[ 0 ]}"] = $_POST[ $k ];
+						}
+					}
 				}
 			}
 		}
@@ -253,7 +339,7 @@ class Feed {
 
 		foreach( $results as &$listing ) {
 			if ( $listing->photo ) {
-				$listing->photos = $this->getImage( $listing->id, json_decode( $listing->photo ) );
+				$listing->photos = $this->getThumb( $listing->id, json_decode( $listing->photo ) );
 
 			} else {
 				$listing->photos = [ [ plugin_dir_url( realpath( __DIR__  ) ) . 'images/no-image.jpg', '' ] ];
@@ -285,20 +371,26 @@ class Feed {
 
 	public function parkingTypeAsSelect( $id ) {
 		$name = 'parking';
+		$list = $this->getSearchDataSet( $name );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Parking Type', 'adk_feed' ), $id );
+		return $this->getSearchSelect( $list, $name, __( 'Parking Type', 'adk_feed' ), $id );
 	}
 
 	public function farmTypeAsSelect( $id ) {
 		$name = 'farm_type';
+		$list = $this->getSearchDataSet( $name );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Farm Type', 'adk_feed' ), $id );
+		return $this->getSearchSelect( $list, $name, __( 'Farm Type', 'adk_feed' ), $id );
 	}
 
 	public function zoningTypeAsSelect( $id ) {
 		$name = 'zoning_type';
+		$list = $this->getSearchDataSet( $name );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
 
-		return $this->getSearchSelect( $this->getSearchDataSet( $name ), $name, __( 'Zoning Type', 'adk_feed' ), $id );
+		return $this->getSearchSelect( $list, $name, __( 'Zoning Type', 'adk_feed' ), $id );
 	}
 
 	public function bedroomsAsSelect( $id ) {
@@ -331,8 +423,10 @@ class Feed {
 	public function squareFeetAsSelect( $id ) {
 		$name = 'lot_size';
 		$rooms = $this->getSearchRange( $name );
+		$list = $this->rangeToDataSet( $rooms );
+		array_unshift( $list, __( 'Any', 'adk_feed' ) );
 
-		return $this->getSearchSelect( $this->rangeToDataSet( $rooms ), $name, __( 'Lot Size', 'adk_feed' ), $id );
+		return $this->getSearchSelect( $list, $name, __( 'Lot Size', 'adk_feed' ), $id );
 	}
 
 	public function priceAsSelect( $id ) {
@@ -383,6 +477,8 @@ class Feed {
 		$start = [];
 		$end = [];
 		$middle = [];
+
+		$buttons = min( $buttons, $total );
 
 		if ( $total <= 1 ) {
 			return '';
@@ -489,6 +585,24 @@ class Feed {
 		}
 
 		return $listing;
+	}
+
+	public function get_keywords() {
+		$ret = [];
+
+		if ( !empty( $_POST['Keywords'] ) ) {
+			foreach( explode( ',', $_POST['Keywords'] ) as $v ) {
+				$ret[] = "<option selected='selected' value='$v'>$v</option>";
+			}
+		}
+
+		return implode( "\n", $ret );
+	}
+
+	public function totalRecords() {
+		global $wpdb;
+
+		return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}adk_feed_data" );
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -641,26 +755,26 @@ class Feed {
 				return $v;
 			}
 		}
+
+		return 0;
 	}
 
 	protected function getSearchSelect( array $list, $name, $text, $id, $default = '' ) {
 		$ret = [];
 		$value = isset( $_POST[ $name ] ) ? $_POST[ $name ] : '';
+		$multiple = false && in_array( $name, [ 'zoning_type' ] ) ? 'multiple' : '';
 
 		$ret[] = "<label for='$id' class='dropdownLabel'>$text</label>";
-		$ret[] = "<select data-default='$default' data-hashkey='$name' name='ctl00\$MainContent\$ctl00\$ctl00\${$id}\$ctl00' data-placeholder='$text' id='$id'>";
-
-		$y = 0;
+		$ret[] = "<select data-default='$default' data-hashkey='$name' data-placeholder='$text' id='$id' $multiple>";
 
 		foreach( $list as $k => $i ) {
 			$selected = '';
 
-			if ( $value === $k ) {
-				$selected = ' selected="selected" ';
+			if ( $value == $k ) {
+				$selected = 'selected="selected"';
 			}
 
-			$ret[] = '<option value="' . $k . '"' . $selected . '>' . $i . '</option>';
-			$y++;
+			$ret[] = '<option value="' . $k . '" ' . $selected . '>' . $i . '</option>';
 		}
 
 		$ret[] = '</select>';

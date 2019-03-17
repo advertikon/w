@@ -1010,7 +1010,7 @@ ini_set('display_errors', 1);
 							</div> -->
 							<div class="homeMoreFilterCon checkbox" id="openHouse">
 								<div class="homeFilter">
-									<input type="checkbox" id="chkOpenHouse" value="1" data-hashkey="OpenHouse" />
+									<input type="checkbox" id="chkOpenHouse" value="1" data-hashkey="open_house" />
 									<label for="chkOpenHouse" class="checkboxLabel">Open Houses Only</label>
 								</div>
 							</div>
@@ -1169,6 +1169,7 @@ ini_set('display_errors', 1);
 							</div>
 
 							<div class="homeMoreFilterCon" id="landSize">
+								<?php echo $feed->squareFeetAsSelect( 'ddlLandSize' ); ?>
 								<label for="ddlLandSize" class="dropdownLabel">Land Size</label>
 								<select name="ctl00$MainContent$ctl00$ctl00$ddlLandSize$ctl00" data-hashkey="LandSizeRange" id="ddlLandSize">
 	<option value=" ">Any</option>
@@ -1188,7 +1189,8 @@ ini_set('display_errors', 1);
 							</div>
 
 							<div class="homeMoreFilterCon" id="farmType">
-								<label for="ddlFarmType">Farm Type</label>
+								<?php echo $feed->farmTypeAsSelect( 'ddlFarmType' ); ?>
+								<!-- <label for="ddlFarmType">Farm Type</label>
 								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlFarmType$ctl00" multiple="multiple" data-hashkey="FarmTypeId" id="ddlFarmType">
 	<option value="1">Animal</option>
 	<option value="3">Cash Crop</option>
@@ -1202,11 +1204,12 @@ ini_set('display_errors', 1);
 	<option value="2">Boarding</option>
 	<option value="12">Mixed</option>
 
-</select>
+</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="zoningType">
-								<label for="ddlZoningType" class="dropdownLabel">Zoning Type</label>
+								<?php echo $feed->zoningTypeAsSelect( 'ddlZoningType' ); ?>
+								<!-- <label for="ddlZoningType" class="dropdownLabel">Zoning Type</label>
 								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlZoningType$ctl00" multiple="multiple" data-hashkey="ZoningTypeGroupId" id="ddlZoningType">
 	<option value="4">Commercial Retail</option>
 	<option value="3">Commercial Office</option>
@@ -1223,7 +1226,7 @@ ini_set('display_errors', 1);
 	<option value="11">Recreational</option>
 	<option value="10">Other</option>
 
-</select>
+</select> -->
 							</div>
 
 							<input type="text" id="txtPropertyTypeGroupID" value="1" class="hiddenSearchFilter" style="display: none" data-hashkey="PropertyTypeGroupID" />
@@ -1362,13 +1365,16 @@ HTML;
 
 	function updateOrdering() {
 		var
-			transactionType = $( "[data-hashkey=transaction_type]" ).eq( 0 ).val().toLowerCase();
+			transactionType = $( "[data-hashkey=transaction_type]" ).eq( 0 ).val().toLowerCase(),
+			propertyType    = $( "[data-hashkey=property_type]" ).eq( 0 ).val();
+
+		propertyType = propertyType ? propertyType.toLowerCase() : '';
 
 		$( "#homeSearchMoreFiltersInnerCon > div " ).hide();
 		$( "#homePrimaryFilterCon > div " ).hide();
 
 
-		topItems = [ "BedsTop", "BathsTop" ];
+		topItems    = [];
 		bottomItems = [ "propertyTypeRes" , "transactionTypeRes" ];
 		//console.log( transactionType );
 
@@ -1389,6 +1395,72 @@ HTML;
 				//console.log( "Transaction: sale" );
 		}
 
+		switch( propertyType ) {
+			case 'vacant land':
+				topItems.push( "LandSizeTop" );
+				topItems.push( "ZoningTypeTop" );
+
+				bottomItems.push( "landSize" );
+				bottomItems.push( "zoningType" );
+				break;
+			case 'single family':
+			case 'multi-family':
+				topItems.push( "BathsTop" );
+				topItems.push( "BedsTop" );
+
+				bottomItems.push( "baths" );
+				bottomItems.push( "beds" );
+				bottomItems.push( "keywords" );
+				bottomItems.push( "buildingSpace" );
+				bottomItems.push( "openHouse" );
+				bottomItems.push( "zoningType" );
+				bottomItems.push( "parkingType" );
+				break;
+			case 'office':
+			case 'business':
+			case 'industrial':
+			case 'retail':
+				topItems.push( "BuildingSpaceTop" );
+
+				bottomItems.push( "buildingSpace" );
+				bottomItems.push( "keywords" );
+				break;
+			case 'recreational':
+				topItems.push( "BathsTop" );
+				topItems.push( "BedsTop" );
+
+				bottomItems.push( "baths" );
+				bottomItems.push( "beds" );
+				bottomItems.push( "keywords" );
+				bottomItems.push( "buildingType" );
+				//bottomItems.push( "openHouse" );
+				bottomItems.push( "landSize" );
+				break;
+			case 'agriculture':
+				topItems.push( "BathsTop" );
+				topItems.push( "BedsTop" );
+
+				bottomItems.push( "baths" );
+				bottomItems.push( "beds" );
+				bottomItems.push( "keywords" );
+				bottomItems.push( "buildingType" );
+				bottomItems.push( "openHouse" );
+				bottomItems.push( "landSize" );
+				bottomItems.push( "farmType" );
+				break;
+			case 'hospitality':
+				topItems.push( "BuildingSpaceTop" );
+				topItems.push( "LandSizeTop" );
+
+				bottomItems.push( "landSize" );
+				bottomItems.push( "buildingSpace" );
+				bottomItems.push( "keywords" );
+				break;
+			default:
+				bottomItems.push( "keywords" );
+
+		}
+
 		$.each( topItems, function() {
 			$( "#" + this ).show();
 		} );
@@ -1401,6 +1473,24 @@ HTML;
 	function setValue() {
 		//console.log( "update- value" );
 		$( "[data-hashkey=" + $( this ).attr( "data-hashkey" ) + "]" ).not( this ).val( $( this ).val() );
+	}
+
+	function getFilters() {
+		var data = {};
+
+		$.each( bottomItems, function() {
+			var e = $( "#" + this ).find( "select,input" );
+
+			if ( e.val() ) {
+				data[ e.attr( "data-hashkey" ) ] = e.val();
+			}
+		} );
+
+		if ( $( "#homeSearchTxt" ).val() ) {
+			data.mls = $( "#homeSearchTxt" ).val();
+		}
+
+		console.log( data );
 	}
 
 </script>
