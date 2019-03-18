@@ -125,36 +125,36 @@ function create_table() {
 }
 
 function adk_add_scripts() {
-	wp_register_script(
-		'adk_feed', plugins_url( 'assets/javascripts/jquery.selectBoxIt.min.js', __FILE__ ),
-		[ 'jquery', 'jquery-ui-widget' ],
-		'1.1',
-		false
-	);
+	// wp_register_script(
+	// 	'adk_feed', plugins_url( 'assets/javascripts/jquery.selectBoxIt.min.js', __FILE__ ),
+	// 	[ 'jquery', 'jquery-ui-widget' ],
+	// 	'1.1',
+	// 	false
+	// );
 
-	wp_enqueue_script('adk_feed' );
+	// wp_enqueue_script('adk_feed' );
 
-	wp_register_script(
-		'adk_feed_1', plugins_url( 'assets/javascripts/jquery.validate.min.js', __FILE__ ),
-		[ 'jquery' ],
-		'1.1',
-		true
-	);
+	// wp_register_script(
+	// 	'adk_feed_1', plugins_url( 'assets/javascripts/jquery.validate.min.js', __FILE__ ),
+	// 	[ 'jquery' ],
+	// 	'1.1',
+	// 	true
+	// );
 
-	wp_enqueue_script('adk_feed_1' );
+	// wp_enqueue_script('adk_feed_1' );
 
-	wp_register_script(
-		'adk_feed_2', plugins_url( 'assets/javascripts/single-listing.min.js', __FILE__ ),
-		[],
-		'1.1',
-		true
-	);
+	// wp_register_script(
+	// 	'adk_feed_2', plugins_url( 'assets/javascripts/single-listing.min.js', __FILE__ ),
+	// 	[],
+	// 	'1.1',
+	// 	true
+	// );
 
-	wp_enqueue_script('adk_feed_2' );
+	// wp_enqueue_script('adk_feed_2' );
 
-	wp_register_script( 'fitvids', '//cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.min.js', array('jquery'), null, true );
-	wp_enqueue_script( 'jquery-ui-tabs', array('jquery') );
-	wp_enqueue_script('fitvids' );
+	// wp_register_script( 'fitvids', '//cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.min.js', array('jquery'), null, true );
+	//wp_enqueue_script( 'jquery-ui-tabs', array('jquery') );
+	// wp_enqueue_script('fitvids' );
 }
 
 function adk_add_styles() {

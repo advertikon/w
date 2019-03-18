@@ -234,10 +234,10 @@ ini_set('display_errors', 1);
 		z-index: 1;
 	}
 </style>
-<form id="search-form" action="" method="POST">
+<!-- <form id="search-form" action="" method="POST"> -->
 <div id="homeHeaderCon" class="fullWidth" style="background-image: url( '<?php echo plugins_url( 'adk_feed/assets/images/residential-banner-1.jpg'); ?>' );">
 	<div id="homeHeaderInnerCon">
-		<h1 id="homeHeaderTitle" class="headerImageText" style="color: white;"> Search <span style="font-size:larger;">283,726</span> listings from trusted REALTORS<sup>®</sup></h1>
+		<h1 id="homeHeaderTitle" class="headerImageText" style="color: white;"> Search <span style="font-size:larger;"><?php echo number_format( $feed->totalRecords() ); ?></span> listings from trusted realtors</h1>
 		<div id="homeHeaderSearchCon">
 
 			<div id="homeSearchCon">
@@ -257,7 +257,7 @@ ini_set('display_errors', 1);
 							<div id="homeSearchInputInnerCon">
 								<div id="homeSearchTxtCon" style="width: 100%;">
 									<input type="text" autocomplete="city" placeholder="city" style="display: none">
-									<input id="homeSearchTxt" type="text" autocomplete="new-password" spellcheck="false" placeholder="<?php _e( 'City, Neighbourhood or MLS® number', 'adk_ffed' ); ?>" />
+									<input id="homeSearchTxt" type="text" autocomplete="new-password" spellcheck="false" placeholder="<?php _e( 'City, Neighbourhood or MLS® number', 'adk_ffed' ); ?>" <?php if(isset($_POST['mls']) && !empty(trim($_POST['mls'])))echo 'value="' . $_POST['mls'] . '"'; ?> " />
 								</div>
 								<div id="homePrimaryFilterOuterCon">
 									<div id="homePrimaryFilterCon">
@@ -591,7 +591,8 @@ ini_set('display_errors', 1);
 </select>
 										</div>
 										<div class="homeFilterCon" id="LandSizeTop" style="display: none;">
-											<label for="ddlLandSizeTop">Land Size</label>
+											<?php echo $feed->squareFeetAsSelect( 'ddlLandSizeTop' ); ?>
+											<!-- <label for="ddlLandSizeTop">Land Size</label>
 											<select name="ctl00$MainContent$ctl00$ctl00$ddlLandSizeTop$ctl00" data-hashkey="LandSizeRange" data-placeholder="Land Size" id="ddlLandSizeTop">
 	<option value=" ">Any</option>
 	<option value="1-0">1+ acres</option>
@@ -606,7 +607,7 @@ ini_set('display_errors', 1);
 	<option value="500-0">500+ acres</option>
 	<option value="1000-0">1000+ acres</option>
 
-</select>
+</select> -->
 										</div>
 										<div class="homeFilterCon" id="ZoningTypeTop" style="display: none;">
 											<label for="ddlZoningTypeTop">Zoning Type</label>
@@ -976,7 +977,7 @@ ini_set('display_errors', 1);
 
 
 							<div class="homeMoreFilterCon" id="parkingType">
-								<?php echo $feed->parkingTypeAsSelect( 'ddlParkingType' ); ?>
+								<?php echo $feed->parkingTypeAsSelect( 'ddlParkingTypee' ); ?>
 							  <!--   <label for="ddlParkingType" class="dropdownLabel">Parking Type</label>
 								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlParkingType$ctl00" multiple="multiple" data-hashkey="ParkingTypeId" data-default="" id="ddlParkingType">
 	<option value="35">Boat House</option>
@@ -1010,7 +1011,7 @@ ini_set('display_errors', 1);
 							</div> -->
 							<div class="homeMoreFilterCon checkbox" id="openHouse">
 								<div class="homeFilter">
-									<input type="checkbox" id="chkOpenHouse" value="1" data-hashkey="open_house" />
+									<input type="checkbox" id="chkOpenHouse" value="1" data-hashkey="open_house" <?php echo empty( $_POST['open_house'] ) ? '' : "checked='checked'"; ?>/>
 									<label for="chkOpenHouse" class="checkboxLabel">Open Houses Only</label>
 								</div>
 							</div>
@@ -1018,7 +1019,9 @@ ini_set('display_errors', 1);
 								<label for="txtKeywords" class="textboxLabel">Keywords</label>
 								<i style="display: none;" class="fa fa-question-circle inputHelperIcon" aria-hidden="true" id="KeywordToolTip" data-tooltipid="KeywordsTooltip"></i>
 								<!-- <input type="text" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords" placeholder="Waterfront, Garage, Pool…" />-->
-								<select multiple="multiple" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords"></select>
+								<select multiple="multiple" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords">
+									<?php echo $feed->get_keywords(); ?>
+								</select>
 							</div>
 
 							<div class="homeMoreFilterCon" id="hospitalityBuildingType">
@@ -1189,7 +1192,7 @@ ini_set('display_errors', 1);
 							</div>
 
 							<div class="homeMoreFilterCon" id="farmType">
-								<?php echo $feed->farmTypeAsSelect( 'ddlFarmType' ); ?>
+								<?php echo $feed->farmTypeAsSelect( 'ddlFarmTypee' ); ?>
 								<!-- <label for="ddlFarmType">Farm Type</label>
 								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlFarmType$ctl00" multiple="multiple" data-hashkey="FarmTypeId" id="ddlFarmType">
 	<option value="1">Animal</option>
@@ -1208,7 +1211,7 @@ ini_set('display_errors', 1);
 							</div>
 
 							<div class="homeMoreFilterCon" id="zoningType">
-								<?php echo $feed->zoningTypeAsSelect( 'ddlZoningType' ); ?>
+								<?php echo $feed->zoningTypeAsSelect( 'ddlZoningTypee' ); ?>
 								<!-- <label for="ddlZoningType" class="dropdownLabel">Zoning Type</label>
 								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlZoningType$ctl00" multiple="multiple" data-hashkey="ZoningTypeGroupId" id="ddlZoningType">
 	<option value="4">Commercial Retail</option>
@@ -1271,7 +1274,7 @@ ini_set('display_errors', 1);
 		<!-- <div class="search-row">
 			<button type="submit"><?php _e( 'Search', 'adk_feed' ); ?></button>
 		</div> -->
-	</form>
+	<!-- </form> -->
 
 
 	<section id="wplistings-featured-listings-11" class="widget wplistings-featured-listings clearfix amr_widget">
@@ -1283,12 +1286,14 @@ ini_set('display_errors', 1);
 			$is_first = 0 === $i % 3 ? 'first' : '';
 			$photo = isset( $l->photos[ 0 ] ) ? $l->photos[ 0 ] : [ '', '' ]; // 607 x 480
 			$price = number_format( $l->price );
+			$lot_size = $l->lot_size ? number_format( $l->lot_size, 2 ) : 0;
+			$seo_url = '/ddf-listing/' . str_replace( [ ' ' ], '_', $l->address ) . '-' . $l->id;
 
 			echo <<<HTML
 		<div class="listing one-third $is_first">
 			<div class="listing-wrap">
 				<div class="listing-widget-thumb">
-					<a href="/ddf-listing/foo-{$l->id}" class="listing-image-link">
+					<a href="$seo_url" class="listing-image-link">
 						<img src="{$photo[ 0 ]}" class="attachment-listings size-listings wp-post-image" alt="{$photo[ 1 ]}" />
 					</a>
 					<span class="listing-status for-sale">{$l->transaction_type}</span>
@@ -1299,7 +1304,7 @@ ini_set('display_errors', 1);
 				</div><!-- .listing-widget-thumb -->
 				<div class="listing-widget-details">
 					<h3 class="listing-title">
-						<a href="/ddf-listing/foo-{$l->id}">{$l->transaction_type}: {$l->address}</a>
+						<a href="$seo_url">{$l->transaction_type}: {$l->address}</a>
 					</h3>
 					<p class="listing-address">
 						<span class="listing-address">{$l->address}</span><br />
@@ -1308,7 +1313,7 @@ ini_set('display_errors', 1);
 					<ul class="listing-beds-baths-sqft">
 						<li class="beds">{$l->bedrooms}<span>Beds</span></li> 
 						<li class="baths">{$l->bathrooms}<span>Baths</span></li> 
-						<li class="sqft">{$l->square_feet}<span>Sq ft</span></li>
+						<li class="sqft">{$lot_size}<span>acres</span></li>
 					</ul>
 				</div><!-- .listing-widget-details -->
 				<a href="/ddf-listing/foo-{$l->id}" class="button btn-primary more-link">View Listing</a>
@@ -1325,18 +1330,12 @@ HTML;
 	<script>
 		+function( $ ) {
 			$( ".page-item" ).not( ".active" ).not( ".disabled" ).on( "click", paginate );
-			 // $( "#search-form select" ).selectBoxIt();
-
 
 			function paginate() {
-				$( "#page" ).val( $( this ).attr( "data-page" ) );
-				$( "#search-form" ).submit();
+				getFilters( $( this ).attr( "data-page" ) );
 			}
 		}( jQuery );
 	</script>
-
-
-	
 
 	<?php  echo "<a href='http://www.kulnijjar.ca#slide-Listings'>&#8592; Go Back</a>"; ?>
 </div>
@@ -1360,8 +1359,21 @@ HTML;
 			$( "#" + this ).show().find( "select" ).trigger( "change" );
 		} );
 
-		$( "#search-form select" ).on( "change", setValue );
+		$( "#homeHeaderCon select" ).on( "change", setValue );
 	}(jQuery));
+
+	$( document ).ready( function( $ ) {
+		$( "#homeHeaderCon select" ).each( function() {
+			var select = $( this );
+
+			$( this ).find( "option" ).each( function() {
+				if( $( this ).attr( "selected" ) ) {
+					console.log( $( this ).attr( "value" ) );
+					select.val( $( this ).attr( 'value' ) ).trigger( "change" );
+				}
+			} );
+		} );
+	} );
 
 	function updateOrdering() {
 		var
@@ -1398,7 +1410,7 @@ HTML;
 		switch( propertyType ) {
 			case 'vacant land':
 				topItems.push( "LandSizeTop" );
-				topItems.push( "ZoningTypeTop" );
+				// topItems.push( "ZoningTypeTop" );
 
 				bottomItems.push( "landSize" );
 				bottomItems.push( "zoningType" );
@@ -1471,17 +1483,22 @@ HTML;
 	}
 
 	function setValue() {
-		//console.log( "update- value" );
 		$( "[data-hashkey=" + $( this ).attr( "data-hashkey" ) + "]" ).not( this ).val( $( this ).val() );
 	}
 
-	function getFilters() {
-		var data = {};
+	function getFilters( page ) {
+		var
+			data = {},
+			form, e;
 
 		$.each( bottomItems, function() {
 			var e = $( "#" + this ).find( "select,input" );
 
 			if ( e.val() ) {
+				if ( e.attr( 'type' ) && !e.is( ":checked" ) ) {
+					return;
+				}
+
 				data[ e.attr( "data-hashkey" ) ] = e.val();
 			}
 		} );
@@ -1490,7 +1507,25 @@ HTML;
 			data.mls = $( "#homeSearchTxt" ).val();
 		}
 
+		if ( page ) {
+			data.page = page;
+
+		} else {
+			data.page = 1;
+		}
+
 		console.log( data );
+
+		if( !$.isEmptyObject( data ) ) {
+			form = $( "<form method='POST'>" );
+
+			$.each( data, function( k ,v ) {
+				e = $( "<input type='hidden' value='" + v + "' name='" +  k +"'>" );
+				e.appendTo( form );
+			} );
+		}
+
+		form.appendTo( $( 'body' ) ).submit();
 	}
 
 </script>

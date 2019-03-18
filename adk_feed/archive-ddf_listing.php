@@ -26,8 +26,30 @@ if ( is_null( $l->id ) ) {
 	die( 'Listing with ID ' . $id . ' has been removed' );
 }
 
+$address = trim( $l->address . ' ' . $l->address2 );
+$address .= ', ' . $l->city . ' ' . $l->province . ' ' . $l->zip_code;
+
+$utilities = [];
+
+if ( $l->building_appliances ) {
+	$utilities[] = $l->building_appliances;
+} 
+
+if ( $l->land_appliances ) {
+	$utilities[] = $l->land_appliances;
+}
+
+$utilities = implode( ',', $utilities );
+
 get_header()
 ?>
+
+<link type="text/css"rel="stylesheet" href="<?php echo plugins_url( 'adk_feed/assets/stylesheets/wp-listings-single.css' ); ?>"/>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.min.js"></script>
+<script src="<?php echo plugins_url( 'adk_feed/assets/javascripts/jquery.validate.min.js' ); ?>"></script>
+<script src="<?php echo plugins_url( 'adk_feed/assets/javascripts/single-listing.min.js' ); ?>"></script>
 
 <div id="primary" class="content-area container inner">
 	<div id="content" class="site-content" role="main">
@@ -36,13 +58,13 @@ get_header()
 			<div id="content" class="grid_10">
 				<header class="entry-header">
 					<div style="margin-top:60px"></div>
-					<a href='http://kulnijjar.ca/'>&#8592; Go Back</a>            
+					<a href='http://kulnijjar.ca/ddf-search'>&#8592; Go Back</a>            
 					<h2 class="entry-title" itemprop="name"><?php echo $l->transaction_type . ' ' . $l->address; ?></h2>			
 				</header><!-- .entry-header -->
 				<div itemscope itemtype="http://schema.org/SingleFamilyResidence" class="entry-content wplistings-single-listing">
 					<div class="listing-image-wrap">
 						<div itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
-							<img width="1000" height="749" src="<?php echo $l->photos[ 0 ][ 0 ]; ?>" class="single-listing-image wp-post-image" alt="" itemprop="contentUrl"" sizes="(max-width: 1000px) 100vw, 1000px" />
+							<img width="1000" height="749" src="<?php echo $l->photos[ 0 ][ 0 ]; ?>" class="single-listing-image wp-post-image" alt="" itemprop="contentUrl" sizes="(max-width: 1000px) 100vw, 1000px" />
 						</div>
 						<span class="listing-status for-sale"><?php echo $l->transaction_type; ?></span>
 					</div><!-- .listing-image-wrap -->
@@ -50,8 +72,8 @@ get_header()
 						<li class="listing-price"><span class="currency-symbol">$</span> <?php echo number_format( $l->price ); ?> </li>
 						<li class="listing-bedrooms"><span class="label">Beds: </span><?php echo $l->bedrooms; ?></li>
 						<li class="listing-bathrooms"><span class="label">Baths: </span><?php echo $l->bathrooms; ?></li>
-						<li class="listing-sqft"><span class="label">Sq Ft: </span><?php echo $l->square_feet; ?></li>
-						<li class="listing-lot-sqft"><span class="label">Lot Sq Ft: </span><?php echo $l->lot_size; ?> acres</li>
+						<li class="listing-sqft"><span class="label">Sq Ft: </span><?php echo number_format( $l->square_feet_inner ); ?></li>
+						<li class="listing-lot-sqft"><span class="label">Lot Size: </span><?php echo number_format( $l->lot_size, 2 ); ?> acres</li>
 					</ul>
 					<div id="listing-tabs" class="listing-data">
 						<ul>
@@ -82,7 +104,7 @@ get_header()
 										</tr>
 										<tr class="wp_listings_listing_state">
 											<td class="label">State:</td>
-											<td itemprop="addressRegion">Needs to be implemented yet</td>
+											<td itemprop="addressRegion"><?php echo $l->province; ?></td>
 										</tr>
 										<tr class="wp_listings_listing_zip">
 											<td class="label">Zip Code:</td>
@@ -96,7 +118,7 @@ get_header()
 								</tbody>
 								<tbody class="right">
 									<tr class="wp_listings_listing_year_built">
-										<td class="label">Year Built:</td><td><?php echo $l->year_built; ?></td>
+										<td class="label">Year Built:</td><td><?php echo $l->year_built ?: ''; ?></td>
 									</tr>
 									<tr class="wp_listings_listing_floors">
 										<td class="label">Floors:</td>
@@ -104,11 +126,11 @@ get_header()
 									</tr>
 									<tr class="wp_listings_listing_sqft">
 										<td class="label">Square Feet:</td>
-										<td><?php echo $l->square_feet; ?></td>
+										<td><?php echo number_format( $l->square_feet_inner ); ?></td>
 									</tr>
 									<tr class="wp_listings_listing_lot_sqft">
-										<td class="label">Lot Square Feet:</td>
-										<td><?php echo $l->lot_size; ?> acres</td>
+										<td class="label">Lot Size:</td>
+										<td><?php echo number_format( $l->lot_size, 2 ); ?> acres</td>
 									</tr>
 									<tr class="wp_listings_listing_bedrooms">
 										<td class="label">Bedrooms:</td>
@@ -120,7 +142,7 @@ get_header()
 									</tr>
 									<tr class="wp_listings_listing_garage">
 										<td class="label">Garage:</td>
-										<td>Yet to be implemented</td>
+										<td><?php echo $l->parking; ?></td>
 									</tr>
 								</tbody>
 							</table>
@@ -134,15 +156,15 @@ get_header()
 								<tbody class="right">
 									<tr class="wp_listings_listing_lotsize">
 										<td class="label">Lot size:</td>
-										<td><?php echo $l->lot_size; ?> acres</td>
+										<td><?php echo number_format( $l->lot_size, 2 ); ?> acres</td>
 									</tr>
 									<tr class="wp_listings_listing_scenery">
 										<td class="label">Scenery:</td>
-										<td>Yet to be implemented</td>
+										<td><?php echo $l->scenery; ?></td>
 									</tr>
 									<tr class="wp_listings_listing_utilities">
 										<td class="label">Utilities:</td>
-										<td>Yet to be implemented</td>
+										<td><?php echo $utilities; ?></td>
 									</tr>
 								</tbody>
 							</table>
@@ -166,10 +188,18 @@ get_header()
 							</p>
 						</div><!-- #listing-gallery -->
 					</div><!-- #listing-tabs.listing-data -->
-					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Nyt3733Bgyd1KiZIiF8ypMsX2BkokMQ"></script>
+					<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Nyt3733Bgyd1KiZIiF8ypMsX2BkokMQ"></script> -->
+					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlp0cpB-E_2ua_ugYIp1NsO4TmNCqDIg8"></script>
 					<script>
+						var
+							geocoder,
+							mapOptions,
+							map,
+							address = '<?php echo $address; ?>',
+							infowindow;
+
 						function initialize() {
-							var mapCanvas = document.getElementById('map-canvas');
+							var mapCanvas = document.getElementById( 'map-canvas' );
 							var myLatLng = new google.maps.LatLng(49.9503759, -116.9150368)
 							var mapOptions = {
 								center: myLatLng,
@@ -177,28 +207,52 @@ get_header()
 								mapTypeId: google.maps.MapTypeId.ROADMAP
 							}
 
-							var marker = new google.maps.Marker({
-								position: myLatLng,
-								icon: '//s3.amazonaws.com/ae-plugins/wp-listings/images/active.png'
-							});
+							// var marker = new google.maps.Marker({
+							// 	position: myLatLng,
+							// 	icon: '//s3.amazonaws.com/ae-plugins/wp-listings/images/active.png'
+							// });
 
-							var infoContent = ' <p style="font-size: 14px; margin-bottom: 0;">8957 Jacobs Subdivision Road<br />Kaslo BC, V0G1M0</p> ';
-							var infowindow = new google.maps.InfoWindow({
+							var infoContent = ' <p style="font-size: 14px; margin-bottom: 0;">' + address + '</p> ';
+							infowindow = new google.maps.InfoWindow({
 								content: infoContent
 							});
 
-							var map = new google.maps.Map(mapCanvas, mapOptions);
+							map = new google.maps.Map( mapCanvas, mapOptions );
 
-							marker.setMap(map);
+							// marker.setMap(map);
 
-							infowindow.open(map, marker);
+							// infowindow.open( map, marker );
+							setMap();
+						}
+
+						function setMap() {
+							var
+								geocoder = new google.maps.Geocoder();
+
+							geocoder.geocode( { 'address': address }, function( results, status ) {
+								if (status == 'OK') {
+									map.setCenter( results[ 0 ].geometry.location );
+
+									var marker = new google.maps.Marker( {
+										map: map,
+										position: results[ 0 ].geometry.location,
+										icon: '//s3.amazonaws.com/ae-plugins/wp-listings/images/active.png'
+									} );
+
+									infowindow.open( map, marker );
+
+								} else {
+									console.error( 'Geocode was not successful for the following reason: ' + status );
+								}
+							} );
 						}
 
 						google.maps.event.addDomListener( window, 'load', initialize );
 
-						jQuery.get( 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD1Nyt3733Bgyd1KiZIiF8ypMsX2BkokMQ', function ( resp ) {
-							console.log( resp );
-						} );
+						// jQuery.get( 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD1Nyt3733Bgyd1KiZIiF8ypMsX2BkokMQ', function ( resp ) {
+						// 	console.log( resp );
+						// } );
+
 					</script>
 					<div id="listing-map">
 						<h3>Location Map</h3>
