@@ -122,6 +122,12 @@ function create_table() {
   		agent_office_phone  varchar(400) NOT NULL,
   		INDEX i1 (price,bedrooms,bathrooms)
     )" );
+
+    $wpdb->query( "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}adk_feed_coordinates (
+	        listing_id  varchar(20) NOT NULL UNIQUE,
+	        coordinates blob NOT NULL
+    	)"
+    );
 }
 
 function adk_add_scripts() {

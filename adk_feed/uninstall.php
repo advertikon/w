@@ -22,5 +22,9 @@ if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 global $wpdb;
 $wpdb->query( "DROP TABLE {$wpdb->prefix}adk_feed_data" );
+$wpdb->query( "DROP TABLE {$wpdb->prefix}adk_feed_coordinates" );
 
 adk_rm( __DIR__ . '/images/' );
+
+require_once 'class/cache.php';
+adk_rm( ADKCache::$dir );

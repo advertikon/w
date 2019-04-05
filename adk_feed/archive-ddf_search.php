@@ -2,6 +2,10 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// $ch = curl_init( 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=47.6918452,-122.2226413&radius=1500&type=freeway&key=AIzaSyDlp0cpB-E_2ua_ugYIp1NsO4TmNCqDIg8' );
+
+// curl_exec( $ch );
 ?>
 
 <style>
@@ -13,20 +17,23 @@ ini_set('display_errors', 1);
 	cursor: pointer;
 	background-color: #ecb53e;
 	color: white;
-	border: solid 2px #bf973f;
+	border: solid 2px #e1c07;
 	font-size: 16px;
 	font-weight: bold;
+	border-radius: 3px;
 }
 
 .page-item.active {
 	cursor: default;
-	background-color: #c58907;
+	background-color: #815800;
+	border-color: #926c34;
 }
 
 .page-item.disabled {
 	cursor: default;
-	background-color: #bbbbbb;
-	border: solid 2px #777777;
+	background-color: #f2f2f2;
+	border: solid 2px #e1e1e1;
+	color: #ecb53e;
 }
 
 .pagination-wrapper{

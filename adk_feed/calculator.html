@@ -1,0 +1,1085 @@
+<link rel="stylesheet" href="widget.css" type="text/css">
+<link rel="stylesheet" href="calculator.css" type="text/css">
+<link rel="stylesheet" href="font-awesome.min.css" type="text/css">
+
+<div id="listingCalculatorsTab" class="listingTabContent noPrint" style="">
+                    <div class="absoluteCenter">
+                        <div id="listingCalculatorsTab_Loading" class="sk-spinning-circle"></div>
+                    </div>
+                    <div class="rh ng-scope" style="visibility: visible;"><div class="rh-widget calc-payment" max-width="1080px">
+<div id="payment-calc" class="ratehub-calc full">
+
+<div class="rh-calc-wrapper lang-en">
+	<div class="rh-calc-tabs" style="">
+					
+			<div class="rh-holder first selected">
+				<h2><a class="purchase" href="#">Purchase</a></h2>
+			</div>
+						<div class="rh-holder">
+				<!-- this tab only displays renewal rates, but we call it renewal/refinance because many users confuse the two -->
+				<h2><a class="renewal" href="#">Renewal or Refinance</a></h2>
+			</div>
+						</div>
+	<div class="rh-calc-block">
+		<form novalidate="" class="ng-pristine ng-valid">
+			<table class="rh-calc-head">
+			<tbody><tr>
+				<td class="col01">
+					<h3 id="ask_heading">Asking Price</h3>
+				</td>
+				<td class="col02">
+					<label for="ask" class="accessible">Asking Price</label>
+					<input id="ask" name="ask" type="text" class="text input-number " value="1.00" pattern="[0-9]*">
+				</td>
+				<td class="col03">
+					<a class="go" href="#" tabindex="9"><span>Go</span></a>
+					<div class="calc-tip-wrapper calc-tip-step1">
+						<div class="calc-tip nib-left">
+							<div class="calc-tip-top"></div>
+							<div class="calc-tip-middle">
+								<div class="calc-tip-title"><a href="#" class="calc-tip-close">&nbsp;</a>STEP 1</div>
+								<div class="calc-tip-content">
+									<span class="content-purchase">Enter the price of the home you're interested in and press GO.</span>
+									<span class="content-renew" style="display:none">Enter the amount of the mortgage you wish to renew or refinance and press GO.</span>
+								</div>
+							</div>
+							<div class="calc-tip-bottom"></div>
+							<div class="calc-tip-nib"></div>
+						</div>
+					</div>
+				</td>
+				<td class="social" colspan="2" style="text-align:right;">
+									</td>
+			</tr>
+		</tbody></table>
+		<table class="rh-calc-main">
+						<tbody class="purchase" style="">
+				<tr class="downpayment percent">
+					<td class="col1" rowspan="2">Down payment</td>
+					<td class="col2" rowspan="2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Down payment      </span>
+      <span class="rh-content">
+The amount of money you pay up front to obtain a mortgage. The minimum down payment in Canada is 5%. For down payments of less than 20%, home buyers are required to purchase mortgage default insurance, commonly referred to as CMHC insurance.      </span>
+  </span>
+
+</td>
+					<td class="col3"></td>
+
+										<td class="col4 scen1">
+						<label for="dp_pc1" class="accessible">Down payment 1 (%)</label>
+						<input id="dp_pc1" name="dp_pc[]" type="text" class="text input-number" data-unrounded="0.05" value="5%" pattern="[0-9]*" style="color: rgb(10, 89, 107);">
+					</td>
+										<td class="col4 scen2">
+						<label for="dp_pc2" class="accessible">Down payment 2 (%)</label>
+						<input id="dp_pc2" name="dp_pc[]" type="text" class="text input-number" data-unrounded="0.1" value="10%" pattern="[0-9]*" style="color: rgb(10, 89, 107);">
+					</td>
+										<td class="col4 scen3">
+						<label for="dp_pc3" class="accessible">Down payment 3 (%)</label>
+						<input id="dp_pc3" name="dp_pc[]" type="text" class="text input-number" data-unrounded="0.15" value="15%" pattern="[0-9]*" style="color: rgb(10, 89, 107);">
+					</td>
+										<td class="col4 scen4">
+						<label for="dp_pc4" class="accessible">Down payment 4 (%)</label>
+						<input id="dp_pc4" name="dp_pc[]" type="text" class="text input-number" data-unrounded="0.2" value="20%" pattern="[0-9]*" style="color: rgb(10, 89, 107);">
+					</td>
+									</tr>
+				<tr class="downpayment alt">
+					<td class="col3"><span class="ico-minus">minus</span></td>
+
+										<td class="col4 scen1">
+						<label for="dp_dol1" class="accessible">Down payment 1 ($)</label>
+						<input id="dp_dol1" name="dp_dol[]" type="text" class="text input-number" pattern="[0-9]*">
+					</td>
+										<td class="col4 scen2">
+						<label for="dp_dol2" class="accessible">Down payment 2 ($)</label>
+						<input id="dp_dol2" name="dp_dol[]" type="text" class="text input-number" pattern="[0-9]*">
+					</td>
+										<td class="col4 scen3">
+						<label for="dp_dol3" class="accessible">Down payment 3 ($)</label>
+						<input id="dp_dol3" name="dp_dol[]" type="text" class="text input-number" pattern="[0-9]*">
+					</td>
+										<td class="col4 scen4">
+						<label for="dp_dol4" class="accessible">Down payment 4 ($)</label>
+						<input id="dp_dol4" name="dp_dol[]" type="text" class="text input-number" pattern="[0-9]*">
+					</td>
+									</tr>
+								<tr class="cmhc">
+					<td class="col1">Mortgage insurance</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Mortgage insurance      </span>
+      <span class="rh-content">
+Mortgage default insurance, commonly referred to as CMHC insurance, protects the lender in the case the borrower defaults on the mortgage. Mortgage default insurance is required on all mortgages with down payments of less than 20%, which are known as high ratio mortgages. Mortgage default insurance is calculated as a percentage applied to your mortgage amount.      </span>
+  </span>
+
+</td>
+					<td class="col3"><span class="ico-plus">plus</span></td>
+										<td class="col4 scen1">$0</td>
+										<td class="col4 scen2">$0</td>
+										<td class="col4 scen3">$0</td>
+										<td class="col4 scen4">$0</td>
+									</tr>
+				<tr class="total">
+					<td class="rh-col" colspan="2"><span>Total Mortgage Required</span></td>
+					<td class="col3"><span class="ico-well">equals</span></td>
+										<td class="col4 scen1">$1</td>
+										<td class="col4 scen2">$1</td>
+										<td class="col4 scen3">$1</td>
+										<td class="col4 scen4 last">$1</td>
+									</tr>
+			</tbody>
+									<tbody class="mortgage-options">
+				<tr class="amortization">
+					<td class="col1">Amortization period</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Amortization period      </span>
+      <span class="rh-content">
+The length of time it will take a homeowner to pay off his/her mortgage. In Canada, the maximum amortization period for insurable mortgages is 25 years. Longer amortization periods allow homeowners to make smaller monthly payments, but equate to more interest paid over the life of the mortgage.      </span>
+  </span>
+
+</td>
+					<td class="col3">&nbsp;</td>
+
+										<td class="col4 scen1">
+												<div class="calc-tip-wrapper calc-tip-step2">
+							<div class="calc-tip nib-left active">
+								<div class="calc-tip-top"></div>
+								<div class="calc-tip-middle"><a href="#" class="calc-tip-close">&nbsp;</a><div class="calc-tip-title">STEP 2</div><div class="calc-tip-content">Choose an amortization period.</div></div>
+								<div class="calc-tip-bottom"></div>
+								<div class="calc-tip-nib"></div>
+							</div>
+						</div>
+						
+						<label for="amort1" class="accessible">Amortization period 1</label>
+								<select id="amort1" name="amort[]">
+			<option value="" selected="selected">
+				Select			</option>
+					<option value="5">5 years</option>
+				<option value="10">10 years</option>
+				<option value="15">15 years</option>
+				<option value="20">20 years</option>
+				<option value="25">25 years</option>
+				<option value="30" disabled="disabled">30 years</option>
+				<option value="other">Other</option>
+				</select>
+
+		
+
+		
+					</td>
+										<td class="col4 scen2">
+						
+						<label for="amort2" class="accessible">Amortization period 2</label>
+								<select id="amort2" name="amort[]">
+			<option value="" selected="selected">
+				Select			</option>
+					<option value="5">5 years</option>
+				<option value="10">10 years</option>
+				<option value="15">15 years</option>
+				<option value="20">20 years</option>
+				<option value="25">25 years</option>
+				<option value="30" disabled="disabled">30 years</option>
+				<option value="other">Other</option>
+				</select>
+
+		
+
+		
+					</td>
+										<td class="col4 scen3">
+						
+						<label for="amort3" class="accessible">Amortization period 3</label>
+								<select id="amort3" name="amort[]">
+			<option value="" selected="selected">
+				Select			</option>
+					<option value="5">5 years</option>
+				<option value="10">10 years</option>
+				<option value="15">15 years</option>
+				<option value="20">20 years</option>
+				<option value="25">25 years</option>
+				<option value="30" disabled="disabled">30 years</option>
+				<option value="other">Other</option>
+				</select>
+
+		
+
+		
+					</td>
+										<td class="col4 scen4">
+						
+						<label for="amort4" class="accessible">Amortization period 4</label>
+								<select id="amort4" name="amort[]">
+			<option value="" selected="selected">
+				Select			</option>
+					<option value="5">5 years</option>
+				<option value="10">10 years</option>
+				<option value="15">15 years</option>
+				<option value="20">20 years</option>
+				<option value="25">25 years</option>
+				<option value="30">30 years</option>
+				<option value="other">Other</option>
+				</select>
+
+		
+
+		
+					</td>
+									</tr>
+				<tr class="mortgage-rate">
+					<td class="col1">Mortgage rate</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Mortgage rate      </span>
+      <span class="rh-content">
+The rate of interest you will pay on the outstanding balance of your mortgage. This is determined by the mortgage type and mortgage provider. To see how rates vary by type and provider, click on "Select Rate" link on the right.      </span>
+  </span>
+
+</td>
+					<td class="col3">&nbsp;<br>&nbsp;</td>
+										<td class="col4 scen1" style="position:relative;">
+												<div class="calc-tip-wrapper calc-tip-step3">
+							<div class="calc-tip nib-left">
+								<div class="calc-tip-top"></div>
+								<div class="calc-tip-middle"><div class="calc-tip-title"><a href="#" class="calc-tip-close">&nbsp;</a>STEP 3</div>
+									<div class="calc-tip-content">Enter a mortgage rate to calculate the corresponding payment.</div>
+								</div>
+								<div class="calc-tip-bottom"></div>
+								<div class="calc-tip-nib"></div>
+							</div>
+						</div>
+																		<input class="rate-value text" name="rate_value" type="text">
+											</td>
+										<td class="col4 scen2" style="position:relative;">
+																		<input class="rate-value text" name="rate_value" type="text">
+											</td>
+										<td class="col4 scen3" style="position:relative;">
+																		<input class="rate-value text" name="rate_value" type="text">
+											</td>
+										<td class="col4 scen4" style="position:relative;">
+																		<input class="rate-value text" name="rate_value" type="text">
+											</td>
+									</tr>
+								<tr class="total-mortgage-payment">
+					<td colspan="3" class="rh-col"><h4>Total Mortgage Payment</h4></td>
+
+										<td class="col4 scen1" rowspan="2">
+												<span class="details simple">
+							<span class="amount">$-</span>
+						</span>
+											</td>
+										<td class="col4 scen2" rowspan="2">
+												<span class="details simple">
+							<span class="amount">$-</span>
+						</span>
+											</td>
+										<td class="col4 scen3" rowspan="2">
+												<span class="details simple">
+							<span class="amount">$-</span>
+						</span>
+											</td>
+										<td class="col4 scen4" rowspan="2">
+												<span class="details simple">
+							<span class="amount">$-</span>
+						</span>
+											</td>
+									</tr>
+				<tr class="payment-freq">
+					<td class="col1">
+						<label for="freq">Frequency</label>
+						<select id="freq" name="freq">
+							<option value="12,1">Monthly</option>
+							<option value="26,1">Bi-weekly</option>
+							<option value="12,2">Accelerated Bi-weekly</option>
+						</select>
+					</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Mortgage payment      </span>
+      <span class="rh-content">
+The monthly mortgage payment is calculated based on the inputs you provided: the mortgage amount, rate type (fixed or variable), term, amortization period, and payment frequency. A general affordability rule, as outlined by the Canada Mortgage and Housing Corporation, is that your monthly housing costs should not exceed 32% of your gross household monthly income.      </span>
+  </span>
+
+</td>
+					<td class="col3">&nbsp;</td>
+				</tr>
+			</tbody>
+			
+						<tbody class="land-transfer-tax" style="">
+				<tr class="first">
+					<td class="rh-col" colspan="4">
+						<div class="rh-title">
+							<div>
+								Land Transfer Tax:
+								<span>$0</span>
+							</div>
+						</div>
+					</td>
+
+					<td colspan="3" class="rh-col profile" rowspan="4">
+						<div class="calc-tip-wrapper calc-tip-step4">
+							<div class="calc-tip nib-left">
+								<div class="calc-tip-top"></div>
+								<div class="calc-tip-middle"><a href="#" class="calc-tip-close">&nbsp;</a><div class="calc-tip-title">STEP 4</div><div class="calc-tip-content">If necessary, update your profile to calculate land transfer tax.</div></div>
+								<div class="calc-tip-bottom"></div>
+								<div class="calc-tip-nib"></div>
+							</div>
+						</div>
+						<div class="rh-title">
+							<div>
+								Profile							</div>
+						</div>
+						<div class="section">
+														<div class="rh-row">
+								<label for="rh-calc-province">Province</label><select id="rh-calc-province" name="province">
+			<option value="">
+				Please select			</option>
+					<option value="BC">British Columbia</option>
+				<option value="AB">Alberta</option>
+				<option value="SK">Saskatchewan</option>
+				<option value="MB">Manitoba</option>
+				<option value="ON" selected="selected">Ontario</option>
+				<option value="QC">Quebec</option>
+				<option value="NB">New Brunswick</option>
+				<option value="NS">Nova Scotia</option>
+				<option value="PE">Prince Edward Island</option>
+				<option value="NL">Newfoundland</option>
+				<option value="YK">Yukon</option>
+				<option value="NT">Northwest Territories</option>
+				<option value="NU">Nunavut</option>
+				</select>
+																			
+		
+		
+															</div>
+							<div class="rh-row toronto city" style="visibility:visible">
+								<label for="city">City</label><select id="rh-calc-city" name="city" class=""><option value="">Please select</option><option value="aberarder" data-id="3428">Aberarder</option><option value="abitibi-canyon" data-id="3429">Abitibi Canyon</option><option value="acton" data-id="3430">Acton</option><option value="adolphustown" data-id="3431">Adolphustown</option><option value="ailsa-craig" data-id="3432">Ailsa Craig</option><option value="ajax" data-id="3433">Ajax</option><option value="alban" data-id="3434">Alban</option><option value="alderville-first-nation" data-id="3435">Alderville First Nation</option><option value="alexandria" data-id="3436">Alexandria</option><option value="alfred" data-id="3437">Alfred</option><option value="algoma-mills" data-id="3438">Algoma Mills</option><option value="alliston" data-id="3439">Alliston</option><option value="almonte" data-id="3440">Almonte</option><option value="alvinston" data-id="3441">Alvinston</option><option value="amherstburg" data-id="3442">Amherstburg</option><option value="ancaster" data-id="3443">Ancaster</option><option value="angus" data-id="3444">Angus</option><option value="apsley" data-id="3445">Apsley</option><option value="arden" data-id="3446">Arden</option><option value="arkell" data-id="3447">Arkell</option><option value="arkona" data-id="3448">Arkona</option><option value="armstrong" data-id="3449">Armstrong</option><option value="arnprior" data-id="3450">Arnprior</option><option value="arthur" data-id="3451">Arthur</option><option value="athens" data-id="3452">Athens</option><option value="atikokan" data-id="3453">Atikokan</option><option value="attawapiskat" data-id="3454">Attawapiskat</option><option value="atwood" data-id="3455">Atwood</option><option value="auburn" data-id="3456">Auburn</option><option value="aurora" data-id="3457">Aurora</option><option value="avonmore" data-id="3458">Avonmore</option><option value="aylmer" data-id="3459">Aylmer</option><option value="ayr" data-id="3460">Ayr</option><option value="ayton" data-id="3461">Ayton</option><option value="azilda" data-id="3462">Azilda</option><option value="baden" data-id="3463">Baden</option><option value="bailieboro" data-id="3464">Bailieboro</option><option value="bala" data-id="3465">Bala</option><option value="balmertown" data-id="3466">Balmertown</option><option value="baltimore" data-id="3467">Baltimore</option><option value="bancroft" data-id="3468">Bancroft</option><option value="barrie" data-id="3469">Barrie</option><option value="barrys-bay" data-id="3470">Barry's Bay</option><option value="barwick" data-id="3471">Barwick</option><option value="batawa" data-id="3472">Batawa</option><option value="batchawana-bay" data-id="3473">Batchawana Bay</option><option value="bath" data-id="3474">Bath</option><option value="bayfield" data-id="3475">Bayfield</option><option value="baysville" data-id="3476">Baysville</option><option value="beachburg" data-id="3477">Beachburg</option><option value="beachville" data-id="3478">Beachville</option><option value="beamsville" data-id="3479">Beamsville</option><option value="beardmore" data-id="3481">Beardmore</option><option value="bearskin-lake" data-id="3482">Bearskin Lake</option><option value="bearskin-lake-first-nation" data-id="3483">Bearskin Lake First Nation</option><option value="bears-passage" data-id="3480">Bear's Passage</option><option value="beaverton" data-id="3484">Beaverton</option><option value="beeton" data-id="3485">Beeton</option><option value="belle-river" data-id="3486">Belle River</option><option value="belleville" data-id="3487">Belleville</option><option value="belmont" data-id="3488">Belmont</option><option value="bethany" data-id="3489">Bethany</option><option value="bethesda" data-id="3490">Bethesda</option><option value="big-trout-lake" data-id="3491">Big Trout Lake</option><option value="binbrook" data-id="3492">Binbrook</option><option value="birch-island" data-id="3493">Birch Island</option><option value="biscotasing" data-id="3494">Biscotasing</option><option value="blackstock" data-id="3495">Blackstock</option><option value="blenheim" data-id="3496">Blenheim</option><option value="blezard-valley" data-id="3497">Blezard Valley</option><option value="blind-river" data-id="3498">Blind River</option><option value="bloomfield" data-id="3499">Bloomfield</option><option value="blyth" data-id="3500">Blyth</option><option value="bobcaygeon" data-id="3501">Bobcaygeon</option><option value="bolton" data-id="3502">Bolton</option><option value="bonfield" data-id="3503">Bonfield</option><option value="borden" data-id="3504">Borden</option><option value="bothwell" data-id="3505">Bothwell</option><option value="bourget" data-id="3506">Bourget</option><option value="bowmanville" data-id="3507">Bowmanville</option><option value="bracebridge" data-id="3508">Bracebridge</option><option value="bradford" data-id="3509">Bradford</option><option value="bradford-west-gwillimbury" data-id="3510">Bradford West Gwillimbury</option><option value="braeside" data-id="3511">Braeside</option><option value="brampton" data-id="3512">Brampton</option><option value="brantford" data-id="3513">Brantford</option><option value="brechin" data-id="3514">Brechin</option><option value="breslau" data-id="3515">Breslau</option><option value="bridgenorth" data-id="3516">Bridgenorth</option><option value="brigden" data-id="3517">Brigden</option><option value="bright" data-id="3518">Bright</option><option value="brighton" data-id="3519">Brighton</option><option value="brights-grove" data-id="3520">Brights Grove</option><option value="britt" data-id="3521">Britt</option><option value="brockville" data-id="3522">Brockville</option><option value="brooklin" data-id="3523">Brooklin</option><option value="brownsville" data-id="3524">Brownsville</option><option value="bruce-mines" data-id="3525">Bruce Mines</option><option value="brussels" data-id="3526">Brussels</option><option value="buckhorn" data-id="3527">Buckhorn</option><option value="burford" data-id="3528">Burford</option><option value="burgessville" data-id="3529">Burgessville</option><option value="burks-falls" data-id="3530">Burk's Falls</option><option value="burleigh-falls" data-id="3531">Burleigh Falls</option><option value="burlington" data-id="3532">Burlington</option><option value="cache-bay" data-id="3533">Cache Bay</option><option value="calabogie" data-id="3534">Calabogie</option><option value="caledon" data-id="3535">Caledon</option><option value="caledon-east" data-id="3536">Caledon East</option><option value="caledonia" data-id="3537">Caledonia</option><option value="callander" data-id="3538">Callander</option><option value="calstock" data-id="3539">Calstock</option><option value="cambray" data-id="3540">Cambray</option><option value="cambridge" data-id="3541">Cambridge</option><option value="cameron" data-id="3542">Cameron</option><option value="camlachie" data-id="3543">Camlachie</option><option value="campbellford" data-id="3544">Campbellford</option><option value="campbellville" data-id="3545">Campbellville</option><option value="cannington" data-id="3546">Cannington</option><option value="capreol" data-id="3547">Capreol</option><option value="caradoc-first-nation" data-id="3548">Caradoc First Nation</option><option value="caramat" data-id="3549">Caramat</option><option value="cardiff" data-id="3550">Cardiff</option><option value="cardinal" data-id="3551">Cardinal</option><option value="cargill" data-id="3552">Cargill</option><option value="carleton-place" data-id="3553">Carleton Place</option><option value="carnarvon" data-id="3554">Carnarvon</option><option value="carp" data-id="3555">Carp</option><option value="cartier" data-id="3556">Cartier</option><option value="casselman" data-id="3557">Casselman</option><option value="castlemore" data-id="3558">Castlemore</option><option value="castleton" data-id="3559">Castleton</option><option value="cat-lake" data-id="3560">Cat Lake</option><option value="cavan" data-id="3561">Cavan</option><option value="cayuga" data-id="3562">Cayuga</option><option value="centralia" data-id="3563">Centralia</option><option value="chalk-river" data-id="3564">Chalk River</option><option value="chapleau" data-id="3565">Chapleau</option><option value="charlton" data-id="3566">Charlton</option><option value="chatham" data-id="3567">Chatham</option><option value="chatsworth" data-id="3568">Chatsworth</option><option value="chelmsford" data-id="3569">Chelmsford</option><option value="chesley" data-id="3570">Chesley</option><option value="chesterville" data-id="3571">Chesterville</option><option value="chiefs-point-first-nation" data-id="3572">Chiefs Point First Nation</option><option value="chippewas-of-kettle-stony-poin" data-id="3573">Chippewas of Kettle/Stony Poin</option><option value="chippewas-of-sarnia-first-nati" data-id="3574">Chippewas Of Sarnia First Nati</option><option value="christian-island" data-id="3575">Christian Island</option><option value="claremont" data-id="3576">Claremont</option><option value="clarence-creek" data-id="3577">Clarence Creek</option><option value="clarence-rockland" data-id="3578">Clarence-Rockland</option><option value="clarington" data-id="3579">Clarington</option><option value="clarkson" data-id="3580">Clarkson</option><option value="clearwater-bay" data-id="3581">Clearwater Bay</option><option value="clifford" data-id="3582">Clifford</option><option value="clinton" data-id="3583">Clinton</option><option value="cloud-bay" data-id="3584">Cloud Bay</option><option value="cobalt" data-id="3585">Cobalt</option><option value="cobden" data-id="3586">Cobden</option><option value="coboconk" data-id="3587">Coboconk</option><option value="cobourg" data-id="3588">Cobourg</option><option value="cochenour" data-id="3589">Cochenour</option><option value="cochrane" data-id="3590">Cochrane</option><option value="coe-hill" data-id="3591">Coe Hill</option><option value="colborne" data-id="3592">Colborne</option><option value="colchester" data-id="3593">Colchester</option><option value="cold-springs" data-id="3594">Cold Springs</option><option value="coldwater" data-id="3595">Coldwater</option><option value="collingwood" data-id="3596">Collingwood</option><option value="comber" data-id="3597">Comber</option><option value="concord" data-id="3598">Concord</option><option value="coniston" data-id="3599">Coniston</option><option value="connaught" data-id="3600">Connaught</option><option value="constance-bay" data-id="3601">Constance Bay</option><option value="constance-lake-first-nation" data-id="3602">Constance Lake First Nation</option><option value="cookstown" data-id="3603">Cookstown</option><option value="cooksville" data-id="3604">Cooksville</option><option value="cornwall" data-id="3605">Cornwall</option><option value="corunna" data-id="3606">Corunna</option><option value="cottam" data-id="3607">Cottam</option><option value="courtice" data-id="3608">Courtice</option><option value="courtright" data-id="3609">Courtright</option><option value="crediton" data-id="3610">Crediton</option><option value="creemore" data-id="3611">Creemore</option><option value="crysler" data-id="3612">Crysler</option><option value="crystal-beach" data-id="3613">Crystal Beach</option><option value="cumberland" data-id="3614">Cumberland</option><option value="dashwood" data-id="3615">Dashwood</option><option value="deep-river" data-id="3616">Deep River</option><option value="deerbrook" data-id="3618">Deerbrook</option><option value="deer-lake" data-id="3617">Deer Lake</option><option value="delaware-of-the-thames-moravia" data-id="3619">Delaware of the Thames(Moravia</option><option value="delhi" data-id="3620">Delhi</option><option value="delta" data-id="3621">Delta</option><option value="denbigh" data-id="3622">Denbigh</option><option value="desbarats" data-id="3623">Desbarats</option><option value="deseronto" data-id="3624">Deseronto</option><option value="deux-rivieres" data-id="3625">Deux Rivières</option><option value="devlin" data-id="3626">Devlin</option><option value="dokis" data-id="3627">Dokis</option><option value="dokis-first-nation" data-id="3628">Dokis First Nation</option><option value="dorchester" data-id="3629">Dorchester</option><option value="dorion" data-id="3630">Dorion</option><option value="dorset" data-id="3631">Dorset</option><option value="douglas" data-id="3632">Douglas</option><option value="douglastown" data-id="3633">Douglastown</option><option value="drayton" data-id="3634">Drayton</option><option value="dresden" data-id="3635">Dresden</option><option value="drumbo" data-id="3636">Drumbo</option><option value="dryden" data-id="3637">Dryden</option><option value="dublin" data-id="3638">Dublin</option><option value="dubreuilville" data-id="3639">Dubreuilville</option><option value="dunchurch" data-id="3640">Dunchurch</option><option value="dundalk" data-id="3641">Dundalk</option><option value="dundas" data-id="3642">Dundas</option><option value="dungannon" data-id="3643">Dungannon</option><option value="dunnville" data-id="3644">Dunnville</option><option value="dunsford" data-id="3645">Dunsford</option><option value="durham" data-id="3646">Durham</option><option value="dutton" data-id="3647">Dutton</option><option value="dwight" data-id="3648">Dwight</option><option value="dyers-bay" data-id="3649">Dyer's Bay</option><option value="eagle-lake-first-nation" data-id="3650">Eagle Lake First Nation</option><option value="eagle-river" data-id="3651">Eagle River</option><option value="ear-falls" data-id="3652">Ear Falls</option><option value="earlton" data-id="3653">Earlton</option><option value="east-gwillimbury" data-id="3654">East Gwillimbury</option><option value="eastwood" data-id="3656">Eastwood</option><option value="east-york" data-id="3655">East York</option><option value="echo-bay" data-id="3657">Echo Bay</option><option value="eganville" data-id="3658">Eganville</option><option value="elgin" data-id="3659">Elgin</option><option value="elizabethtown" data-id="3660">Elizabethtown</option><option value="elk-lake" data-id="3661">Elk Lake</option><option value="elliot-lake" data-id="3662">Elliot Lake</option><option value="elmira" data-id="3663">Elmira</option><option value="elmvale" data-id="3664">Elmvale</option><option value="elora" data-id="3665">Elora</option><option value="embro" data-id="3666">Embro</option><option value="embrun" data-id="3667">Embrun</option><option value="emeryville" data-id="3668">Emeryville</option><option value="emo" data-id="3669">Emo</option><option value="emsdale" data-id="3670">Emsdale</option><option value="englehart" data-id="3671">Englehart</option><option value="enterprise" data-id="3672">Enterprise</option><option value="erin" data-id="3673">Erin</option><option value="espanola" data-id="3674">Espanola</option><option value="essex" data-id="3675">Essex</option><option value="estaire" data-id="3676">Estaire</option><option value="etobicoke" data-id="3677">Etobicoke</option><option value="eugenia" data-id="3678">Eugenia</option><option value="exeter" data-id="3679">Exeter</option><option value="fauquier" data-id="3680">Fauquier</option><option value="fenelon-falls" data-id="3681">Fenelon Falls</option><option value="fenwick" data-id="3682">Fenwick</option><option value="fergus" data-id="3683">Fergus</option><option value="feversham" data-id="3684">Feversham</option><option value="field" data-id="3685">Field</option><option value="finch" data-id="3686">Finch</option><option value="fingal" data-id="3687">Fingal</option><option value="fisherville" data-id="3688">Fisherville</option><option value="flamborough" data-id="3689">Flamborough</option><option value="flanders" data-id="3690">Flanders</option><option value="flesherton" data-id="3691">Flesherton</option><option value="foley" data-id="3692">Foley</option><option value="foleyet" data-id="3693">Foleyet</option><option value="forest" data-id="3694">Forest</option><option value="fort-albany" data-id="3695">Fort Albany</option><option value="fort-erie" data-id="3696">Fort Erie</option><option value="fort-frances" data-id="3697">Fort Frances</option><option value="fort-hope" data-id="3698">Fort Hope</option><option value="fort-severn" data-id="3699">Fort Severn</option><option value="fort-severn-first-nation" data-id="3700">Fort Severn First Nation</option><option value="fort-william-first-nation" data-id="3701">Fort William First Nation</option><option value="foxboro" data-id="3702">Foxboro</option><option value="foymount" data-id="3703">Foymount</option><option value="frankford" data-id="3704">Frankford</option><option value="freelton" data-id="3705">Freelton</option><option value="french-river-first-nation" data-id="3706">French River First Nation</option><option value="galt" data-id="3707">Galt</option><option value="gananoque" data-id="3708">Gananoque</option><option value="garden-hill" data-id="3709">Garden Hill</option><option value="garden-river-first-nation" data-id="3710">Garden River First Nation</option><option value="garson" data-id="3711">Garson</option><option value="georgetown" data-id="3712">Georgetown</option><option value="georgina" data-id="3713">Georgina</option><option value="geraldton" data-id="3714">Geraldton</option><option value="gilmour" data-id="3715">Gilmour</option><option value="glencoe" data-id="3719">Glencoe</option><option value="glen-robertson" data-id="3716">Glen Robertson</option><option value="glen-water" data-id="3717">Glen Water</option><option value="glen-williams" data-id="3718">Glen Williams</option><option value="gloucester" data-id="3720">Gloucester</option><option value="goderich" data-id="3721">Goderich</option><option value="gogama" data-id="3722">Gogama</option><option value="golden-lake" data-id="3723">Golden Lake</option><option value="gooderham" data-id="3724">Gooderham</option><option value="gore-bay" data-id="3725">Gore Bay</option><option value="gormley" data-id="3726">Gormley</option><option value="gorrie" data-id="3727">Gorrie</option><option value="goulais-river" data-id="3728">Goulais River</option><option value="gowganda" data-id="3729">Gowganda</option><option value="grafton" data-id="3730">Grafton</option><option value="grand-bend" data-id="3731">Grand Bend</option><option value="grand-valley" data-id="3732">Grand Valley</option><option value="granton" data-id="3733">Granton</option><option value="grassy-narrows" data-id="3734">Grassy Narrows</option><option value="grassy-narrows-first-nation" data-id="3735">Grassy Narrows First Nation</option><option value="gravenhurst" data-id="3736">Gravenhurst</option><option value="greensville" data-id="3737">Greensville</option><option value="grimsby" data-id="3738">Grimsby</option><option value="guelph" data-id="3739">Guelph</option><option value="gull-bay" data-id="3740">Gull Bay</option><option value="gull-bay-first-nation" data-id="3741">Gull Bay First Nation</option><option value="hagersville" data-id="3742">Hagersville</option><option value="haileybury" data-id="3743">Haileybury</option><option value="haldimand" data-id="3744">Haldimand</option><option value="haliburton" data-id="3745">Haliburton</option><option value="halton-hills" data-id="3746">Halton Hills</option><option value="hamilton" data-id="3747">Hamilton</option><option value="hampton" data-id="3748">Hampton</option><option value="hanmer" data-id="3749">Hanmer</option><option value="hanover" data-id="3750">Hanover</option><option value="harrietsville" data-id="3751">Harrietsville</option><option value="harriston" data-id="3752">Harriston</option><option value="harrow" data-id="3753">Harrow</option><option value="harrowsmith" data-id="3754">Harrowsmith</option><option value="hastings" data-id="3755">Hastings</option><option value="havelock" data-id="3756">Havelock</option><option value="hawkesbury" data-id="3758">Hawkesbury</option><option value="hawk-junction" data-id="3757">Hawk Junction</option><option value="hearst" data-id="3759">Hearst</option><option value="hemlo" data-id="3760">Hemlo</option><option value="hensall" data-id="3761">Hensall</option><option value="henvey-inlet-first-nation" data-id="3762">Henvey Inlet First Nation</option><option value="hepworth" data-id="3763">Hepworth</option><option value="hespeler" data-id="3764">Hespeler</option><option value="hickson" data-id="3765">Hickson</option><option value="highgate" data-id="3766">Highgate</option><option value="hillsburgh" data-id="3767">Hillsburgh</option><option value="holland-landing" data-id="3768">Holland Landing</option><option value="holstein" data-id="3769">Holstein</option><option value="honey-harbour" data-id="3770">Honey Harbour</option><option value="hornepayne" data-id="3771">Hornepayne</option><option value="hudson" data-id="3772">Hudson</option><option value="humphrey" data-id="3773">Humphrey</option><option value="huntsville" data-id="3774">Huntsville</option><option value="ignace" data-id="3775">Ignace</option><option value="ilderton" data-id="3776">Ilderton</option><option value="ingersoll" data-id="3777">Ingersoll</option><option value="ingleside" data-id="3778">Ingleside</option><option value="innerkip" data-id="3779">Innerkip</option><option value="innisfil" data-id="3780">Innisfil</option><option value="inverary" data-id="3781">Inverary</option><option value="inwood" data-id="3782">Inwood</option><option value="iron-bridge" data-id="3783">Iron Bridge</option><option value="iroquois" data-id="3784">Iroquois</option><option value="iroquois-falls" data-id="3785">Iroquois Falls</option><option value="jaffray-melick" data-id="3786">Jaffray Melick</option><option value="jarvis" data-id="3787">Jarvis</option><option value="jasper" data-id="3788">Jasper</option><option value="jellicoe" data-id="3789">Jellicoe</option><option value="jockvale" data-id="3790">Jockvale</option><option value="johnstown" data-id="3791">Johnstown</option><option value="jordan" data-id="3792">Jordan</option><option value="kaministiquia" data-id="3793">Kaministiquia</option><option value="kamiskotia" data-id="3794">Kamiskotia</option><option value="kanata" data-id="3795">Kanata</option><option value="kapuskasing" data-id="3796">Kapuskasing</option><option value="kasabonika-first-nation" data-id="3797">Kasabonika First Nation</option><option value="kashechewan-first-nation" data-id="3798">Kashechewan First Nation</option><option value="kearney" data-id="3799">Kearney</option><option value="keene" data-id="3800">Keene</option><option value="keewatin" data-id="3801">Keewatin</option><option value="kemptville" data-id="3802">Kemptville</option><option value="kenora" data-id="3803">Kenora</option><option value="kent-centre" data-id="3804">Kent Centre</option><option value="kerwood" data-id="3805">Kerwood</option><option value="keswick" data-id="3806">Keswick</option><option value="killaloe" data-id="3807">Killaloe</option><option value="killarney" data-id="3808">Killarney</option><option value="kincardine" data-id="3809">Kincardine</option><option value="king-city" data-id="3810">King City</option><option value="kingfisher-lake" data-id="3811">Kingfisher Lake</option><option value="kingfisher-lake-first-nation" data-id="3812">Kingfisher Lake First Nation</option><option value="kingston" data-id="3813">Kingston</option><option value="kingsville" data-id="3814">Kingsville</option><option value="kinmount" data-id="3815">Kinmount</option><option value="kintore" data-id="3816">Kintore</option><option value="kirkfield" data-id="3817">Kirkfield</option><option value="kirkland-lake" data-id="3818">Kirkland Lake</option><option value="kirkton" data-id="3819">Kirkton</option><option value="kitchener" data-id="3820">Kitchener</option><option value="kleinburg" data-id="3821">Kleinburg</option><option value="lac-la-croix" data-id="3823">Lac la Croix</option><option value="lac-seul-first-nation" data-id="3824">Lac Seul First Nation</option><option value="lafontaine" data-id="3825">Lafontaine</option><option value="lagoon-city" data-id="3826">Lagoon City</option><option value="lakefield" data-id="3827">Lakefield</option><option value="lambeth" data-id="3828">Lambeth</option><option value="lanark" data-id="3829">Lanark</option><option value="lancaster" data-id="3830">Lancaster</option><option value="langton" data-id="3831">Langton</option><option value="lansdowne" data-id="3832">Lansdowne</option><option value="lansdowne-house" data-id="3833">Lansdowne House</option><option value="larder-lake" data-id="3834">Larder Lake</option><option value="lasalle" data-id="3835">LaSalle</option><option value="latchford" data-id="3836">Latchford</option><option value="leamington" data-id="3837">Leamington</option><option value="lefroy" data-id="3838">Lefroy</option><option value="levack" data-id="3839">Levack</option><option value="lincoln" data-id="3840">Lincoln</option><option value="lindsay" data-id="3841">Lindsay</option><option value="linwood" data-id="3842">Linwood</option><option value="lions-head" data-id="3843">Lion's Head</option><option value="listowel" data-id="3844">Listowel</option><option value="little-britain" data-id="3845">Little Britain</option><option value="little-current" data-id="3846">Little Current</option><option value="lively" data-id="3847">Lively</option><option value="lombardy" data-id="3848">Lombardy</option><option value="london" data-id="3849">London</option><option value="longlac" data-id="3854">Longlac</option><option value="long-lac" data-id="3850">Long Lac</option><option value="long-lake-first-nation" data-id="3851">Long Lake First Nation</option><option value="long-point" data-id="3852">Long Point</option><option value="long-sault" data-id="3853">Long Sault</option><option value="lorignal" data-id="3822">L'Orignal</option><option value="lorne" data-id="3855">Lorne</option><option value="lucan" data-id="3856">Lucan</option><option value="lucknow" data-id="3857">Lucknow</option><option value="lyn" data-id="3858">Lyn</option><option value="lynden" data-id="3859">Lynden</option><option value="maberly" data-id="3861">Maberly</option><option value="macdiarmid" data-id="3862">Macdiarmid</option><option value="mactier" data-id="3863">MacTier</option><option value="madoc" data-id="3864">Madoc</option><option value="madsen" data-id="3865">Madsen</option><option value="magnetawan" data-id="3866">Magnetawan</option><option value="magnetawan-first-nation" data-id="3867">Magnetawan First Nation</option><option value="maidstone" data-id="3868">Maidstone</option><option value="maitland" data-id="3869">Maitland</option><option value="mallorytown" data-id="3870">Mallorytown</option><option value="malton" data-id="3871">Malton</option><option value="manitouwadge" data-id="3872">Manitouwadge</option><option value="manitowaning" data-id="3873">Manitowaning</option><option value="manotick" data-id="3874">Manotick</option><option value="maple" data-id="3875">Maple</option><option value="marathon" data-id="3876">Marathon</option><option value="markdale" data-id="3877">Markdale</option><option value="markham" data-id="3878">Markham</option><option value="markstay" data-id="3879">Markstay</option><option value="marmora" data-id="3880">Marmora</option><option value="marten-falls-first-nation" data-id="3881">Marten Falls First Nation</option><option value="marten-river" data-id="3882">Marten River</option><option value="martintown" data-id="3883">Martintown</option><option value="massey" data-id="3884">Massey</option><option value="matachewan" data-id="3885">Matachewan</option><option value="matheson" data-id="3886">Matheson</option><option value="mattawa" data-id="3887">Mattawa</option><option value="mattice" data-id="3888">Mattice</option><option value="maxville" data-id="3889">Maxville</option><option value="maynooth" data-id="3890">Maynooth</option><option value="mcdonalds-corners" data-id="3891">McDonalds Corners</option><option value="mcgregor" data-id="3892">McGregor</option><option value="mchigeeng" data-id="3860">M'Chigeeng</option><option value="mckellar" data-id="3893">McKellar</option><option value="meaford" data-id="3894">Meaford</option><option value="melbourne" data-id="3895">Melbourne</option><option value="merlin" data-id="3896">Merlin</option><option value="merrickville" data-id="3897">Merrickville</option><option value="metcalfe" data-id="3898">Metcalfe</option><option value="midland" data-id="3899">Midland</option><option value="mildmay" data-id="3900">Mildmay</option><option value="milford-bay" data-id="3901">Milford Bay</option><option value="millbrook" data-id="3902">Millbrook</option><option value="millhaven" data-id="3903">Millhaven</option><option value="milton" data-id="3904">Milton</option><option value="milverton" data-id="3905">Milverton</option><option value="minaki" data-id="3906">Minaki</option><option value="mindemoya" data-id="3907">Mindemoya</option><option value="minden" data-id="3908">Minden</option><option value="mine-centre" data-id="3909">Mine Centre</option><option value="missanabie" data-id="3910">Missanabie</option><option value="mississauga" data-id="3911">Mississauga</option><option value="mitchell" data-id="3912">Mitchell</option><option value="mohawks-of-the-bay-of-quinte-f" data-id="3913">Mohawks Of The Bay of Quinte F</option><option value="monkton" data-id="3914">Monkton</option><option value="moonbeam" data-id="3915">Moonbeam</option><option value="moonstone" data-id="3916">Moonstone</option><option value="mooretown" data-id="3917">Mooretown</option><option value="moose-creek" data-id="3918">Moose Creek</option><option value="moose-factory" data-id="3919">Moose Factory</option><option value="moosonee" data-id="3920">Moosonee</option><option value="morrisburg" data-id="3921">Morrisburg</option><option value="morson" data-id="3922">Morson</option><option value="mount-albert" data-id="3923">Mount Albert</option><option value="mount-brydges" data-id="3924">Mount Brydges</option><option value="mount-forest" data-id="3925">Mount Forest</option><option value="mount-hope" data-id="3926">Mount Hope</option><option value="mount-pleasant" data-id="3927">Mount Pleasant</option><option value="muskoka" data-id="3928">Muskoka</option><option value="muskoka-falls" data-id="3929">Muskoka Falls</option><option value="muskrat-dam" data-id="3930">Muskrat Dam</option><option value="muskrat-dam-first-nation" data-id="3931">Muskrat Dam First Nation</option><option value="nairn" data-id="3932">Nairn</option><option value="naiscoutaing-first-nation" data-id="3933">Naiscoutaing First Nation</option><option value="nakina" data-id="3934">Nakina</option><option value="nanticoke" data-id="3935">Nanticoke</option><option value="napanee" data-id="3936">Napanee</option><option value="navan" data-id="3937">Navan</option><option value="nepean" data-id="3938">Nepean</option><option value="nephton" data-id="3939">Nephton</option><option value="nestor-falls" data-id="3940">Nestor Falls</option><option value="neustadt" data-id="3941">Neustadt</option><option value="newburgh" data-id="3946">Newburgh</option><option value="newcastle" data-id="3947">Newcastle</option><option value="new-dundee" data-id="3942">New Dundee</option><option value="new-hamburg" data-id="3943">New Hamburg</option><option value="new-liskeard" data-id="3944">New Liskeard</option><option value="newmarket" data-id="3948">Newmarket</option><option value="new-tecumseth" data-id="3945">New Tecumseth</option><option value="newtonville" data-id="3949">Newtonville</option><option value="niagara-falls" data-id="3950">Niagara Falls</option><option value="niagara-on-the-lake" data-id="3951">Niagara-on-the-Lake</option><option value="nickel-centre" data-id="3952">Nickel Centre</option><option value="nipigon" data-id="3953">Nipigon</option><option value="nipissing-first-nation" data-id="3954">Nipissing First Nation</option><option value="nobel" data-id="3955">Nobel</option><option value="nobleton" data-id="3956">Nobleton</option><option value="noelville" data-id="3957">Noelville</option><option value="north-augusta" data-id="3958">North Augusta</option><option value="north-bay" data-id="3959">North Bay</option><option value="northbrook" data-id="3963">Northbrook</option><option value="north-gower" data-id="3960">North Gower</option><option value="north-spirit-lake" data-id="3961">North Spirit Lake</option><option value="north-york" data-id="3962">North York</option><option value="norval" data-id="3964">Norval</option><option value="norwich" data-id="3965">Norwich</option><option value="norwood" data-id="3966">Norwood</option><option value="oak-ridges" data-id="3967">Oak Ridges</option><option value="oakville" data-id="3968">Oakville</option><option value="oakwood" data-id="3969">Oakwood</option><option value="oba" data-id="3970">Oba</option><option value="odessa" data-id="3971">Odessa</option><option value="ogoki" data-id="3972">Ogoki</option><option value="ohsweken" data-id="3973">Ohsweken</option><option value="oil-springs" data-id="3974">Oil Springs</option><option value="ojibways-of-hiawatha-first-nat" data-id="3975">Ojibways of Hiawatha First Nat</option><option value="ojibways-of-walpole-island-fir" data-id="3976">Ojibways of Walpole Island Fir</option><option value="omemee" data-id="3977">Omemee</option><option value="onaping-falls" data-id="3978">Onaping Falls</option><option value="oneida-first-nation" data-id="3979">Oneida First Nation</option><option value="opasatika" data-id="3980">Opasatika</option><option value="ophir" data-id="3981">Ophir</option><option value="orangeville" data-id="3982">Orangeville</option><option value="orillia" data-id="3983">Orillia</option><option value="orleans" data-id="3984">Orleans</option><option value="oro" data-id="3985">Oro</option><option value="orono" data-id="3986">Orono</option><option value="orrville" data-id="3987">Orrville</option><option value="osgoode" data-id="3988">Osgoode</option><option value="oshawa" data-id="3989">Oshawa</option><option value="ottawa" data-id="3990">Ottawa</option><option value="otterville" data-id="3991">Otterville</option><option value="owen-sound" data-id="3992">Owen Sound</option><option value="oxdrift" data-id="3993">Oxdrift</option><option value="oxford-mills" data-id="3994">Oxford Mills</option><option value="paisley" data-id="3995">Paisley</option><option value="pakenham" data-id="3996">Pakenham</option><option value="palgrave" data-id="3997">Palgrave</option><option value="palmer-rapids" data-id="3998">Palmer Rapids</option><option value="palmerston" data-id="3999">Palmerston</option><option value="paquette-corner" data-id="4000">Paquette Corner</option><option value="parham" data-id="4001">Parham</option><option value="paris" data-id="4002">Paris</option><option value="parkhill" data-id="4003">Parkhill</option><option value="parry-sound" data-id="4004">Parry Sound</option><option value="pass-lake" data-id="4005">Pass Lake</option><option value="peawanuck" data-id="4006">Peawanuck</option><option value="pefferlaw" data-id="4007">Pefferlaw</option><option value="pelee-island" data-id="4008">Pelee Island</option><option value="pelham" data-id="4009">Pelham</option><option value="pembroke" data-id="4010">Pembroke</option><option value="penetanguishene" data-id="4011">Penetanguishene</option><option value="perrault-falls" data-id="4012">Perrault Falls</option><option value="perth" data-id="4013">Perth</option><option value="petawawa" data-id="4014">Petawawa</option><option value="peterborough" data-id="4015">Peterborough</option><option value="petrolia" data-id="4016">Petrolia</option><option value="pickering" data-id="4017">Pickering</option><option value="pickle-lake" data-id="4018">Pickle Lake</option><option value="picton" data-id="4019">Picton</option><option value="pikangikum-first-nation" data-id="4020">Pikangikum First Nation</option><option value="pineal-lake" data-id="4021">Pineal Lake</option><option value="plantagenet" data-id="4022">Plantagenet</option><option value="plattsville" data-id="4023">Plattsville</option><option value="pleasant-park" data-id="4024">Pleasant Park</option><option value="plevna" data-id="4025">Plevna</option><option value="pointe-au-baril" data-id="4028">Pointe au Baril</option><option value="point-grondine-first-nation" data-id="4026">Point Grondine First Nation</option><option value="point-pelee" data-id="4027">Point Pelee</option><option value="port-burwell" data-id="4029">Port Burwell</option><option value="port-carling" data-id="4030">Port Carling</option><option value="port-colborne" data-id="4031">Port Colborne</option><option value="port-credit" data-id="4032">Port Credit</option><option value="port-cunnington" data-id="4033">Port Cunnington</option><option value="port-dover" data-id="4034">Port Dover</option><option value="port-elgin" data-id="4035">Port Elgin</option><option value="port-franks" data-id="4036">Port Franks</option><option value="port-hope" data-id="4037">Port Hope</option><option value="port-lambton" data-id="4038">Port Lambton</option><option value="portland" data-id="4046">Portland</option><option value="port-loring" data-id="4039">Port Loring</option><option value="port-mcnicoll" data-id="4040">Port McNicoll</option><option value="port-perry" data-id="4041">Port Perry</option><option value="port-robinson" data-id="4042">Port Robinson</option><option value="port-rowan" data-id="4043">Port Rowan</option><option value="port-stanley" data-id="4044">Port Stanley</option><option value="port-sydney" data-id="4045">Port Sydney</option><option value="powassan" data-id="4047">Powassan</option><option value="prescott" data-id="4048">Prescott</option><option value="preston" data-id="4049">Preston</option><option value="princeton" data-id="4050">Princeton</option><option value="puce" data-id="4051">Puce</option><option value="queenston" data-id="4052">Queenston</option><option value="queensville" data-id="4053">Queensville</option><option value="rainy-lake-first-nation" data-id="4054">Rainy Lake First Nation</option><option value="rainy-river" data-id="4055">Rainy River</option><option value="raith" data-id="4056">Raith</option><option value="ramore" data-id="4057">Ramore</option><option value="rayside-balfour" data-id="4058">Rayside-Balfour</option><option value="redbridge" data-id="4061">Redbridge</option><option value="redditt" data-id="4062">Redditt</option><option value="red-lake" data-id="4059">Red Lake</option><option value="red-rock" data-id="4060">Red Rock</option><option value="renfrew" data-id="4063">Renfrew</option><option value="restoule" data-id="4064">Restoule</option><option value="richmond" data-id="4065">Richmond</option><option value="richmond-hill" data-id="4066">Richmond Hill</option><option value="ridgetown" data-id="4067">Ridgetown</option><option value="ridgeway" data-id="4068">Ridgeway</option><option value="ripley" data-id="4069">Ripley</option><option value="rockland" data-id="4070">Rockland</option><option value="rockwood" data-id="4071">Rockwood</option><option value="rodney" data-id="4072">Rodney</option><option value="rolphton" data-id="4073">Rolphton</option><option value="rondeau" data-id="4074">Rondeau</option><option value="roseneath" data-id="4075">Roseneath</option><option value="rosseau" data-id="4076">Rosseau</option><option value="russell" data-id="4077">Russell</option><option value="ruthven" data-id="4078">Ruthven</option><option value="sachigo-first-nation-reserve-1" data-id="4079">Sachigo First Nation Reserve 1</option><option value="saint-clair-beach" data-id="4080">Saint Clair Beach</option><option value="salem" data-id="4081">Salem</option><option value="sandwich" data-id="4082">Sandwich</option><option value="sandy-cove-acres" data-id="4083">Sandy Cove Acres</option><option value="sandy-lake" data-id="4084">Sandy Lake</option><option value="sandy-lake-first-nation" data-id="4085">Sandy Lake First Nation</option><option value="sapawe" data-id="4086">Sapawe</option><option value="sarnia" data-id="4087">Sarnia</option><option value="sauble-beach" data-id="4088">Sauble Beach</option><option value="saugeen-first-nation" data-id="4089">Saugeen First Nation</option><option value="sault-ste-marie" data-id="4090">Sault Ste. Marie</option><option value="savant-lake" data-id="4091">Savant Lake</option><option value="scarborough" data-id="4092">Scarborough</option><option value="schomberg" data-id="4093">Schomberg</option><option value="schreiber" data-id="4094">Schreiber</option><option value="scotland" data-id="4095">Scotland</option><option value="seaforth" data-id="4096">Seaforth</option><option value="searchmont" data-id="4097">Searchmont</option><option value="sebright" data-id="4098">Sebright</option><option value="sebringville" data-id="4099">Sebringville</option><option value="seeleys-bay" data-id="4100">Seeleys Bay</option><option value="selby" data-id="4101">Selby</option><option value="selkirk" data-id="4102">Selkirk</option><option value="serpent-river-first-nation" data-id="4103">Serpent River First Nation</option><option value="severn-bridge" data-id="4104">Severn Bridge</option><option value="shakespeare" data-id="4105">Shakespeare</option><option value="shannonville" data-id="4106">Shannonville</option><option value="sharbot-lake" data-id="4107">Sharbot Lake</option><option value="shawanaga-first-nation" data-id="4108">Shawanaga First Nation</option><option value="shebandowan" data-id="4109">Shebandowan</option><option value="shedden" data-id="4110">Shedden</option><option value="shelburne" data-id="4111">Shelburne</option><option value="silver-water" data-id="4112">Silver Water</option><option value="simcoe" data-id="4113">Simcoe</option><option value="sioux-lookout" data-id="4114">Sioux Lookout</option><option value="sioux-narrows" data-id="4115">Sioux Narrows</option><option value="six-nations-of-the-grand-river" data-id="4116">Six Nations of the Grand River</option><option value="smiths-falls" data-id="4117">Smiths Falls</option><option value="smithville" data-id="4118">Smithville</option><option value="smooth-rock-falls" data-id="4119">Smooth Rock Falls</option><option value="snelgrove" data-id="4120">Snelgrove</option><option value="sombra" data-id="4121">Sombra</option><option value="southampton" data-id="4124">Southampton</option><option value="south-mountain" data-id="4122">South Mountain</option><option value="south-river" data-id="4123">South River</option><option value="spanish" data-id="4125">Spanish</option><option value="sparta" data-id="4126">Sparta</option><option value="spencerville" data-id="4127">Spencerville</option><option value="sprucedale" data-id="4128">Sprucedale</option><option value="stayner" data-id="4139">Stayner</option><option value="st-catharines" data-id="4129">St. Catharines</option><option value="st-charles" data-id="4130">St. Charles</option><option value="st-clements" data-id="4131">St. Clements</option><option value="st-davids" data-id="4132">St. Davids</option><option value="st-eugene" data-id="4140">St-Eugene</option><option value="stevensville" data-id="4141">Stevensville</option><option value="stewarttown" data-id="4142">Stewarttown</option><option value="st-george" data-id="4133">St. George</option><option value="stirling" data-id="4143">Stirling</option><option value="st-isidore-de-prescott" data-id="4134">St. Isidore de Prescott</option><option value="st-jacobs" data-id="4135">St. Jacobs</option><option value="st-marys" data-id="4136">St. Mary's</option><option value="stokes-bay" data-id="4144">Stoke's Bay</option><option value="stoney-creek" data-id="4145">Stoney Creek</option><option value="stoney-point" data-id="4146">Stoney Point</option><option value="stouffville" data-id="4147">Stouffville</option><option value="straffordville" data-id="4148">Straffordville</option><option value="stratford" data-id="4149">Stratford</option><option value="strathroy" data-id="4150">Strathroy</option><option value="stratton" data-id="4151">Stratton</option><option value="streetsville" data-id="4152">Streetsville</option><option value="st-regis" data-id="4137">St. Regis</option><option value="stroud" data-id="4153">Stroud</option><option value="st-thomas" data-id="4138">St. Thomas</option><option value="sturgeon-falls" data-id="4154">Sturgeon Falls</option><option value="sudbury" data-id="4155">Sudbury</option><option value="sultan" data-id="4156">Sultan</option><option value="summer-beaver" data-id="4157">Summer Beaver</option><option value="sunderland" data-id="4158">Sunderland</option><option value="sundridge" data-id="4159">Sundridge</option><option value="sutton" data-id="4160">Sutton</option><option value="swastika" data-id="4161">Swastika</option><option value="sydenham" data-id="4162">Sydenham</option><option value="tamworth" data-id="4163">Tamworth</option><option value="tara" data-id="4164">Tara</option><option value="tavistock" data-id="4165">Tavistock</option><option value="taylor-corners" data-id="4166">Taylor Corners</option><option value="tecumseh" data-id="4167">Tecumseh</option><option value="teeswater" data-id="4168">Teeswater</option><option value="temagami" data-id="4169">Temagami</option><option value="terrace-bay" data-id="4170">Terrace Bay</option><option value="thamesford" data-id="4171">Thamesford</option><option value="thamesville" data-id="4172">Thamesville</option><option value="thedford" data-id="4174">Thedford</option><option value="the-eabametoong-fort-hope-fi" data-id="4173">The Eabametoong (Fort Hope) Fi</option><option value="thessalon" data-id="4175">Thessalon</option><option value="thessalon-first-nation" data-id="4176">Thessalon First Nation</option><option value="thornbury" data-id="4177">Thornbury</option><option value="thorndale" data-id="4178">Thorndale</option><option value="thorne" data-id="4179">Thorne</option><option value="thornhill" data-id="4180">Thornhill</option><option value="thorold" data-id="4181">Thorold</option><option value="thunder-bay" data-id="4182">Thunder Bay</option><option value="thurlow" data-id="4183">Thurlow</option><option value="tilbury" data-id="4184">Tilbury</option><option value="tillsonburg" data-id="4185">Tillsonburg</option><option value="timmins" data-id="4186">Timmins</option><option value="tiverton" data-id="4187">Tiverton</option><option value="tobermory" data-id="4188">Tobermory</option><option value="toledo" data-id="4189">Toledo</option><option value="toronto" data-id="4190">Toronto</option><option value="tottenham" data-id="4192">Tottenham</option><option value="trenton" data-id="4193">Trenton</option><option value="trout-creek" data-id="4194">Trout Creek</option><option value="trowbridge" data-id="4195">Trowbridge</option><option value="tweed" data-id="4196">Tweed</option><option value="udora" data-id="4197">Udora</option><option value="uniondale" data-id="4198">Uniondale</option><option value="unionville" data-id="4199">Unionville</option><option value="upsala" data-id="4200">Upsala</option><option value="utterson" data-id="4201">Utterson</option><option value="uxbridge" data-id="4202">Uxbridge</option><option value="valley-east" data-id="4203">Valley East</option><option value="vanier" data-id="4204">Vanier</option><option value="vankleek-hill" data-id="4205">Vankleek Hill</option><option value="vaughan" data-id="4206">Vaughan</option><option value="vermilion-bay" data-id="4207">Vermilion Bay</option><option value="verner" data-id="4208">Verner</option><option value="verona" data-id="4209">Verona</option><option value="victoria" data-id="4210">Victoria</option><option value="vineland" data-id="4211">Vineland</option><option value="virginiatown" data-id="4212">Virginiatown</option><option value="wabigoon" data-id="4213">Wabigoon</option><option value="wainfleet" data-id="4214">Wainfleet</option><option value="walden" data-id="4215">Walden</option><option value="walkerton" data-id="4216">Walkerton</option><option value="wallaceburg" data-id="4217">Wallaceburg</option><option value="wapekeka-first-nation" data-id="4218">Wapekeka First Nation</option><option value="wardsville" data-id="4219">Wardsville</option><option value="warkworth" data-id="4220">Warkworth</option><option value="warren" data-id="4221">Warren</option><option value="wasaga-beach" data-id="4222">Wasaga Beach</option><option value="waterdown" data-id="4223">Waterdown</option><option value="waterford" data-id="4224">Waterford</option><option value="waterloo" data-id="4225">Waterloo</option><option value="watford" data-id="4226">Watford</option><option value="waubaushene" data-id="4227">Waubaushene</option><option value="wawa" data-id="4228">Wawa</option><option value="webbwood" data-id="4229">Webbwood</option><option value="webequie" data-id="4230">Webequie</option><option value="welcome" data-id="4231">Welcome</option><option value="welland" data-id="4232">Welland</option><option value="wellandport" data-id="4233">Wellandport</option><option value="wellesley" data-id="4234">Wellesley</option><option value="wellington" data-id="4235">Wellington</option><option value="west-guilford" data-id="4236">West Guilford</option><option value="west-lincoln" data-id="4237">West Lincoln</option><option value="west-lorne" data-id="4238">West Lorne</option><option value="westmeath" data-id="4239">Westmeath</option><option value="westport" data-id="4240">Westport</option><option value="westree" data-id="4241">Westree</option><option value="wheatley" data-id="4242">Wheatley</option><option value="whitby" data-id="4243">Whitby</option><option value="whitchurch-stouffville" data-id="4244">Whitchurch-Stouffville</option><option value="whitefish" data-id="4246">Whitefish</option><option value="whitefish-falls" data-id="4247">Whitefish Falls</option><option value="whitefish-river-first-nation" data-id="4248">Whitefish River First Nation</option><option value="white-river" data-id="4245">White River</option><option value="whitney" data-id="4249">Whitney</option><option value="wiarton" data-id="4250">Wiarton</option><option value="wikwemikong" data-id="4251">Wikwemikong</option><option value="wilberforce" data-id="4252">Wilberforce</option><option value="williamsburg" data-id="4253">Williamsburg</option><option value="winchester" data-id="4254">Winchester</option><option value="windermere" data-id="4255">Windermere</option><option value="windsor" data-id="4256">Windsor</option><option value="wingham" data-id="4257">Wingham</option><option value="winona" data-id="4258">Winona</option><option value="woodbridge" data-id="4259">Woodbridge</option><option value="woodstock" data-id="4260">Woodstock</option><option value="woodville" data-id="4261">Woodville</option><option value="wooler" data-id="4262">Wooler</option><option value="wunnummin-lake" data-id="4263">Wunnummin Lake</option><option value="wyoming" data-id="4264">Wyoming</option><option value="yarker" data-id="4265">Yarker</option><option value="york" data-id="4266">York</option><option value="zurich" data-id="4267">Zurich</option></select>
+																		
+	
+
+		
+	<script id="option-template" type="text/x-jquery-tmpl">
+		<option value="{{if $item.slugValues}}${slug}{{else}}${id}{{/if}}" {{if $item.slugValues}}data-id="${id}"{{/if}}>${name}</option>
+	</script>
+	
+
+	
+															</div>
+														<div class="rh-row fthb" style="visibility: visible;">
+								<label for="fthb">I am a first-time home buyer</label><span class="rh-checkbox-container"><div class="icheckbox" style="position: relative;"><input type="checkbox" class="checkbox" id="fthb" name="fthb" style="position: absolute; opacity: 0;"><i class="fa fa-square"></i><i class="fa fa-check-square"></i><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></span>
+															</div>
+							<div class="rh-row pcp" style="visibility: hidden;">
+								<label for="pcp">I am buying a newly built home</label><span class="rh-checkbox-container"><div class="icheckbox" style="position: relative;"><input type="checkbox" class="checkbox" id="pcp" name="pcp" style="position: absolute; opacity: 0;"><i class="fa fa-square"></i><i class="fa fa-check-square"></i><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></span>
+															</div>
+						</div>
+					</td>
+				</tr>
+				<tr class="ltt provincial">
+					<td class="col1">Provincial:</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Provincial      </span>
+      <span class="rh-content">
+Land transfer tax (LTT), typically calculated as a percentage of the purchase price of a home, is required when purchasing a home in Canada. All provinces have a LTT, and the amount varies in each province.       </span>
+  </span>
+
+</td>
+					<td class="col3"><span class="ico-plus">plus</span></td>
+					<td class="col4"><div>$0</div></td>
+				</tr>
+				<tr class="ltt municipal">
+					<td class="col1">Municipal:</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Municipal      </span>
+      <span class="rh-content">
+Some municipalities, like Toronto, levy an additional LTT, which is similarly calculated as a percentage of the purchase price of a home.      </span>
+  </span>
+
+</td>
+					<td class="col3"><span class="ico-plus">plus</span></td>
+					<td class="col4"><div>$0</div></td>
+				</tr>
+				<tr class="ltt rebate">
+					<td class="col1">Rebate:</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Rebate      </span>
+      <span class="rh-content">
+If you are a first-time home buyer in British Columbia or Ontario, you will be eligible for LTT rebates, equal to the value of the LTT up to a maximum amount set by the province.      </span>
+  </span>
+
+</td>
+					<td class="col3"><span class="ico-minus">minus</span></td>
+					<td class="col4"><div>$0</div></td>
+				</tr>
+				<tr class="ltt fees">
+					<td colspan="5" class="col1" style="display: none;"></td>
+				</tr>
+			</tbody>
+			<tbody class="land-transfer-tax" style="display: none;">
+				<tr class="first">
+					<td class="rh-col" colspan="5">
+						<div class="rh-title">
+							<div>
+								Land Transfer Tax								<span>$0</span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr class="ltt provincial">
+					<td class="col1">Provincial:</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Provincial      </span>
+      <span class="rh-content">
+Land transfer tax (LTT), typically calculated as a percentage of the purchase price of a home, is required when purchasing a home in Canada. All provinces have a LTT, and the amount varies in each province.       </span>
+  </span>
+
+</td>
+					<td class="col3"><span class="ico-plus">plus</span></td>
+					<td class="col4" colspan="2"><div>$0</div></td>
+				</tr>
+				<tr class="ltt municipal">
+					<td class="col1">Municipal:</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Municipal      </span>
+      <span class="rh-content">
+Some municipalities, like Toronto, levy an additional LTT, which is similarly calculated as a percentage of the purchase price of a home.      </span>
+  </span>
+
+</td>
+					<td class="col3"><span class="ico-plus">plus</span></td>
+					<td class="col4" colspan="2"><div>$0</div></td>
+				</tr>
+				<tr class="ltt rebate">
+					<td class="col1">Rebate:</td>
+					<td class="col2">  <span class="rh-tooltip-container top-right">
+    <a class="rh-tooltip" data-trigger="hover" data-placement="top" show-by-default="false" data-original-title="" title=""><span class="fa-stack no-hover">
+      <i class="fa fa-circle-thin fa-stack-2x"></i>
+      <i class="fa fa-question fa-stack-1x"></i>
+    </span><span class="fa-stack is-hover">
+      <i class="fa fa-circle fa-stack-2x"></i>
+      <i class="fa fa-question fa-inverse fa-stack-1x"></i>
+    </span></a>
+      <span class="rh-title">
+Rebate      </span>
+      <span class="rh-content">
+If you are a first-time home buyer in British Columbia or Ontario, you will be eligible for LTT rebates, equal to the value of the LTT up to a maximum amount set by the province.      </span>
+  </span>
+
+</td>
+					<td class="col3"><span class="ico-minus">minus</span></td>
+					<td class="col4" colspan="2"><div>$0</div></td>
+				</tr>
+				<tr class="ltt fees">
+					<td colspan="5" class="col1" style="display: none;">*You will be required to pay a title transfer fee.</td>
+				</tr>
+
+				<tr>
+					<td class="rh-col" colspan="5">
+						<div class="calc-tip-wrapper calc-tip-step4">
+							<div class="calc-tip nib-left">
+								<div class="calc-tip-top"></div>
+								<div class="calc-tip-middle"><a href="#" class="calc-tip-close">&nbsp;</a><div class="calc-tip-title">STEP 4</div><div class="calc-tip-content">If necessary, update your profile to calculate land transfer tax.</div></div>
+								<div class="calc-tip-bottom"></div>
+								<div class="calc-tip-nib"></div>
+							</div>
+						</div>
+
+						<div class="rh-title">
+							<div>
+								Profile							</div>
+						</div>
+					</td>
+				</tr>
+
+								<tr class="ltt profile">
+					<td class="col1" colspan="3">Province</td>
+					<td class="col4" colspan="2"></td>
+				</tr>
+				<tr class="ltt profile">
+					<td class="col1" colspan="3">City</td>
+					<td class="col4" colspan="2"></td>
+				</tr>
+				
+                <tr class="ltt profile fthb" style="visibility: visible;">
+					<td class="col1" colspan="4">I am a first-time home buyer</td>
+					<td class="col4" colspan="1"></td>
+				</tr>
+				<tr class="ltt profile pcp" style="visibility: hidden;">
+					<td class="col1" colspan="4">I am buying a newly built home</td>
+					<td class="col4" colspan="1"></td>
+				</tr>
+			</tbody>
+					</table>
+		<input type="submit" value="Calculate" style="position: absolute; width:10px; left:-999em;">
+
+				<div class="payment-calc-ext">
+						<div class="calc-tip-wrapper calc-tip-step5">
+				<div class="calc-tip nib-up">
+					<div class="calc-tip-top"></div>
+					<div class="calc-tip-middle"><div class="calc-tip-title"><a href="#" class="calc-tip-close">&nbsp;</a></div><div class="calc-tip-content">Explore the drop-downs to better understand your mortgage choice.</div></div>
+					<div class="calc-tip-bottom"></div>
+					<div class="calc-tip-nib"></div>
+				</div>
+			</div>
+						<div id="calc_extension">
+	<div class="content-page cash-needed">
+		<h3 class="section-header">
+			<a href="#">
+				<span class="section-title">Cash Needed</span><span class="expand-section"></span><div class="section-desc">How much extra cash will I need when my house closes?</div>
+			</a>
+		</h3>
+		<div class="section-content" style="display: none;">
+			<p>When you purchase a house, there are a number of costs you'll need to put cash aside for in addition to your down payment. These costs depend on a number of factors including things like what kind of home you are buying (i.e. house vs. condo) and where the home is located.</p>
+			<p>Our tool will help you calculate these costs, so you know how much you'll need to save.</p>
+
+			<label for="home_type">Type of home:</label>
+			<select id="home_type">
+				<option value="house">House</option>
+				<option value="condo">Condominium</option>
+			</select>
+
+			<div class="ledger-header">
+				<h4>Required Cash Expenditures</h4>
+				<div class="ledger-values">
+				<label for="scenario">Scenario:</label>
+					<select id="scenario" class="scenario">
+						<option value="0">1 (5.00 % down)</option>
+						<option value="1">2 (10.00 % down)</option>
+						<option value="2">3 (15.00 % down)</option>
+						<option value="3">4 (20.00 % down)</option>
+					</select>
+				</div>
+			</div>
+			<ul class="ledger-items">
+				<li>
+					<div class="ledger-item ledger-dp">
+						<span class="item-name">Down payment</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-cmhc-pst">
+						<span class="item-name">PST on mortgage insurance</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-ltt">
+						<span class="item-name">Land Transfer Tax</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-lawyer">
+						<span class="item-name">Lawyer fees</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-title">
+						<span class="item-name">Title insurance</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li class="ledger-cert">
+					<div class="ledger-item">
+						<span class="item-name">Estoppel certificate fee</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item highlight ledger-cash-req">
+						<span class="item-name">Total Cash Required</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+
+			</ul>
+
+			<div class="ledger-header">
+				<h4>Other Cash Considerations</h4>
+			</div>
+			<ul class="ledger-items">
+				<li>
+					<div class="ledger-item ledger-inspect">
+						<span class="item-name">Home inspection fees</span>
+						<span class="ledger-values">
+							<span class="item-val first">$300 - $500</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-appraisal">
+						<span class="item-name">Appraisal fees</span>
+						<span class="ledger-values">
+							<span class="item-val first">$300</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="content-page monthly-expenses">
+		<h3 class="section-header">
+			<a href="#">
+				<span class="section-title">Monthly Expenses</span><span class="expand-section"></span><div class="section-desc">Can I afford my monthly expenses &amp; mortgage payments?</div>
+			</a>
+		</h3>
+		<div class="section-content" style="display: none;">
+<!--
+			<div class="ledger-header">
+				<h4>Income</h4>
+				<div class="ledger-values">
+					<label for="scenario">Scenario:</label>
+					<select id="scenario">
+						<option value="0">1</option>
+						<option value="1">2</option>
+						<option value="2">3</option>
+						<option value="3">4</option>
+					</select>
+				</div>
+			</div>
+			<ul class="ledger-items">
+				<li>
+					<div class="ledger-item ledger-income">
+						<span class="item-name">Total</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item indent ledger-income-tax">
+						<span class="item-name">Less: Income tax</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item highlight ledger-net-income">
+						<span class="item-name">Net income</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+			</ul>
+-->
+			<div class="ledger-header">
+				<h4>Expenses</h4>
+				<div class="ledger-values">
+					<label for="scen_2">Scenario:</label>
+					<select id="scen_2" class="scenario">
+						<option value="0">1 (5.00 % down)</option>
+						<option value="1">2 (10.00 % down)</option>
+						<option value="2">3 (15.00 % down)</option>
+						<option value="3">4 (20.00 % down)</option>
+					</select>
+				</div>
+			</div>
+			<ul class="ledger-items">
+				<li>
+					<div class="ledger-item ledger-mtg-payment">
+						<span class="item-name">Mortgage payment</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li class="ledger-prop-tax">
+					<div class="ledger-item">
+						<span class="item-name">Property Tax</span>
+						<span class="ledger-values">
+									<input class="item-val first input-number" value="$-" pattern="[0-9]*">		
+								</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-debt">
+						<span class="item-name">Monthly Debt Payments</span>
+						<span class="ledger-values">
+									<input class="item-val first input-number" value="$0" pattern="[0-9]*">
+								</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-utils">
+						<span class="item-name">Utilities</span>
+						<span class="ledger-values">
+									<input class="item-val first input-number" value="$-" pattern="[0-9]*">
+								</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li class="ledger-condo">
+					<div class="ledger-item">
+						<span class="item-name">Condo Fees</span>
+						<span class="ledger-values">
+									<input class="item-val first input-number" value="$300" pattern="[0-9]*">
+								</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-prop-ins">
+						<span class="item-name">Property insurance</span>
+						<span class="ledger-values">
+							<input class="item-val first input-number" value="$50" pattern="[0-9]*">
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-phone">
+						<span class="item-name">Phone</span>
+						<span class="ledger-values">
+							<input class="item-val first input-number" value="$40" pattern="[0-9]*">
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-cable">
+						<span class="item-name">Cable</span>
+						<span class="ledger-values">
+							<input class="item-val first input-number" value="$60" pattern="[0-9]*">
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item ledger-internet">
+						<span class="item-name">Internet</span>
+						<span class="ledger-values">
+							<input class="item-val first input-number" value="$45" pattern="[0-9]*">
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item highlight ledger-expenses">
+						<span class="item-name">Total</span>
+						<span class="ledger-values">
+							<span class="item-val first input-number">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="content-page rate-risk">
+		<h3 class="section-header">
+			<a href="#">
+				<span class="section-title">Interest Rate Risk</span><span class="expand-section"></span><div class="section-desc">What would my payment be at higher interest rates?</div>
+			</a>
+		</h3>
+		<div class="section-content" style="display: none;">
+			<p>When determining the size of home you can afford, it's important to look at the long term horizon. The mortgage rate you pay today could be substantially different from the mortgage rates available when the time comes to renew your mortgage.</p>
+			<p>The calculation below shows how much of your mortgage principal will be left at the end of the term.</p>
+
+			<div class="ledger-header">
+				<h4>Mortgage Amount</h4>
+				<div class="ledger-values">
+					<label for="scen_3">Scenario:</label>
+					<select id="scen_3" class="scenario">
+						<option value="0">1 (5.00 % down)</option>
+						<option value="1">2 (10.00 % down)</option>
+						<option value="2">3 (15.00 % down)</option>
+						<option value="3">4 (20.00 % down)</option>
+					</select>
+				</div>
+			</div>
+			<ul class="ledger-items">
+				<li>
+					<div class="ledger-item ledger-mtg-today">
+						<span class="item-name">Mortgage amount today</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item indent ledger-mtg-paid">
+						<span class="item-name">Less: Principal paid off over term</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+				<li>
+					<div class="ledger-item highlight ledger-mtg-eot">
+						<span class="item-name">Mortgage remaining at end of term:</span>
+						<span class="ledger-values">
+							<span class="item-val first">$-</span>
+						</span>
+						<span class="ledger-line"></span>
+					</div>
+				</li>
+			</ul>
+
+			<div class="interest-rate-examples">
+				<p class="first">Using this amount, below we calculate the corresponding mortgage payments at a variety of interest rates:</p>
+				<table>
+					<thead>
+						<tr>
+							<th colspan="2">Purchase interest rate</th>
+							<th class="payment">Payment<br><span class="sub-head">Selected Scenario</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Selected Rate</td>
+							<td class="rate-value"></td>
+
+							<td class="payment first">$-</td>
+						</tr>
+						<tr>
+							<td>Average 5-year Fixed Rates (2000 - 2010)</td>
+							<td class="rate-value">3.89%</td>
+
+							<td class="payment first">$-</td>
+						</tr>
+						<tr>
+							<td>Average 5-year Fixed Rates (1990 - 2000)</td>
+							<td class="rate-value">7.23%</td>
+
+							<td class="payment first">$-</td>
+						</tr>
+						<tr>
+							<td>Average 5-year Fixed Rates (1980 - 1990)</td>
+							<td class="rate-value">11.92%</td>
+
+							<td class="payment first">$-</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p>Below is a graph that displays the approximate values of competitive 5-year fixed mortgage rates since 2006.</p>
+			<div class="chart-wrapper chart-center">
+						<h2>5-year Fixed Mortgage Rates						</h2>
+				<div id="Chart_tsPUL" class="rh-chart"></div>
+	</div>
+
+		</div>
+	</div>
+	<div class="content-page amortization">
+		<h3 class="section-header">
+			<a href="#">
+				<span class="section-title">Amortization Schedule</span><span class="expand-section"></span><div class="section-desc">What do my payments look like over time?</div>
+			</a>
+		</h3>
+		<div class="section-content" style="display: none;">
+			<div class="ledger-values">
+				<label for="scen_4">Scenario:</label>
+					<select id="scen_4" class="scenario">
+						<option value="0">1 (5.00 % down)</option>
+						<option value="1">2 (10.00 % down)</option>
+						<option value="2">3 (15.00 % down)</option>
+						<option value="3">4 (20.00 % down)</option>
+					</select>
+			</div>
+
+				<div id="extension-amort">
+		<div id="extension-amort_chart" style="overflow:hidden;"></div>
+		<table class="amort-sched">
+			<thead>
+				<tr><th class="year">Year</th>
+				<th>Total Paid</th>
+				<th>Principal Paid</th>
+				<th>Interest Paid</th>
+				<th>Balance</th>
+			</tr></thead>
+			<tbody></tbody>
+		</table>
+	</div>
+	
+
+		</div>
+	</div>
+</div>
+
+
+		</div>
+				</form>
+	</div>
+</div>
+<div style="display:none">
+    <div id="RateSelector_N4xzh" class="rh-rate-selector ratehub">
+        <h1>Select rate</h1>
+        <form name="rs-filter" class="ng-pristine ng-valid">
+            <div class="row">
+                <label for="rs-type">Type:</label>
+                <select id="rs-type" name="t">
+                    <option value="1" selected="selected">  Fixed Rates</option>
+                    <option value="2">  Variable Rates</option>
+                                    </select>
+            </div>
+            <div class="row">
+                <label for="rs-term">Term:</label>
+                <select id="rs-term" name="y"><option value="1">1 year</option><option value="2">2 years</option><option value="3">3 years</option><option value="4">4 years</option><option value="5" selected="selected">5 years</option><option value="6">6 years</option><option value="7">7 years</option><option value="8">8 years</option><option value="9">9 years</option><option value="10">10 years</option></select>
+            </div>
+                            <div class="row">
+                    <label for="rs-location">Location:</label>
+                    <span class="rh-select">
+                        <span class="rh-city-selector">
+                            <input id="rs-location" name="location" required="" class="rh-city-select" data-placeholder="Please select">
+                        </span>
+                    </span>
+                </div>
+                    </form>
+        <table class="large-header small-header rate-display" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Provider</th>
+                    <th>Rate</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="rate-display-best">
+                    <td class="loading" colspan="3"><img src="https://www.ratehub.ca/images/loading.gif" alt="Loading...">Loading...</td>
+                </tr>
+                <tr class="rate-display-custom">
+                    <td>Custom rate</td>
+                    <td><input type="text" value="" maxlength="5" class="rh-input"></td>
+                    <td><a href="#" title="Select this rate">Select</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script id="rs-rate-template" type="text/x-jquery-tmpl">
+    <tr class="rate-display-best {{if sponsored }} sponsored {{/if}}">
+        <td>
+            <div class="rh-provider">
+                <span class="provider-logo"><img alt="${provider.name}" src="${ratehub.serverUri + provider.logo}?size=50"
+                    /></span><span class="provider-name">${provider.name}</span>
+            </div>
+        </td>
+        <td>	<span class="rate-value">${Globalize.format(value, "n2")}<span class="percent-sign">%</span></span>
+</td>
+        <td><a href="#" title="Select this rate">Select</a></td>
+    </tr>
+</script>
+
+</div>
+
+
+
+
+
+</div></div>
+                    <div id="listingCalculatorsDisclaimerCon" style="display: none">
+                        This calculator is for demonstration purposes only. The Canadian Real Estate Association does not guarantee that all calculations are accurate. Always consult a professional financial advisor before making personal financial decisions.
+                    </div>
+                </div>

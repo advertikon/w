@@ -13,6 +13,7 @@ $id = $wp->query_vars['listing_id'];
 
 require_once __DIR__ . '/../../plugins/adk_feed/class/feed.php';
 require_once __DIR__ . '/../../plugins/adk_feed/class/cache.php';
+require_once __DIR__ . '/../../plugins/adk_feed/class/google_coordinates.php';
 
 ADKCache::flush();
 
@@ -41,7 +42,18 @@ if ( $l->land_appliances ) {
 
 $utilities = implode( ',', $utilities );
 
-get_header()
+get_header();
+
+$coordinates = GoogleCoordinates::get( $l );
+
+// $ch = curl_init( 'https://api.locallogic.co/v1/demographics?lat=45.5017&lng=-73.5656' );
+// curl_setopt( $ch, CURLOPT_HTTPHEADER, [ 'X-API-KEY' => '907c3d69b4d0018a652664e82605d3c2d6d0184b487ab1764723facea049f9f73f1a57d10dd33d4b' ] );
+// curl_exec( $ch );
+
+// $ch = curl_init( 'https://api.locallogic.co/v1/scores/bG9jYWxsb2dpYweyJ0b2tlbiI6IjkwN2MzZDY5YjRkMDAxOGE2NTI2NjRlODI2MDVkM2MyZDZkMDE4NGI0ODdhYjE3NjQ3MjNmYWNlYTA0OWY5ZjczZjFhNTdkMTBkZDMzZDRiIiwibGF0Ijo0NS41MDE3MzQsImxuZyI6LTczLjU2NTQyfQ==?locale=en&fields=value%2Ctext%2Cname' );
+// curl_setopt( $ch, CURLOPT_HEADER, true );
+
+
 ?>
 
 <link type="text/css"rel="stylesheet" href="<?php echo plugins_url( 'adk_feed/assets/stylesheets/wp-listings-single.css' ); ?>"/>
@@ -247,16 +259,22 @@ get_header()
 							} );
 						}
 
-						google.maps.event.addDomListener( window, 'load', initialize );
+						//google.maps.event.addDomListener( window, 'load', initialize );
 
-						// jQuery.get( 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD1Nyt3733Bgyd1KiZIiF8ypMsX2BkokMQ', function ( resp ) {
-						// 	console.log( resp );
-						// } );
+						function initLocallogic() {            
+							var contentWidget = new locallogic.LocalContent('local-content', {
+								lat: <?php echo $coordinates->get_lat(); ?>,
+								lng: <?php echo $coordinates->get_lng(); ?>,
+								basemap: "google",
+							} );
+						}
 
 					</script>
+					<script async defer src="https://cdn.locallogic.co/sdk/?token=<?php echo get_option( 'adk_feed_locallogic' ); ?>&callback=initLocallogic"></script>
 					<div id="listing-map">
 						<h3>Location Map</h3>
-						<div id="map-canvas" style="width: 100%; height: 350px;"></div>
+						<!-- <div id="map-canvas" style="width: 100%; height: 350px;"></div> -->
+						<div id="local-content"></div>
 					</div><!-- .listing-map -->
 
 					<a href='http://kulnijjar.ca/ddf-search'>&#8592; Go Back</a>

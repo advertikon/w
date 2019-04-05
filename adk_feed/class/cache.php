@@ -3,7 +3,7 @@
 class ADKCache {
 	const TIME = 86400; // a day
 
-	static protected $dir = __DIR__ . '/../cache/';
+	static public $dir = __DIR__ . '/../cache/';
 
 	static public function add( $k, $v ) {
 		if ( !is_dir( self::$dir ) ) {
