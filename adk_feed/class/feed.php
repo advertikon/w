@@ -292,7 +292,7 @@ class Feed {
 								$where["building_appliances like '%{$wpdb->_escape($_POST[ $k ] )}%'"] = '';
 
 							} else if ( 'mls' === $k ) {
-								$where["city like '%{$wpdb->_escape($_POST[ $k ] )}%' or neighbor like '%{$wpdb->_escape($_POST[ $k ] )}%'"] = '';
+								$where["city like '%{$wpdb->_escape($_POST[ $k ] )}%' or address like '%{$wpdb->_escape($_POST[ $k ] )}%'"] = '';
 							}
 
 						} else {
@@ -324,17 +324,16 @@ class Feed {
 	 */
 	public function doQuery( array $where = [], $offset = 1, $limit = 1 ) {
 		global $wpdb;
+		$wpdb->show_errors();
 
 		$q = $wpdb->prepare(
 			"SELECT SQL_CALC_FOUND_ROWS * FROM {$wpdb->prefix}adk_feed_data " .
 			( $where ? ' WHERE ' . implode( ' AND ', array_keys( $where ) ) : '' ) .
 			" LIMIT $limit OFFSET $offset",
-			array_values( $where )
+			array_filter( array_values( $where ) )
 		);
 
-		//echo $q . "<br>";
-
-		$results = $wpdb->get_results( $q );
+		$results = $wpdb->get_results( $q ) ?: [];
 		$this->totalRows = $wpdb->get_var( " SELECT FOUND_ROWS()" );
 
 		foreach( $results as &$listing ) {
