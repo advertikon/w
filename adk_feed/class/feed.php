@@ -267,7 +267,7 @@ class Feed {
 			'farm_type'         => [ '%s', '=',  'farm_type' ],
 			'square_feet_inner' => [ '%f', '=',  'square_feet_inner' ],
 			'Keywords'          => [ '%s', 'like',  'building_appliances' ],
-			'mls'               => [ '%s', 'like',  'building_appliances' ],
+			'mls'               => [ '%s', 'like',  '' ],
 		] as $k => $type ) {
 			if ( !empty( $_POST[ $k ] ) ) {
 				$val = $_POST[ $k ];
@@ -471,33 +471,32 @@ class Feed {
 	}
 
 	public function pagination( $buttons = 10 ) {
-		$page = isset( $_POST['page'] ) ? min( Feed::PAGE_SIZE, max( 1, (int)$_POST['page'] ) ) : 1;
+		$page = isset( $_POST['page'] ) ? max( 1, (int)$_POST['page'] ) : 1;
 		$total = ceil( $this->totalRows / Feed::PAGE_SIZE );
 		$start = [];
 		$end = [];
 		$middle = [];
-
-		$buttons = min( $buttons, $total );
+		//$buttons = min( $buttons, $total );
 
 		if ( $total <= 1 ) {
 			return '';
 		}
 
-		if ( 1 === $page) {
+		if ( 1 == $page) {
 			$end[] = $this->renderPageItem( '>', $total - 1 );
 			$end[] = $this->renderPageItem( '>>', $total );
 
-		} else if ( 2 === $page ) {
+		} else if ( 2 == $page ) {
 			$end[] = $this->renderPageItem( '>', $total - 1 );
 			$end[] = $this->renderPageItem( '>>', $total );
 			$start[] = $this->renderPageItem( '<', 1 );
 
-		} else if ( $page === $total - 1 ) {
+		} else if ( $page == $total - 1 ) {
 			$start[] = $this->renderPageItem( '<<', 1 );
 			$start[] = $this->renderPageItem( '<', $page - 1 );
 			$end[] = $this->renderPageItem( '>', $total );
 
-		} else if ( $page === $total ) {
+		} else if ( $page == $total ) {
 			$start[] = $this->renderPageItem( '<<', 1 );
 			$start[] = $this->renderPageItem( '<', $page - 1 );
 
@@ -513,7 +512,7 @@ class Feed {
 		$isRight = false;
 
 		if ( $buttonsCount < $total ) {
-			$buttonsCount--;
+			$buttonsCount--; // ...
 
 			// Stick to the left
 			if ( $page <= $buttonsCount ) {
@@ -521,7 +520,7 @@ class Feed {
 				$isLeft = true;
 
 			// Stick to the right
-			} else if ( $total - $buttonsCount <= $page ) {
+			} else if ( $total - $buttonsCount < $page ) {
 				$start[] = $this->renderPageItem( '...' );
 				$isRight = true;
 
@@ -530,23 +529,27 @@ class Feed {
 				array_unshift( $end, $this->renderPageItem( '...' ) );
 				$start[] = $this->renderPageItem( '...' );
 			}
+
+		} else {
+			$buttonsCount = $total;
+			$isLeft = true;
 		}
 
 		if ( $isLeft ) {
 			$from = 1;
-			$to   = $buttonsCount;
+			$to   = $buttonsCount + 1;
 
 		} else if ( $isRight ) {
-			$from = $total - $buttonsCount;
-			$to   = $total;
+			$from = $total - $buttonsCount + 1;
+			$to   = $total + 1;
 
 		} else {
-			$from = $page - round( $buttonsCount / 2 );
-			$to   = $page + round( $buttonsCount / 2 );
+			$from = $page - floor( $buttonsCount / 2 );
+			$to   = $from + $buttonsCount;//$page + floor( $buttonsCount / 2 );
 		}
 
-		for( $i = $from; $i <= $to; $i++ ) {
-			$middle[] = $this->renderPageItem( $i, $i, $i === $page );
+		for( $i = $from; $i < $to; $i++ ) {
+			$middle[] = $this->renderPageItem( $i, $i, $i == $page );
 		}
 
 		$ret = [];
