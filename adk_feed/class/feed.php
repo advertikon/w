@@ -292,7 +292,7 @@ class Feed {
 								$where["building_appliances like '%{$wpdb->_escape($_POST[ $k ] )}%'"] = '';
 
 							} else if ( 'mls' === $k ) {
-								$where["city like '%{$wpdb->_escape($_POST[ $k ] )}%' or address like '%{$wpdb->_escape($_POST[ $k ] )}%'"] = '';
+								$where["lower(city) like lower('%{$wpdb->_escape($_POST[ $k ] )}%') or lower(address) like lower('%{$wpdb->_escape($_POST[ $k ] )}%') or id = " . (int)$_POST[ $k ] ] = '';
 							}
 
 						} else {
@@ -484,20 +484,38 @@ class Feed {
 
 		if ( 1 == $page) {
 			$end[] = $this->renderPageItem( '>', $total - 1 );
-			$end[] = $this->renderPageItem( '>>', $total );
+
+			if ( $total > 2 ) {
+				$end[] = $this->renderPageItem( '>>', $total );
+			}
 
 		} else if ( 2 == $page ) {
-			$end[] = $this->renderPageItem( '>', $total - 1 );
-			$end[] = $this->renderPageItem( '>>', $total );
+			if ( $total > 2 ) {
+				$end[] = $this->renderPageItem( '>', $total - 1 );
+			}
+
+			if ( $total > 3 ) {
+				$end[] = $this->renderPageItem( '>>', $total );
+			}
+
 			$start[] = $this->renderPageItem( '<', 1 );
 
 		} else if ( $page == $total - 1 ) {
-			$start[] = $this->renderPageItem( '<<', 1 );
-			$start[] = $this->renderPageItem( '<', $page - 1 );
+			if ( $total > 3 ) {
+				$start[] = $this->renderPageItem( '<<', 1 );
+			}
+
+			if ( $total > 2 ) {
+				$start[] = $this->renderPageItem( '<', $page - 1 );
+			}
+
 			$end[] = $this->renderPageItem( '>', $total );
 
 		} else if ( $page == $total ) {
-			$start[] = $this->renderPageItem( '<<', 1 );
+			if ( $total > 2 ) {
+				$start[] = $this->renderPageItem( '<<', 1 );
+			}
+
 			$start[] = $this->renderPageItem( '<', $page - 1 );
 
 		} else {
@@ -877,12 +895,7 @@ class Feed {
 	protected function updateListings() {
 		$this->log->write( 'Updating listings...' );
 		$from  = get_option( 'adk_feed_last_update', '1970-01-01 00:00:00' );
-		// $from = '1970-01-01 00:00:00';
-
-//		$d = new \DateTime( "today -1 day" );
-//		$from = $d->format( 'c' );
 		$this->search( [ $this, 'doUpdate' ], $from );
-
 		update_option( 'adk_feed_last_update', date( 'Y-m-d H:i:s' ) );
 	}
 

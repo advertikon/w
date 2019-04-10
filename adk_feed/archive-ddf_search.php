@@ -1,11 +1,7 @@
 <?php get_header(); ?>
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// $ch = curl_init( 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=47.6918452,-122.2226413&radius=1500&type=freeway&key=AIzaSyDlp0cpB-E_2ua_ugYIp1NsO4TmNCqDIg8' );
-
-// curl_exec( $ch );
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 ?>
 
 <style>
@@ -37,53 +33,13 @@ ini_set('display_errors', 1);
 }
 
 .pagination-wrapper{
-	width: 440px;
 	margin: 0 auto;
 	max-width: 100%;
 }
 
-/*#search-form label {
-	width: 33%;
-	display: inline-block;
-	margin-top: 15px;
+.pagination {
+	display: flex;
 }
-
-#search-form label .selectboxit-container,
-#search-form label .selectboxit {
-	width: 98%!important;
-	background-image: none!important;
-	background-color: white;
-}
-
-#search-form label .selectboxit-options {
-	width: 98%;
-}
-
-.search-row {
-	margin-bottom: 10px;
-}
-
-#search-form {
-	margin: 15px 0;
-}
-
-#search-form button {
-	background-color: #e0b13c;
-	font-weight: bold;
-	color: white;
-	border-radius: 5px;
-	position: relative;
-	left: calc(100% - 160px);
-	width: 160px;
-	height: 50px;
-	font-size: 20px;
-}*/
-
-/*@media ( max-width: 600px ) {
-	#search-form label {
-		width: 100%;
-	}
-}*/
 </style>
 
 <div style="width:90%;max-width:1200px; margin:90px auto 0 auto">
@@ -104,15 +60,6 @@ ini_set('display_errors', 1);
 	$feed = new Feed( $user, $pwd );
 
 	$list = $feed->query();
-
-	// $propertyTypes    = $feed->propertyTypesAsSelect();
-	// $transactionTypes = $feed->transactionTypesAsSelect();
-	// $buildingTypes    = $feed->buildingTypesAsSelect();
-	// $bedrooms         = $feed->bedroomsAsSelect();
-	// $bathrooms        = $feed->bathroomsAsSelect();
-	// $squareFeet       = $feed->squareFeetAsSelect();
-	// $price            = $feed->priceAsSelect();
-	// var_dump( $propertyTypes );
 	?>
 
 	<script>var $ = jQuery;</script>
@@ -264,7 +211,8 @@ ini_set('display_errors', 1);
 							<div id="homeSearchInputInnerCon">
 								<div id="homeSearchTxtCon" style="width: 100%;">
 									<input type="text" autocomplete="city" placeholder="city" style="display: none">
-									<input id="homeSearchTxt" type="text" autocomplete="new-password" spellcheck="false" placeholder="<?php _e( 'City, Neighbourhood or MLS® number', 'adk_ffed' ); ?>" <?php if(isset($_POST['mls']) && !empty(trim($_POST['mls'])))echo 'value="' . $_POST['mls'] . '"'; ?> " />
+									<input id="homeSearchTxt" type="text" autocomplete="new-password" spellcheck="false" placeholder="<?php _e( 'City or address', 'adk_feed' ); ?>"
+									<?php if(isset($_POST['mls']) && !empty(trim($_POST['mls'])))echo 'value="' . $_POST['mls'] . '"'; ?> />
 								</div>
 								<div id="homePrimaryFilterOuterCon">
 									<div id="homePrimaryFilterCon">
@@ -274,241 +222,24 @@ ini_set('display_errors', 1);
 										<!-- <div class="homeFilterCon" id="TransactionTypeTopCom" style="display: none;">
 										   <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeTopCom' ); ?>
 										</div> -->
-									   <!--  <div class="homeFilterCon" id="TransactionTypeCom" style="display: none;">
-											<label for="ddlTransactionTypeTop">Transaction Type</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeTopCom$ctl00" data-default="2" data-hashkey="TransactionTypeId" data-placeholder="Transaction Type" id="ddlTransactionTypeTopCom">
-	<option value="2">For sale</option>
-	<option value="3">For rent</option>
-
-</select>
-										</div> -->
 										<div class="homeFilterCon" id="MinRentTop" style="display: none;">
 											<?php echo $feed->minRentAsSelect( 'ddlMinRentTop' ); ?>
-										  <!--   <label for="ddlMinRentTop">Min Rent</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlMinRentTop$ctl00" data-hashkey="RentMin" data-placeholder="Min Rent" id="ddlMinRentTop">
-	<option value="0">0</option>
-	<option value="100">100</option>
-	<option value="200">200</option>
-	<option value="300">300</option>
-	<option value="400">400</option>
-	<option value="500">500</option>
-	<option value="600">600</option>
-	<option value="700">700</option>
-	<option value="800">800</option>
-	<option value="900">900</option>
-	<option value="1000">1,000</option>
-	<option value="1200">1,200</option>
-	<option value="1400">1,400</option>
-	<option value="1600">1,600</option>
-	<option value="1800">1,800</option>
-	<option value="2000">2,000</option>
-	<option value="2500">2,500</option>
-	<option value="3000">3,000</option>
-	<option value="3500">3,500</option>
-	<option value="4000">4,000</option>
-	<option value="4500">4,500</option>
-	<option value="5000">5,000</option>
-	<option value="6000">6,000</option>
-	<option value="7000">7,000</option>
-	<option value="8000">8,000</option>
-	<option value="9000">9,000</option>
-	<option value="10000">10,000</option>
-
-</select> -->
 										</div>
 										<div class="homeFilterCon" id="MaxRentTop" style="display: none;">
 											<?php echo $feed->maxRentAsSelect( 'ddlMaxRentTop' ); ?>
-										   <!--  <label for="ddlMaxRentTop">Max Rent</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxRentTop$ctl00" data-hashkey="RentMax" data-placeholder="Max Rent" id="ddlMaxRentTop">
-	<option value="0">Unlimited</option>
-	<option value="100">100</option>
-	<option value="200">200</option>
-	<option value="300">300</option>
-	<option value="400">400</option>
-	<option value="500">500</option>
-	<option value="600">600</option>
-	<option value="700">700</option>
-	<option value="800">800</option>
-	<option value="900">900</option>
-	<option value="1000">1,000</option>
-	<option value="1200">1,200</option>
-	<option value="1400">1,400</option>
-	<option value="1600">1,600</option>
-	<option value="1800">1,800</option>
-	<option value="2000">2,000</option>
-	<option value="2500">2,500</option>
-	<option value="3000">3,000</option>
-	<option value="3500">3,500</option>
-	<option value="4000">4,000</option>
-	<option value="4500">4,500</option>
-	<option value="5000">5,000</option>
-	<option value="6000">6,000</option>
-	<option value="7000">7,000</option>
-	<option value="8000">8,000</option>
-	<option value="9000">9,000</option>
-	<option value="10000">10,000</option>
-
-</select> -->
+										  
 										</div>
 										<div class="homeFilterCon" id="MinPriceTop">
 											<?php echo $feed->minPriceAsSelect( 'ddlMinPriceTop' ); ?>
-										   <!--  <label for="ddlMinPriceTop">Min Price</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlMinPriceTop$ctl00" data-hashkey="PriceMin" data-default="0" data-placeholder="Min Price" id="ddlMinPriceTop">
-	<option value="0">0</option>
-	<option value="25000">25,000</option>
-	<option value="50000">50,000</option>
-	<option value="75000">75,000</option>
-	<option value="100000">100,000</option>
-	<option value="125000">125,000</option>
-	<option value="150000">150,000</option>
-	<option value="175000">175,000</option>
-	<option value="200000">200,000</option>
-	<option value="225000">225,000</option>
-	<option value="250000">250,000</option>
-	<option value="275000">275,000</option>
-	<option value="300000">300,000</option>
-	<option value="325000">325,000</option>
-	<option value="350000">350,000</option>
-	<option value="375000">375,000</option>
-	<option value="400000">400,000</option>
-	<option value="425000">425,000</option>
-	<option value="450000">450,000</option>
-	<option value="475000">475,000</option>
-	<option value="500000">500,000</option>
-	<option value="550000">550,000</option>
-	<option value="600000">600,000</option>
-	<option value="650000">650,000</option>
-	<option value="700000">700,000</option>
-	<option value="750000">750,000</option>
-	<option value="800000">800,000</option>
-	<option value="850000">850,000</option>
-	<option value="900000">900,000</option>
-	<option value="950000">950,000</option>
-	<option value="1000000">1,000,000</option>
-	<option value="1100000">1,100,000</option>
-	<option value="1200000">1,200,000</option>
-	<option value="1300000">1,300,000</option>
-	<option value="1400000">1,400,000</option>
-	<option value="1500000">1,500,000</option>
-	<option value="1600000">1,600,000</option>
-	<option value="1700000">1,700,000</option>
-	<option value="1800000">1,800,000</option>
-	<option value="1900000">1,900,000</option>
-	<option value="2000000">2,000,000</option>
-	<option value="2500000">2,500,000</option>
-	<option value="3000000">3,000,000</option>
-	<option value="3500000">3,500,000</option>
-	<option value="4000000">4,000,000</option>
-	<option value="4500000">4,500,000</option>
-	<option value="5000000">5,000,000</option>
-	<option value="5500000">5,500,000</option>
-	<option value="6000000">6,000,000</option>
-	<option value="6500000">6,500,000</option>
-	<option value="7000000">7,000,000</option>
-	<option value="7500000">7,500,000</option>
-	<option value="10000000">10,000,000</option>
-	<option value="15000000">15,000,000</option>
-	<option value="20000000">20,000,000</option>
-
-</select> -->
 										</div>
 										<div class="homeFilterCon" id="MaxPriceTop">
 											<?php echo $feed->maxPriceAsSelect( 'ddlMaxPriceTop' ); ?>
-											<!-- <label for="ddlMaxPriceTop">Max Price</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxPriceTop$ctl00" data-hashkey="PriceMax" data-default="0" data-placeholder="Max Price" id="ddlMaxPriceTop">
-	<option value="0">Unlimited</option>
-	<option value="25000">25,000</option>
-	<option value="50000">50,000</option>
-	<option value="75000">75,000</option>
-	<option value="100000">100,000</option>
-	<option value="125000">125,000</option>
-	<option value="150000">150,000</option>
-	<option value="175000">175,000</option>
-	<option value="200000">200,000</option>
-	<option value="225000">225,000</option>
-	<option value="250000">250,000</option>
-	<option value="275000">275,000</option>
-	<option value="300000">300,000</option>
-	<option value="325000">325,000</option>
-	<option value="350000">350,000</option>
-	<option value="375000">375,000</option>
-	<option value="400000">400,000</option>
-	<option value="425000">425,000</option>
-	<option value="450000">450,000</option>
-	<option value="475000">475,000</option>
-	<option value="500000">500,000</option>
-	<option value="550000">550,000</option>
-	<option value="600000">600,000</option>
-	<option value="650000">650,000</option>
-	<option value="700000">700,000</option>
-	<option value="750000">750,000</option>
-	<option value="800000">800,000</option>
-	<option value="850000">850,000</option>
-	<option value="900000">900,000</option>
-	<option value="950000">950,000</option>
-	<option value="1000000">1,000,000</option>
-	<option value="1100000">1,100,000</option>
-	<option value="1200000">1,200,000</option>
-	<option value="1300000">1,300,000</option>
-	<option value="1400000">1,400,000</option>
-	<option value="1500000">1,500,000</option>
-	<option value="1600000">1,600,000</option>
-	<option value="1700000">1,700,000</option>
-	<option value="1800000">1,800,000</option>
-	<option value="1900000">1,900,000</option>
-	<option value="2000000">2,000,000</option>
-	<option value="2500000">2,500,000</option>
-	<option value="3000000">3,000,000</option>
-	<option value="3500000">3,500,000</option>
-	<option value="4000000">4,000,000</option>
-	<option value="4500000">4,500,000</option>
-	<option value="5000000">5,000,000</option>
-	<option value="5500000">5,500,000</option>
-	<option value="6000000">6,000,000</option>
-	<option value="6500000">6,500,000</option>
-	<option value="7000000">7,000,000</option>
-	<option value="7500000">7,500,000</option>
-	<option value="10000000">10,000,000</option>
-	<option value="15000000">15,000,000</option>
-	<option value="20000000">20,000,000</option>
-
-</select> -->
 										</div>
 										<div class="homeFilterCon" id="BedsTop">
 											<?php echo $feed->bedroomsAsSelect( 'ddlBedsTop' ); ?>
-										   <!--  <label for="ddlBedsTop">Beds</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlBedsTop$ctl00" data-hashkey="BedRange" data-default="0-0" data-placeholder="Beds" id="ddlBedsTop">
-	<option value="0-0">Any</option>
-	<option value="1-1">1</option>
-	<option value="1-0">1+</option>
-	<option value="2-2">2</option>
-	<option value="2-0">2+</option>
-	<option value="3-3">3</option>
-	<option value="3-0">3+</option>
-	<option value="4-4">4</option>
-	<option value="4-0">4+</option>
-	<option value="5-5">5</option>
-	<option value="5-0">5+</option>
-
-</select> -->
 										</div>
 										<div class="homeFilterCon" id="BathsTop">
 											<?php echo $feed->bathroomsAsSelect( 'ddlBathsTop' ); ?>
-										   <!--  <label for="ddlMinPriceTop">Baths</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlBathsTop$ctl00" data-hashkey="BathRange" data-placeholder="Baths" id="ddlBathsTop">
-	<option value="0-0">Any</option>
-	<option value="1-1">1</option>
-	<option value="1-0">1+</option>
-	<option value="2-2">2</option>
-	<option value="2-0">2+</option>
-	<option value="3-3">3</option>
-	<option value="3-0">3+</option>
-	<option value="4-4">4</option>
-	<option value="4-0">4+</option>
-	<option value="5-5">5</option>
-	<option value="5-0">5+</option>
-
-</select> -->
 										</div>
 										<div class="homeFilterCon" id="NumberOfUnitsTop" style="display: none;">
 											<label for="ddlNumberOfUnitsTop">Number of Units</label>
@@ -538,27 +269,6 @@ ini_set('display_errors', 1);
 										</div>
 										<div class="homeFilterCon" id="BuildingSpaceTop" style="display: none;">
 											<?php echo $feed->buildingSizeAsSelect( 'ddlBuildingSpaceTop' ); ?>
-										   <!--  <label for="ddlBuildingSpaceTop">Building Size</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingSpaceTop$ctl00" data-hashkey="BuildingSizeRange" data-default="" data-placeholder="Building Size" id="ddlBuildingSpaceTop">
-	<option value=" ">Any</option>
-	<option value="0-5000">0-5,000 sqft</option>
-	<option value="5001-10000">5,001 - 10,000 sqft</option>
-	<option value="10001-15000">10,001 - 15,000 sqft</option>
-	<option value="15001-20000">15,001 - 20,000 sqft</option>
-	<option value="20001-25000">20,001 - 25,000 sqft</option>
-	<option value="25001-30000">25,001 - 30,000 sqft</option>
-	<option value="30001-35000">30,001 - 35,000 sqft</option>
-	<option value="35001-40000">35,001 - 40,000 sqft</option>
-	<option value="40001-45000">40,001 - 45,000 sqft</option>
-	<option value="45001-50000">45,001 - 50,000 sqft</option>
-	<option value="50001-75000">50,001 - 75,000 sqft</option>
-	<option value="75001-100000">75,001 - 100,000 sqft</option>
-	<option value="100001-150000">100,001 - 150,000 sqft</option>
-	<option value="150001-200000">150,001 - 200,000 sqft</option>
-	<option value="200001-250000">200,001 - 250,000 sqft</option>
-	<option value="250001-0">Over 250,000 sqft</option>
-
-</select> -->
 										</div>
 										<div class="homeFilterCon" id="FarmTypeTop" style="display: none;">
 											<label for="ddlFarmTypeTop">Farm Type</label>
@@ -599,22 +309,6 @@ ini_set('display_errors', 1);
 										</div>
 										<div class="homeFilterCon" id="LandSizeTop" style="display: none;">
 											<?php echo $feed->squareFeetAsSelect( 'ddlLandSizeTop' ); ?>
-											<!-- <label for="ddlLandSizeTop">Land Size</label>
-											<select name="ctl00$MainContent$ctl00$ctl00$ddlLandSizeTop$ctl00" data-hashkey="LandSizeRange" data-placeholder="Land Size" id="ddlLandSizeTop">
-	<option value=" ">Any</option>
-	<option value="1-0">1+ acres</option>
-	<option value="2-0">2+ acres</option>
-	<option value="5-0">5+ acres</option>
-	<option value="10-0">10+ acres</option>
-	<option value="50-0">50+ acres</option>
-	<option value="100-0">100+ acres</option>
-	<option value="200-0">200+ acres</option>
-	<option value="300-0">300+ acres</option>
-	<option value="400-0">400+ acres</option>
-	<option value="500-0">500+ acres</option>
-	<option value="1000-0">1000+ acres</option>
-
-</select> -->
 										</div>
 										<div class="homeFilterCon" id="ZoningTypeTop" style="display: none;">
 											<label for="ddlZoningTypeTop">Zoning Type</label>
@@ -671,288 +365,40 @@ ini_set('display_errors', 1);
 
 							<div class="homeMoreFilterCon" id="propertyTypeRes">
 								<?php echo $feed->propertyTypesAsSelect( 'ddlPropertyTypeRes' ); ?>
-<!--                                 <label for="ddlPropertyTypeRes" class="dropdownLabel">Property Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlPropertyTypeRes$ctl00" class="moreFilterDropdown" data-hashkey="PropertySearchTypeId" data-default="1" id="ddlPropertyTypeRes">
-	<option value="0">No Preference</option>
-	<option value="1">Residential</option>
-	<option value="2">Recreational</option>
-	<option value="3">Condo/Strata</option>
-	<option value="8">Multi Family</option>
-	<option value="4">Agriculture</option>
-	<option value="5">Parking</option>
-	<option value="6">Vacant Land</option>
-
-</select> -->
 							</div>
 							<div class="homeMoreFilterCon" id="propertyTypeCom">
 								<?php echo $feed->propertyTypesAsSelect( 'ddlPropertyTypeCom' ); ?>
-							   <!--  <label for="ddlPropertyTypeCom" class="dropdownLabel">Property Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlPropertyTypeCom$ctl00" class="moreFilterDropdown" data-hashkey="PropertySearchTypeId" data-default="0" id="ddlPropertyTypeCom">
-	<option value="0">All Commercial</option>
-	<option value="7">Business</option>
-	<option value="8">Multi Family</option>
-	<option value="9">Retail</option>
-	<option value="10">Industrial</option>
-	<option value="11">Office</option>
-	<option value="6">Vacant Land</option>
-	<option value="4">Agriculture</option>
-	<option value="12">Hospitality</option>
-	<option value="13">Institutional</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="transactionTypeRes">
 								 <?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeRes' ); ?>
-							   <!--  <label for="ddlTransactionTypeRes" class="dropdownLabel">Transaction Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeRes$ctl00" data-default="2" data-hashkey="TransactionTypeId" id="ddlTransactionTypeRes">
-	<option value="2">For sale</option>
-	<option value="3">For rent</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="transactionTypeCom">
 								<?php echo $feed->transactionTypesAsSelect( 'ddlTransactionTypeCom' ); ?>
-							   <!--  <label for="ddlTransactionTypeCom" class="dropdownLabel">Transaction Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlTransactionTypeCom$ctl00" data-default="2" data-hashkey="TransactionTypeId" id="ddlTransactionTypeCom">
-	<option value="2">For sale</option>
-	<option value="3">For lease</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="rentMin">
 								<?php echo $feed->minRentAsSelect( 'ddlMinRent' ); ?>
-								<!-- <label for="ddlMinRent" class="dropdownLabel">Min Rent</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlMinRent$ctl00" data-hashkey="RentMin" data-default="0" id="ddlMinRent">
-	<option value="0">0</option>
-	<option value="100">100</option>
-	<option value="200">200</option>
-	<option value="300">300</option>
-	<option value="400">400</option>
-	<option value="500">500</option>
-	<option value="600">600</option>
-	<option value="700">700</option>
-	<option value="800">800</option>
-	<option value="900">900</option>
-	<option value="1000">1,000</option>
-	<option value="1200">1,200</option>
-	<option value="1400">1,400</option>
-	<option value="1600">1,600</option>
-	<option value="1800">1,800</option>
-	<option value="2000">2,000</option>
-	<option value="2500">2,500</option>
-	<option value="3000">3,000</option>
-	<option value="3500">3,500</option>
-	<option value="4000">4,000</option>
-	<option value="4500">4,500</option>
-	<option value="5000">5,000</option>
-	<option value="6000">6,000</option>
-	<option value="7000">7,000</option>
-	<option value="8000">8,000</option>
-	<option value="9000">9,000</option>
-	<option value="10000">10,000</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="rentMax">
 								<?php echo $feed->maxRentAsSelect( 'ddlMaxRent' ); ?>
-								<!-- <label for="ddlMaxRent" class="dropdownLabel">Max Rent</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxRent$ctl00" data-hashkey="RentMax" data-default="0" id="ddlMaxRent">
-	<option value="0">Unlimited</option>
-	<option value="100">100</option>
-	<option value="200">200</option>
-	<option value="300">300</option>
-	<option value="400">400</option>
-	<option value="500">500</option>
-	<option value="600">600</option>
-	<option value="700">700</option>
-	<option value="800">800</option>
-	<option value="900">900</option>
-	<option value="1000">1,000</option>
-	<option value="1200">1,200</option>
-	<option value="1400">1,400</option>
-	<option value="1600">1,600</option>
-	<option value="1800">1,800</option>
-	<option value="2000">2,000</option>
-	<option value="2500">2,500</option>
-	<option value="3000">3,000</option>
-	<option value="3500">3,500</option>
-	<option value="4000">4,000</option>
-	<option value="4500">4,500</option>
-	<option value="5000">5,000</option>
-	<option value="6000">6,000</option>
-	<option value="7000">7,000</option>
-	<option value="8000">8,000</option>
-	<option value="9000">9,000</option>
-	<option value="10000">10,000</option>
-
-</select> -->
 							</div>
 							<div class="homeMoreFilterCon" id="priceMin">
 								<?php echo $feed->minPriceAsSelect( 'ddlMinPrice' ); ?>
-								<!-- <label for="ddlMinPrice" class="dropdownLabel">Min Price</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlMinPrice$ctl00" data-binding-constraint-read="visible" data-hashkey="PriceMin" data-default="0" id="ddlMinPrice">
-	<option value="0">0</option>
-	<option value="25000">25,000</option>
-	<option value="50000">50,000</option>
-	<option value="75000">75,000</option>
-	<option value="100000">100,000</option>
-	<option value="125000">125,000</option>
-	<option value="150000">150,000</option>
-	<option value="175000">175,000</option>
-	<option value="200000">200,000</option>
-	<option value="225000">225,000</option>
-	<option value="250000">250,000</option>
-	<option value="275000">275,000</option>
-	<option value="300000">300,000</option>
-	<option value="325000">325,000</option>
-	<option value="350000">350,000</option>
-	<option value="375000">375,000</option>
-	<option value="400000">400,000</option>
-	<option value="425000">425,000</option>
-	<option value="450000">450,000</option>
-	<option value="475000">475,000</option>
-	<option value="500000">500,000</option>
-	<option value="550000">550,000</option>
-	<option value="600000">600,000</option>
-	<option value="650000">650,000</option>
-	<option value="700000">700,000</option>
-	<option value="750000">750,000</option>
-	<option value="800000">800,000</option>
-	<option value="850000">850,000</option>
-	<option value="900000">900,000</option>
-	<option value="950000">950,000</option>
-	<option value="1000000">1,000,000</option>
-	<option value="1100000">1,100,000</option>
-	<option value="1200000">1,200,000</option>
-	<option value="1300000">1,300,000</option>
-	<option value="1400000">1,400,000</option>
-	<option value="1500000">1,500,000</option>
-	<option value="1600000">1,600,000</option>
-	<option value="1700000">1,700,000</option>
-	<option value="1800000">1,800,000</option>
-	<option value="1900000">1,900,000</option>
-	<option value="2000000">2,000,000</option>
-	<option value="2500000">2,500,000</option>
-	<option value="3000000">3,000,000</option>
-	<option value="3500000">3,500,000</option>
-	<option value="4000000">4,000,000</option>
-	<option value="4500000">4,500,000</option>
-	<option value="5000000">5,000,000</option>
-	<option value="5500000">5,500,000</option>
-	<option value="6000000">6,000,000</option>
-	<option value="6500000">6,500,000</option>
-	<option value="7000000">7,000,000</option>
-	<option value="7500000">7,500,000</option>
-	<option value="10000000">10,000,000</option>
-	<option value="15000000">15,000,000</option>
-	<option value="20000000">20,000,000</option>
-
-</select> -->
 							</div>
 							<div class="homeMoreFilterCon" id="priceMax">
 								<?php echo $feed->maxPriceAsSelect( 'ddlMaxPrice' ); ?>
-							   <!--  <label for="ddlMaxPrice" class="dropdownLabel">Max Price</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlMaxPrice$ctl00" data-binding-constraint-read="visible" data-hashkey="PriceMax" data-default="0" id="ddlMaxPrice">
-	<option value="0">Unlimited</option>
-	<option value="25000">25,000</option>
-	<option value="50000">50,000</option>
-	<option value="75000">75,000</option>
-	<option value="100000">100,000</option>
-	<option value="125000">125,000</option>
-	<option value="150000">150,000</option>
-	<option value="175000">175,000</option>
-	<option value="200000">200,000</option>
-	<option value="225000">225,000</option>
-	<option value="250000">250,000</option>
-	<option value="275000">275,000</option>
-	<option value="300000">300,000</option>
-	<option value="325000">325,000</option>
-	<option value="350000">350,000</option>
-	<option value="375000">375,000</option>
-	<option value="400000">400,000</option>
-	<option value="425000">425,000</option>
-	<option value="450000">450,000</option>
-	<option value="475000">475,000</option>
-	<option value="500000">500,000</option>
-	<option value="550000">550,000</option>
-	<option value="600000">600,000</option>
-	<option value="650000">650,000</option>
-	<option value="700000">700,000</option>
-	<option value="750000">750,000</option>
-	<option value="800000">800,000</option>
-	<option value="850000">850,000</option>
-	<option value="900000">900,000</option>
-	<option value="950000">950,000</option>
-	<option value="1000000">1,000,000</option>
-	<option value="1100000">1,100,000</option>
-	<option value="1200000">1,200,000</option>
-	<option value="1300000">1,300,000</option>
-	<option value="1400000">1,400,000</option>
-	<option value="1500000">1,500,000</option>
-	<option value="1600000">1,600,000</option>
-	<option value="1700000">1,700,000</option>
-	<option value="1800000">1,800,000</option>
-	<option value="1900000">1,900,000</option>
-	<option value="2000000">2,000,000</option>
-	<option value="2500000">2,500,000</option>
-	<option value="3000000">3,000,000</option>
-	<option value="3500000">3,500,000</option>
-	<option value="4000000">4,000,000</option>
-	<option value="4500000">4,500,000</option>
-	<option value="5000000">5,000,000</option>
-	<option value="5500000">5,500,000</option>
-	<option value="6000000">6,000,000</option>
-	<option value="6500000">6,500,000</option>
-	<option value="7000000">7,000,000</option>
-	<option value="7500000">7,500,000</option>
-	<option value="10000000">10,000,000</option>
-	<option value="15000000">15,000,000</option>
-	<option value="20000000">20,000,000</option>
-
-</select> -->
 							</div>
 
 
 							<div class="homeMoreFilterCon" id="beds">
 								<?php echo $feed->bedroomsAsSelect( 'ddlBeds' ); ?>
-								<!-- <label for="ddlBeds" class="dropdownLabel">Beds</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlBeds$ctl00" data-hashkey="BedRange" data-default="0-0" id="ddlBeds">
-	<option value="0-0">Any</option>
-	<option value="1-1">1</option>
-	<option value="1-0">1+</option>
-	<option value="2-2">2</option>
-	<option value="2-0">2+</option>
-	<option value="3-3">3</option>
-	<option value="3-0">3+</option>
-	<option value="4-4">4</option>
-	<option value="4-0">4+</option>
-	<option value="5-5">5</option>
-	<option value="5-0">5+</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="baths">
 								<?php echo $feed->bathroomsAsSelect( 'ddlBaths' ); ?>
-							   <!--  <label for="ddlBaths" class="dropdownLabel">Baths</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlBaths$ctl00" Value="0-0" data-hashkey="BathRange" data-default="0-0" id="ddlBaths">
-	<option value="0-0">Any</option>
-	<option value="1-1">1</option>
-	<option value="1-0">1+</option>
-	<option value="2-2">2</option>
-	<option value="2-0">2+</option>
-	<option value="3-3">3</option>
-	<option value="3-0">3+</option>
-	<option value="4-4">4</option>
-	<option value="4-0">4+</option>
-	<option value="5-5">5</option>
-	<option value="5-0">5+</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="numberOfUnits">
@@ -985,37 +431,7 @@ ini_set('display_errors', 1);
 
 							<div class="homeMoreFilterCon" id="parkingType">
 								<?php echo $feed->parkingTypeAsSelect( 'ddlParkingTypee' ); ?>
-							  <!--   <label for="ddlParkingType" class="dropdownLabel">Parking Type</label>
-								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlParkingType$ctl00" multiple="multiple" data-hashkey="ParkingTypeId" data-default="" id="ddlParkingType">
-	<option value="35">Boat House</option>
-	<option value="36">Concrete</option>
-	<option value="37">Heated Garage</option>
-	<option value="1">Attached garage</option>
-	<option value="2">Integrated garage</option>
-	<option value="3">Detached garage</option>
-	<option value="4">Garage</option>
-	<option value="5">Carport</option>
-	<option value="6">Underground</option>
-	<option value="7">Indoor</option>
-	<option value="8">Open</option>
-	<option value="9">Covered</option>
-	<option value="10">Parking pad</option>
-	<option value="11">Paved Yard</option>
-
-</select> -->
 							</div>
-
-							<!-- <div class="homeMoreFilterCon" id="listedSince">
-								<label for="dteListedSince" class="datePickerLabel">Listed Since</label>
-								<div>
-									<div style="position: relative;">
-										<input readonly="readonly" placeholder="mm/dd/yyyy" type="text" id="dteListedSince" class="homeFilter" data-validation="date" data-hashkey="NumberOfDays" data-type="dayssince" min="2018-03-10" max="2019-03-08" />
-										<img src="/images/common/icons/svg/calendar-black.svg" width="25" class="inputDateIcon" alt="" />
-									</div>
-
-
-								</div>
-							</div> -->
 							<div class="homeMoreFilterCon checkbox" id="openHouse">
 								<div class="homeFilter">
 									<input type="checkbox" id="chkOpenHouse" value="1" data-hashkey="open_house" <?php echo empty( $_POST['open_house'] ) ? '' : "checked='checked'"; ?>/>
@@ -1025,157 +441,34 @@ ini_set('display_errors', 1);
 							<div class="homeMoreFilterCon" id="keywords">
 								<label for="txtKeywords" class="textboxLabel">Keywords</label>
 								<i style="display: none;" class="fa fa-question-circle inputHelperIcon" aria-hidden="true" id="KeywordToolTip" data-tooltipid="KeywordsTooltip"></i>
-								<!-- <input type="text" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords" placeholder="Waterfront, Garage, Pool…" />-->
 								<select multiple="multiple" id="txtKeywords" data-hashkey="Keywords" data-validation="keywords">
 									<?php echo $feed->get_keywords(); ?>
 								</select>
 							</div>
 
 							<div class="homeMoreFilterCon" id="hospitalityBuildingType">
-								<?php //echo $feed->buildingTypesAsSelect( 'ddlHospitalityBuildingType' ); ?>
-							   <!--  <label for="ddlHospitalityBuildingType" class="dropdownLabel">Building Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlHospitalityBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlHospitalityBuildingType">
-	<option value=" ">Any</option>
-	<option value="1">House</option>
-	<option value="16">Row / Townhouse</option>
-	<option value="17">Apartment</option>
-	<option value="2">Duplex</option>
-	<option value="3">Triplex</option>
-	<option value="19">Fourplex</option>
-	<option value="20">Garden Home</option>
-	<option value="6">Mobile Home</option>
-	<option value="27">Manufactured Home/Mobile</option>
-	<option value="12">Special Purpose</option>
-	<option value="5">Residential Commercial Mix</option>
-	<option value="29">Manufactured Home</option>
-	<option value="28">Commercial Apartment</option>
-	<option value="25">Two Apartment House</option>
-	<option value="30">Park Model Mobile Home</option>
-
-</select> -->
+								
 							</div>
 
 							<div class="homeMoreFilterCon" id="ddlInstitutionalBuildingType">
-								<?php //echo $feed->buildingTypesAsSelect( 'ddlHospitalityBuildingType' ); ?>
-							   <!--  <label for="ddlInstitutionalBuildingType" class="dropdownLabel">Building Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlInstitutionalBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlInstitutionalBuildingType">
-	<option value=" ">Any</option>
-	<option value="12">Special Purpose</option>
-	<option value="7">Offices</option>
-	<option value="5">Residential Commercial Mix</option>
-	<option value="4">Multi-Family</option>
-	<option value="8">Retail</option>
-	<option value="9">Warehouse</option>
-	<option value="14">Other</option>
- -->
-</select>
+								
 							</div>
 
 							<div class="homeMoreFilterCon" id="industrialBuildingType">
-								<?php //echo $feed->buildingTypesAsSelect( 'ddlIndustrialBuildingType' ); ?>
-							   <!--  <label for="ddlIndustrialBuildingType" class="dropdownLabel">Building Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlIndustrialBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlIndustrialBuildingType">
-	<option value=" ">Any</option>
-	<option value="12">Special Purpose</option>
-	<option value="7">Offices</option>
-	<option value="5">Residential Commercial Mix</option>
-	<option value="4">Multi-Family</option>
-	<option value="8">Retail</option>
-	<option value="9">Warehouse</option>
-	<option value="14">Other</option>
-
-</select> -->
+								
 							</div>
 
 							<div class="homeMoreFilterCon" id="retailBuildingType">
-								<?php //$feed->buildingTypesAsSelect( 'ddlRetailBuildingType' ); ?>
-								<!-- <label for="ddlRetailBuildingType" class="dropdownLabel">Building Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlRetailBuildingType$ctl00" data-default="none" data-hashkey="BuildingTypeId" id="ddlRetailBuildingType">
-	<option value=" ">Any</option>
-	<option value="8">Retail</option>
-	<option value="21">Flex Facility</option>
-	<option value="5">Residential Commercial Mix</option>
-	<option value="23">Multi-Tenant Industrial</option>
-	<option value="24">Commercial Mix</option>
-	<option value="7">Offices</option>
-	<option value="9">Warehouse</option>
-	<option value="19">Fourplex</option>
-	<option value="4">Multi-Family</option>
-	<option value="12">Special Purpose</option>
-	<option value="14">Other</option>
-
-</select> -->
+								
 							</div>
 
 							<div class="homeMoreFilterCon" id="buildingType">
 								<?php $feed->buildingTypesAsSelect( 'ddlBuildingType' ); ?>
-							   <!--  <label for="ddlBuildingType" class="dropdownLabel">Building Type</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingType$ctl00" data-hashkey="BuildingTypeId" id="ddlBuildingType">
-	<option value=" ">Any</option>
-	<option value="1">House</option>
-	<option value="16">Row / Townhouse</option>
-	<option value="17">Apartment</option>
-	<option value="2">Duplex</option>
-	<option value="3">Triplex</option>
-	<option value="19">Fourplex</option>
-	<option value="20">Garden Home</option>
-	<option value="6">Mobile Home</option>
-	<option value="27">Manufactured Home/Mobile</option>
-	<option value="12">Special Purpose</option>
-	<option value="5">Residential Commercial Mix</option>
-	<option value="29">Manufactured Home</option>
-	<option value="28">Commercial Apartment</option>
-	<option value="25">Two Apartment House</option>
-	<option value="30">Park Model Mobile Home</option>
-
-</select> -->
+							   
 							</div>
-
-						   <!--  <div class="homeMoreFilterCon" id="buildingAttachmentStyle">
-								<label for="ddlBuildingAttachmentStyle" class="dropdownLabel">Building Style</label>
-								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlBuildingAttachmentStyle$ctl00" multiple="multiple" data-hashkey="ConstructionStyleId" id="ddlBuildingAttachmentStyle">
-	<option value="1" parentid="16">Attached</option>
-	<option value="3" parentid="1">Detached</option>
-	<option value="3" parentid="2">Detached</option>
-	<option value="3" parentid="3">Detached</option>
-	<option value="3" parentid="16">Detached</option>
-	<option value="5" parentid="1">Semi-detached</option>
-	<option value="5" parentid="2">Semi-detached</option>
-	<option value="5" parentid="3">Semi-detached</option>
-	<option value="5" parentid="16">Semi-detached</option>
-	<option value="1" parentid="1">Attached</option>
-	<option value="1" parentid="2">Attached</option>
-	<option value="1" parentid="3">Attached</option>
-	<option value="7" parentid="2">Stacked</option>
-	<option value="7" parentid="16">Stacked</option>
-	<option value="9" parentid="1">Link</option>
-
-</select>
-							</div> -->
 
 							<div class="homeMoreFilterCon" id="buildingSpace">
 								<?php echo $feed->buildingSizeAsSelect( 'ddlBuildingSpace' ); ?>
-							   <!--  <label for="ddlBuildingSpace" class="dropdownLabel">Building Size</label>
-								<select name="ctl00$MainContent$ctl00$ctl00$ddlBuildingSpace$ctl00" data-hashkey="BuildingSizeRange" id="ddlBuildingSpace">
-	<option value=" ">Any</option>
-	<option value="0-5000">0-5,000 sqft</option>
-	<option value="5001-10000">5,001 - 10,000 sqft</option>
-	<option value="10001-15000">10,001 - 15,000 sqft</option>
-	<option value="15001-20000">15,001 - 20,000 sqft</option>
-	<option value="20001-25000">20,001 - 25,000 sqft</option>
-	<option value="25001-30000">25,001 - 30,000 sqft</option>
-	<option value="30001-35000">30,001 - 35,000 sqft</option>
-	<option value="35001-40000">35,001 - 40,000 sqft</option>
-	<option value="40001-45000">40,001 - 45,000 sqft</option>
-	<option value="45001-50000">45,001 - 50,000 sqft</option>
-	<option value="50001-75000">50,001 - 75,000 sqft</option>
-	<option value="75001-100000">75,001 - 100,000 sqft</option>
-	<option value="100001-150000">100,001 - 150,000 sqft</option>
-	<option value="150001-200000">150,001 - 200,000 sqft</option>
-	<option value="200001-250000">200,001 - 250,000 sqft</option>
-	<option value="250001-0">Over 250,000 sqft</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="landSize">
@@ -1200,43 +493,10 @@ ini_set('display_errors', 1);
 
 							<div class="homeMoreFilterCon" id="farmType">
 								<?php echo $feed->farmTypeAsSelect( 'ddlFarmTypee' ); ?>
-								<!-- <label for="ddlFarmType">Farm Type</label>
-								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlFarmType$ctl00" multiple="multiple" data-hashkey="FarmTypeId" id="ddlFarmType">
-	<option value="1">Animal</option>
-	<option value="3">Cash Crop</option>
-	<option value="7">Hobby Farm</option>
-	<option value="6">Market Gardening</option>
-	<option value="5">Nursery</option>
-	<option value="10">Greenhouse</option>
-	<option value="9">Orchard</option>
-	<option value="8">Vineyard</option>
-	<option value="4">Feed Lot</option>
-	<option value="2">Boarding</option>
-	<option value="12">Mixed</option>
-
-</select> -->
 							</div>
 
 							<div class="homeMoreFilterCon" id="zoningType">
 								<?php echo $feed->zoningTypeAsSelect( 'ddlZoningTypee' ); ?>
-								<!-- <label for="ddlZoningType" class="dropdownLabel">Zoning Type</label>
-								<select size="3" name="ctl00$MainContent$ctl00$ctl00$ddlZoningType$ctl00" multiple="multiple" data-hashkey="ZoningTypeGroupId" id="ddlZoningType">
-	<option value="4">Commercial Retail</option>
-	<option value="3">Commercial Office</option>
-	<option value="2">Commercial Mixed</option>
-	<option value="5">Industrial</option>
-	<option value="7">Industrial-Light</option>
-	<option value="8">Industrial-Medium</option>
-	<option value="6">Industrial-Heavy</option>
-	<option value="13">Residential-Low Density</option>
-	<option value="14">Residential - Medium Density</option>
-	<option value="12">Residential-High Density</option>
-	<option value="9">Institutional</option>
-	<option value="1">Agricultural</option>
-	<option value="11">Recreational</option>
-	<option value="10">Other</option>
-
-</select> -->
 							</div>
 
 							<input type="text" id="txtPropertyTypeGroupID" value="1" class="hiddenSearchFilter" style="display: none" data-hashkey="PropertyTypeGroupID" />
@@ -1265,23 +525,7 @@ ini_set('display_errors', 1);
 	</div>
 </div>
 
-	
-		<!-- <div class="search-row"> -->
-			<?php
-				// echo $propertyTypes;
-				// echo $transactionTypes;
-				// echo $buildingTypes;
-				// echo $bedrooms;
-				// echo $bathrooms;
-				// echo $squareFeet;
-				// echo $price;
-			?>
-			<input id="page" type="hidden" name="page" value="1">
-		<!-- </div> -->
-		<!-- <div class="search-row">
-			<button type="submit"><?php _e( 'Search', 'adk_feed' ); ?></button>
-		</div> -->
-	<!-- </form> -->
+	<input id="page" type="hidden" name="page" value="1">
 
 
 	<section id="wplistings-featured-listings-11" class="widget wplistings-featured-listings clearfix amr_widget">

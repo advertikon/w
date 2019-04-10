@@ -1,5 +1,4 @@
 <?php
-
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -45,23 +44,27 @@ $utilities = implode( ',', $utilities );
 get_header();
 
 $coordinates = GoogleCoordinates::get( $l );
-
-// $ch = curl_init( 'https://api.locallogic.co/v1/demographics?lat=45.5017&lng=-73.5656' );
-// curl_setopt( $ch, CURLOPT_HTTPHEADER, [ 'X-API-KEY' => '907c3d69b4d0018a652664e82605d3c2d6d0184b487ab1764723facea049f9f73f1a57d10dd33d4b' ] );
-// curl_exec( $ch );
-
-// $ch = curl_init( 'https://api.locallogic.co/v1/scores/bG9jYWxsb2dpYweyJ0b2tlbiI6IjkwN2MzZDY5YjRkMDAxOGE2NTI2NjRlODI2MDVkM2MyZDZkMDE4NGI0ODdhYjE3NjQ3MjNmYWNlYTA0OWY5ZjczZjFhNTdkMTBkZDMzZDRiIiwibGF0Ijo0NS41MDE3MzQsImxuZyI6LTczLjU2NTQyfQ==?locale=en&fields=value%2Ctext%2Cname' );
-// curl_setopt( $ch, CURLOPT_HEADER, true );
-
-
 ?>
 
 <link type="text/css"rel="stylesheet" href="<?php echo plugins_url( 'adk_feed/assets/stylesheets/wp-listings-single.css' ); ?>"/>
+<link href="<?php echo get_theme_file_uri( 'js/accordion/css/accordion.css' ); ?>" rel="stylesheet">
+<script src="<?php echo get_theme_file_uri( 'js/accordion/js/accordion.min.js' ); ?>"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<style type="text/css">
+	.calc-tip-middle {
+		box-sizing: content-box!important;
+	}
+
+	#listing-calculator tbody {
+		widtH: 100%!important;
+	}
+</style>
 
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.min.js"></script>
 <script src="<?php echo plugins_url( 'adk_feed/assets/javascripts/jquery.validate.min.js' ); ?>"></script>
-<script src="<?php echo plugins_url( 'adk_feed/assets/javascripts/single-listing.min.js' ); ?>"></script>
+<script src="<?php echo plugins_url( 'adk_feed/assets/javascripts/single-listing.js' ); ?>"></script>
 
 <div id="primary" class="content-area container inner">
 	<div id="content" class="site-content" role="main">
@@ -92,6 +95,8 @@ $coordinates = GoogleCoordinates::get( $l );
 							<li><a href="#listing-description">Description</a></li>
 							<li><a href="#listing-details">Details</a></li>
 							<li><a href="#listing-gallery">Photos</a></li>
+							<li><a href="#listing-statistic">Statistics</a></li>
+							<li><a href="#listing-calculator">Calculator</a></li>
 						</ul>
 						<div id="listing-description" itemprop="description">
 							<span class="formula">
@@ -199,6 +204,15 @@ $coordinates = GoogleCoordinates::get( $l );
 								</div>
 							</p>
 						</div><!-- #listing-gallery -->
+						<div id="listing-calculator">
+							<div>
+								<h2 style="font-family:stagsans,arial,helvetica,sans-serif;font-size:1.6em;font-weight:400;margin-top:0;text-decoration:none;color:#A3C139;"> Mortgage payment calculator</h2>
+								<div class="widget" data-widget="calc-payment" data-lang="en"></div>
+								<div style="text-align:right;">  <a href="https://www.ratehub.ca/" style="display:inline-block;width:80px;margin-top:.5em;"><img src="https://www.ratehub.ca/assets/images/widget-logo.png" style="width:100%;" alt="Ratehub.ca logo"></a></div>
+								<script type="text/javascript" src="https://www.ratehub.ca/assets/js/widget-loader.js"></script>
+							</div>
+						</div>
+						<div id="listing-statistic"><?php require_once 'stat.php'; ?></div>
 					</div><!-- #listing-tabs.listing-data -->
 					<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1Nyt3733Bgyd1KiZIiF8ypMsX2BkokMQ"></script> -->
 					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlp0cpB-E_2ua_ugYIp1NsO4TmNCqDIg8"></script>
@@ -268,7 +282,6 @@ $coordinates = GoogleCoordinates::get( $l );
 								basemap: "google",
 							} );
 						}
-
 					</script>
 					<script async defer src="https://cdn.locallogic.co/sdk/?token=<?php echo get_option( 'adk_feed_locallogic' ); ?>&callback=initLocallogic"></script>
 					<div id="listing-map">
