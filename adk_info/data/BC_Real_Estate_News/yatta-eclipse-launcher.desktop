@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=yatta-eclipse-launcher
+Comment=Start the Eclipse Launcher
+Exec=java -jar /home/max/.local/share/Yatta/Launcher/yatta-eclipse-launcher-linux-64.jar  -Dprism.order=j2d,sw
+Icon=/home/max/.local/share/Yatta/Launcher/html/img/launcherIcon48.png
+Terminal=false
+Type=Application
+Categories=
+X-GNOME-Autostart-Delay=5

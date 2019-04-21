@@ -18,6 +18,7 @@ add_action ( 'wp_enqueue_scripts', 'adk_info_add_scripts' );
 add_action ( 'wp_enqueue_scripts', 'adk_info_add_styles' );
 // add_action( 'init', 'adk_create_posttype' );
 // add_action( 'init', 'adk_rewrite_rule', 10, 0 );
+add_action( 'wp_ajax_adk_remove_pdf', 'adk_remove_pdf' );
 
 function adk_info_activate() {
 	
@@ -177,3 +178,41 @@ function adk_info_add_styles() {
 // 	add_rewrite_rule('^ddf-listing/.+?-(\d+)/?','index.php?post_type=ddf_listing&listing_id=$matches[1]','top' );
 // 	add_rewrite_tag('%listing_id%', '' );
 // }
+
+function adk_remove_pdf() {
+	$name = isset( $_GET['name'] ) ? $_GET['name'] : '';
+	$city = isset( $_GET['city'] ) ? $_GET['city'] : '';
+	$ret = [];
+
+	try {
+		if ( !$name ) {
+			throw new Exception( 'Name is empty' );
+		}
+
+		if ( !$city ) {
+			throw new Exception('City name is empty' );
+		}
+
+		$dataDir = __DIR__ . '/data/';
+
+		if ( !is_dir( $dataDir . $city ) ) {
+			throw new Exception( 'Target folder is missing' );
+		}
+
+		if ( !is_file( $dataDir . $city . '/' . $name ) ) {
+			throw new Exception( 'Target file is missing' );
+		}
+
+		if ( !unlink( $dataDir . $city . '/' . $name  ) ) {
+			throw new Exception( 'Failed to delete the file' );
+		}
+
+		$ret['success'] = 'File has been deleted';
+
+	} catch ( Exception $e ) {
+		$ret['error'] = $e->getMessage();
+	}
+
+	echo json_encode( $ret );
+	die();
+}
