@@ -112,8 +112,8 @@ return [
 		],
 		[
 			'name' => 'Silvertone',
-			'lat' => '',
-			'lng' => '',
+			'lat' => 49.9533322,
+			'lng' => -117.3653719,
 		],
 		[
 			'name' => 'Slocan',

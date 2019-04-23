@@ -8,6 +8,12 @@ if ( !$city || !$file ) {
 	die();
 }
 
+if ( strpos( $city, '..' ) !== false || strpos( $file , '..' ) !== false ) {
+	echo 'Access denied';
+	http_response_code( 403 );
+	die();
+}
+
 $dir = __DIR__ . '/data/';
 
 if ( !is_dir( $dir . $city ) || !is_file( $dir . $city . '/' . $file ) ) {
